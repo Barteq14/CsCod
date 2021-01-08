@@ -1,0 +1,10 @@
+C:\Users\blong\OneDrive\Desktop\projekt\ProjektSSIW\ProjektSSIW\bin\Debug\ProjektSSIW.exe.config
+C:\Users\blong\OneDrive\Desktop\projekt\ProjektSSIW\ProjektSSIW\bin\Debug\ProjektSSIW.exe
+C:\Users\blong\OneDrive\Desktop\projekt\ProjektSSIW\ProjektSSIW\bin\Debug\ProjektSSIW.pdb
+C:\Users\blong\OneDrive\Desktop\projekt\ProjektSSIW\ProjektSSIW\obj\Debug\ProjektSSIW.csprojAssemblyReference.cache
+C:\Users\blong\OneDrive\Desktop\projekt\ProjektSSIW\ProjektSSIW\obj\Debug\ProjektSSIW.Form1.resources
+C:\Users\blong\OneDrive\Desktop\projekt\ProjektSSIW\ProjektSSIW\obj\Debug\ProjektSSIW.Properties.Resources.resources
+C:\Users\blong\OneDrive\Desktop\projekt\ProjektSSIW\ProjektSSIW\obj\Debug\ProjektSSIW.csproj.GenerateResource.cache
+C:\Users\blong\OneDrive\Desktop\projekt\ProjektSSIW\ProjektSSIW\obj\Debug\ProjektSSIW.csproj.CoreCompileInputs.cache
+C:\Users\blong\OneDrive\Desktop\projekt\ProjektSSIW\ProjektSSIW\obj\Debug\ProjektSSIW.exe
+C:\Users\blong\OneDrive\Desktop\projekt\ProjektSSIW\ProjektSSIW\obj\Debug\ProjektSSIW.pdb
