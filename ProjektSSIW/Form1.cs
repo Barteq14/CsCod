@@ -28,7 +28,7 @@ namespace ProjektSSIW
             string[] tempArray = richTextBox1.Lines;
             List<string> pomLista = new List<string>();
             //string[] errors = new string[10];
-            List<String> error = new List<string>();
+            List<String> error = new List<string>(); // lista błędów jakie mogą wyskoczyć
             error.Add("zła intrukcja poczatkowa! (rush)");
             error.Add("brak średnika na końcu!");
             error.Add("zła intrukcja poczatkowa! (begin)");
@@ -38,44 +38,35 @@ namespace ProjektSSIW
             error.Add("zła intrukcja poczatkowa! (begin)");
             error.Add("zła intrukcja poczatkowa! (begin)");
             error.Add("zła intrukcja poczatkowa! (begin)");
-            //textBox1.Text = richTextBox1.Text;
-            //wypisanie do textBox1 elementu o indexie 2 z naszej tablicy
-            /*
-            String linia2 = tempArray[2];
-            textBox1.Text = linia2;
-            */
-            //wypisanie wszystkich elementów z tablicy do listView1
-            /*
-            for(int i = 0; i < tempArray.Length; i++)
-            {
-                listView1.Items.Add(tempArray[i]);
-            }
-            */
-            if (tempArray.Count() <= 0)
+         
+            
+            if (tempArray.Count() <= 0) // sprawdzenie czy tablica jest pusta
             {
                 label4.Text = "Nie wpisałeś żadnego kodu.";
             }
             else 
-            { 
-                if (tempArray[0] == "rush")
+            {
+                int size = tempArray.Length; // pobieram długość tablicy 
+
+                if (tempArray[0] == "rush" && tempArray[size-1] == "save") // sprawdzam czy na poczatku jest 'rush' a na końcu 'save'
                 {
                     for (int i = 0; i < tempArray.Length; i++)
                     {
-                        label4.Text = "OK";
+                        label4.Text = "Wszystko jest OK";
                         listView1.Items.Add(tempArray[i]);
-                        string pom = tempArray[1];
-                        string[] subs = pom.Split(' ', ';', '\t');
-                        string[] subs1 = pom.Split('(', ')', '+', '\t');
+                    }
+                    string pom = tempArray[1];
+                    string[] subs = pom.Split(' ', ';', '\t'); //tablica przechowujaca elementy oprocz ' ' i ';'
+                    string[] subs1 = pom.Split('(', ')', '+', '\t'); //tablica przechowujaca elementy oprocz '(' , ')' oraz '+'
 
-                        foreach (var sub in subs)
-                        {
-                            listView2.Items.Add(sub);
+                    foreach (var sub in subs)
+                    {
+                        listView2.Items.Add(sub);
 
-                        }
-                        foreach (var p in subs1)
-                        {
-                            listView3.Items.Add(p);
-                        }
+                    }
+                    foreach (var p in subs1)
+                    {
+                        listView3.Items.Add(p);
                     }
                 }
                 else
@@ -85,7 +76,7 @@ namespace ProjektSSIW
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void button2_Click(object sender, EventArgs e) //czyszczenie 
         {
             label4.Text = "";
             listView1.Clear();
