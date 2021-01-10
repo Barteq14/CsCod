@@ -12,6 +12,7 @@ namespace ProjektSSIW
 {
     public partial class Form1 : Form
     {
+        Składnia składnia = new Składnia();
         public Form1()
         {
             InitializeComponent();
@@ -29,7 +30,7 @@ namespace ProjektSSIW
             List<string> pomLista = new List<string>();
             //string[] errors = new string[10];
             List<String> error = new List<string>(); // lista błędów jakie mogą wyskoczyć
-            error.Add("zła intrukcja poczatkowa! (rush)");
+            error.Add("błąd składni");
             error.Add("brak średnika na końcu!");
             error.Add("zła intrukcja poczatkowa! (begin)");
             error.Add("zła intrukcja poczatkowa! (begin)");
@@ -58,7 +59,16 @@ namespace ProjektSSIW
                     string pom = tempArray[1];
                     string[] subs = pom.Split(' ', ';', '\t'); //tablica przechowujaca elementy oprocz ' ' i ';'
                     string[] subs1 = pom.Split('(', ')', '+', '\t'); //tablica przechowujaca elementy oprocz '(' , ')' oraz '+'
-
+                    /*
+                    string knife = "knife";
+                    
+                    if (subs.Contains(knife))
+                    {
+                        textBox1.Text = knife;
+                        
+                        //then dodajemy
+                    }
+                    */
                     foreach (var sub in subs)
                     {
                         listView2.Items.Add(sub);
@@ -72,7 +82,8 @@ namespace ProjektSSIW
                 else
                 {
                     label4.Text = error[0];
-                }       
+                }
+                
             }
         }
 
@@ -82,7 +93,16 @@ namespace ProjektSSIW
             listView1.Clear();
             listView2.Clear();
             listView3.Clear();
-            richTextBox1.Clear();
+            //richTextBox1.Clear();
         }
     }
 }
+/*
+•	Obsługa podstawowych operacji arytmetycznych +, -, *, /.
+•	Wykonywanie przynajmniej jednego rodzaju pętli,
+•	Wykonywanie przynajmniej jednej instrukcji warunkowej,
+•	Obsługa zmiennych i kilku typów danych,
+•	Interakcja z użytkownikiem za pomocą:
+o	Klawiatury – do wprowadzania danych (liczb, ciągów znaków),
+o	Konsoli – do informowania użytkownika o wynikach operacji.
+ */
