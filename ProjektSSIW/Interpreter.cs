@@ -10,6 +10,8 @@ namespace ProjektSSIW
     {
         public void interpretuj()
         {
+            Form1 form1 = new Form1();
+
 
         }
     }

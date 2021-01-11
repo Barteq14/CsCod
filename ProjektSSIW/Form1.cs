@@ -57,7 +57,7 @@ namespace ProjektSSIW
                         listView1.Items.Add(tempArray[i]);
                     }
                     string pom = tempArray[1];
-                    string[] subs = pom.Split(' ', ';', '\t'); //tablica przechowujaca elementy oprocz ' ' i ';'
+                    string[] subs = pom.Split(' ', '\t'); //tablica przechowujaca elementy oprocz ' '
                     string[] subs1 = pom.Split('(', ')', '+', '\t'); //tablica przechowujaca elementy oprocz '(' , ')' oraz '+'
                     /*
                     string knife = "knife";
