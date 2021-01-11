@@ -17,11 +17,12 @@ namespace ProjektSSIW.Interpreter
 
 
         }
-       public string[] fore(string[] linijka,int size)
+       public string[] fore(string[] tempArray, int size)
         {
-            string[] subs2 = linijka[size].Split(')', '(', '\t'); //tablica przechowujaca elementy oprocz ' '
+            string[] subs2 = tempArray[size].Split(')', '(', '\t'); //tablica przechowujaca elementy oprocz ' '
             int size1 = subs2.Length;
-            if (subs2[size1-1] == "{")
+            char[] tab = tempArray[size+1].ToCharArray();
+            if (subs2[size1-1] == "{" ||  tab[0] == '{')
             {
                 return subs2;
             }
@@ -35,8 +36,8 @@ namespace ProjektSSIW.Interpreter
               {
 
               }*/
-            
-            return s;
+            string[] t= new string[1];
+            return t ;
         }
         public void ife(string[] linijka , int size)
         {

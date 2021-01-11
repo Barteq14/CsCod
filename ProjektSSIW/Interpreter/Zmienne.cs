@@ -62,6 +62,9 @@ namespace ProjektSSIW.Interpreter
             int liczba2;
             string ok ="";
             string[] pomINT = lines[indeks].Split(' ');
+            string[] pomINT1 = lines[indeks].Split('+','-','*','/');
+            int dlugosc1 = pomINT1.Length -1;
+
             int dlugosc = pomINT.Length;
             if (pomINT[0] == "knife")
             {
