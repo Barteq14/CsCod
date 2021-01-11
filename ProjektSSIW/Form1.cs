@@ -28,7 +28,7 @@ namespace ProjektSSIW
             //tworzymy tablicę naszych elementów z richTextBoxa
             string[] tempArray = richTextBox1.Lines;
             List<string> pomLista = new List<string>();
-            //string[] errors = new string[10];
+            //string[] errors = new string[10];//gg
             List<String> error = new List<string>(); // lista błędów jakie mogą wyskoczyć
             error.Add("błąd składni");
             error.Add("brak średnika na końcu!");
