@@ -13,6 +13,7 @@ namespace ProjektSSIW.Interpreter
         List<dynamic> typZmiennej = new List<dynamic>();
         List<dynamic> nazwaZmiennej = new List<dynamic>();
         List<dynamic> wartoscZmiennej = new List<dynamic>();
+        List<dynamic> konsola = new List<dynamic>();
 
         //listy z indeksami
         List<int> IndeksyINT = new List<int>();
