@@ -70,23 +70,24 @@ namespace ProjektSSIW
                     for(int i =0;i<size;i++)
                     {
                         string[] subs2 = tempArray[i].Split(' ', '(' ,'\t'); //tablica przechowujaca elementy oprocz ' '
-                        int size1 = subs2.Length;
-                        for (int j = 0; j < size1; j++)
-                        {
-                            listView3.Items.Add(subs2[j]);
-                        }
-                     /*   switch (subs2[0])
+                       
+                       
+                        switch (subs2[0])
                         {
                             case "awp":
-                                  petle.fore(tempArray[i]);
-                                  listView3.Items.Add(subs2[0]);
+                               string[] s= petle.fore(tempArray, i);
+                                
+                                for(int j = 0; j < s.Length; j++)
+                                {
+                                    listView3.Items.Add(s[j]);
+                                }
                                 break;
                             case "scar":
-                                petle.ife(tempArray[i]);
+                                petle.ife(tempArray,i);
                              
                                 break;
                             case "negev":
-                                petle.wailee(tempArray[i]);
+                                petle.wailee(tempArray,i);
                               
                                 break;
 
@@ -94,7 +95,7 @@ namespace ProjektSSIW
 
                                
 
-                        }*/
+                        }
 
 
 
@@ -126,6 +127,7 @@ namespace ProjektSSIW
           
             }
             zmienne.InterpretujZmienne(tempArray);
+         
         }
 
         private void button2_Click(object sender, EventArgs e) //czyszczenie 
