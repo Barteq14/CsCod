@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProjektSSIW
 {
-    public class Interpreter
+    public class Interpretacja
     {
         public void interpretuj()
         {
