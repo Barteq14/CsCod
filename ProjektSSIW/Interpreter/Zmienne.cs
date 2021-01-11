@@ -10,29 +10,83 @@ namespace ProjektSSIW.Interpreter
     {
         Składnia składnia = new Składnia();
 
-        public void InterpretujZmienne()
+        List<int> IndeksyINT = new List<int>();
+        List<int> IndeksyDOUBLE = new List<int>();
+        List<int> IndeksyFLOAT = new List<int>();
+        List<int> IndeksySTRING = new List<int>();
+        List<int> IndeksyBOOLEAN = new List<int>();
+
+        public void InterpretujZmienne(string[] tempArray)
         {
 
-         /*   switch (tempArray[0])
+
+            for (int i = 1; i < tempArray.Length; i++)
             {
-                case "knife":
 
-                    break;
-                case "grenade":
+                string[] tab = tempArray[i].Split(' ');
+                switch (tab[0])
+                {
+                    case "knife":
+                        InterpretujInt(tempArray,i);
+                        IndeksyINT.Add(i);
+                        break;
+                    case "grenade":
+                        InterpretujDouble();
+                        IndeksyDOUBLE.Add(i);
+                        break;
+                    case "rifle":
+                        InterpretujFloat();
+                        IndeksyFLOAT.Add(i);
+                        break;
+                    case "defuse":
+                        InterpretujString();
+                        IndeksySTRING.Add(i);
+                        break;
+                    case "zeus":
+                        InterpretujBoolean();
+                        IndeksyBOOLEAN.Add(i);
+                        break;
+                }
 
-                    break;
-                case "rifle":
-
-                    break;
-                case "defuse":
-
-                    break;
-                case "zeus":
-
-                    break;
             }
-         */
 
+            int a = 2;
+
+        }
+        public void InterpretujInt(string[] lines,int indeks)
+        {
+
+            string[] pomINT = lines[indeks].Split(' ');
+            if(pomINT[0] == "knife")
+            {
+                /*
+                if (pomINT[1].GetType.Equals("String"))
+                {
+
+                }*/
+            }
+
+            int a = 2;
+           
+        }
+
+        public void InterpretujDouble()
+        {
+
+        }
+
+        public void InterpretujFloat()
+        {
+
+        }
+
+        public void InterpretujString()
+        {
+
+        }
+
+        public void InterpretujBoolean()
+        {
 
         }
     }
