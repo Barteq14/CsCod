@@ -1,19 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ProjektSSIW.Interpreter
-{
-    public class Zmienne 
-    {
-        Składnia składnia = new Składnia();
+Składnia składnia = new Składnia();
         //listy z informacjami o zmiennej 
         List<dynamic> typZmiennej = new List<dynamic>();
         List<dynamic> nazwaZmiennej = new List<dynamic>();
         List<dynamic> wartoscZmiennej = new List<dynamic>();
-        List<dynamic> konsola = new List<dynamic>();
 
         //listy z indeksami
         List<int> IndeksyINT = new List<int>();
@@ -171,5 +160,3 @@ namespace ProjektSSIW.Interpreter
         {
 
         }
-    }
-}
