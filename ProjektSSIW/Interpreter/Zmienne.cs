@@ -9,7 +9,12 @@ namespace ProjektSSIW.Interpreter
     public class Zmienne 
     {
         Składnia składnia = new Składnia();
+        //listy z informacjami o zmiennej 
+        List<dynamic> typZmiennej = new List<dynamic>();
+        List<dynamic> nazwaZmiennej = new List<dynamic>();
+        List<dynamic> wartoscZmiennej = new List<dynamic>();
 
+        //listy z indeksami
         List<int> IndeksyINT = new List<int>();
         List<int> IndeksyDOUBLE = new List<int>();
         List<int> IndeksyFLOAT = new List<int>();
@@ -49,25 +54,101 @@ namespace ProjektSSIW.Interpreter
                 }
 
             }
-
-            int a = 2;
-
         }
-        public void InterpretujInt(string[] lines,int indeks)
+        public bool InterpretujInt(string[] lines,int indeks)
         {
-
+            int liczba;
+            int liczba2;
+            string ok ="";
             string[] pomINT = lines[indeks].Split(' ');
-            if(pomINT[0] == "knife")
+            int dlugosc = pomINT.Length;
+            if (pomINT[0] == "knife")
             {
-                /*
-                if (pomINT[1].GetType.Equals("String"))
+                if(czyString(pomINT[1]) == true)
                 {
-
-                }*/
+                    if (pomINT[2] == "=")
+                    {
+                        if(czyInt(pomINT[3]) == true)
+                        {
+                            liczba = int.Parse(pomINT[3]);
+                            if(pomINT.Length > 4) // sprawdzenie czy linia posiada wiecej nic 4 podstawowe elementy
+                            {
+                                if(pomINT[4] == "+" || pomINT[4] == "-" || pomINT[4] == "*" || pomINT[4] == "/")
+                                {
+                                    if(czyInt(pomINT[5]) == true)
+                                    {
+                                        liczba2 = int.Parse(pomINT[5]);
+                                        typZmiennej.Add("int"); //zapisuje informacje o zmiennej
+                                        nazwaZmiennej.Add(pomINT[1]);
+                                        if(pomINT[4] == "+")
+                                        {
+                                            wartoscZmiennej.Add(liczba + liczba2);
+                                        }else if(pomINT[4] == "-")
+                                        {
+                                            wartoscZmiennej.Add(liczba - liczba2);
+                                        }else if(pomINT[4] == "*")
+                                        {
+                                            wartoscZmiennej.Add(liczba * liczba2);
+                                        }
+                                        else if(pomINT[4] == "/")
+                                        {
+                                            wartoscZmiennej.Add(liczba / liczba2);
+                                        }
+                                        return true;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                typZmiennej.Add("int");
+                                nazwaZmiennej.Add(pomINT[1]);
+                                wartoscZmiennej.Add(pomINT[3]);
+                                return true;
+                            }
+                        }
+                    }
+                }
             }
 
-            int a = 2;
-           
+            return false;
+
+        }
+
+        public bool czyString(string element)
+        {
+            string specialChar = @"\|!#$%&/()=?»«@£§€{}.-;'<>_,*+`~ąśćźżółęń";
+
+            //sprawdzanie czy element za knife jest stringiem
+            char firstLetter = element.FirstOrDefault();
+
+            if (Char.IsDigit(firstLetter))
+            {
+                return false;
+            }
+            else
+            {
+                foreach (var item in specialChar)
+                {
+                    if (element.Contains(item))
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+
+        public bool czyInt(string element)
+        {
+            
+            //sprawdzam czy kolejne znaki w danym ciagu to liczby, jesli tak zwracam true jesli nie to false
+            char[] tab = element.ToCharArray();
+            foreach(var item in tab)
+            {
+                if (!char.IsDigit(item))
+                    return false;
+            }
+            return true;
         }
 
         public void InterpretujDouble()
