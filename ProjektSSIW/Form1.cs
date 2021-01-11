@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,6 +13,7 @@ namespace ProjektSSIW
 {
     public partial class Form1 : Form
     {
+        ProjektSSIW.Interpreter.Petle petle = new ProjektSSIW.Interpreter.Petle();
         Składnia składnia = new Składnia();
         public Form1()
         {
@@ -28,7 +30,7 @@ namespace ProjektSSIW
             //tworzymy tablicę naszych elementów z richTextBoxa
             string[] tempArray = richTextBox1.Lines;
             List<string> pomLista = new List<string>();
-            //string[] errors = new string[10];//gg
+            //string[] errors = new string[10];
             List<String> error = new List<string>(); // lista błędów jakie mogą wyskoczyć
             error.Add("błąd składni");
             error.Add("brak średnika na końcu!");
@@ -59,17 +61,50 @@ namespace ProjektSSIW
                     string pom = tempArray[1];
                     string[] subs = pom.Split(' ', '\t'); //tablica przechowujaca elementy oprocz ' '
                     string[] subs1 = pom.Split('(', ')', '+', '\t'); //tablica przechowujaca elementy oprocz '(' , ')' oraz '+'
-                    /*
-                    string knife = "knife";
-                    
-                    if (subs.Contains(knife))
+
+                    for(int i =0;i<size;i++)
                     {
-                        textBox1.Text = knife;
-                        
-                        //then dodajemy
+                        string[] subs2 = tempArray[i].Split(' ', '(' ,'\t'); //tablica przechowujaca elementy oprocz ' '
+                        int size1 = subs2.Length;
+                        for (int j = 0; j < size1; j++)
+                        {
+                            listView3.Items.Add(subs2[j]);
+                        }
+                     /*   switch (subs2[0])
+                        {
+                            case "awp":
+                                  petle.fore(tempArray[i]);
+                                  listView3.Items.Add(subs2[0]);
+                                break;
+                            case "scar":
+                                petle.ife(tempArray[i]);
+                             
+                                break;
+                            case "negev":
+                                petle.wailee(tempArray[i]);
+                              
+                                break;
+
+
+
+                               
+
+                        }*/
+
+
+
                     }
-                    */
-                    foreach (var sub in subs)
+                        /*
+                        string knife = "knife";
+
+                        if (subs.Contains(knife))
+                        {
+                            textBox1.Text = knife;
+
+                            //then dodajemy
+                        }
+                        */
+                /*        foreach (var sub in subs)
                     {
                         listView2.Items.Add(sub);
 
@@ -77,13 +112,13 @@ namespace ProjektSSIW
                     foreach (var p in subs1)
                     {
                         listView3.Items.Add(p);
-                    }
+                    }*/
                 }
                 else
                 {
                     label4.Text = error[0];
                 }
-                
+          
             }
         }
 
@@ -94,6 +129,11 @@ namespace ProjektSSIW
             listView2.Clear();
             listView3.Clear();
             //richTextBox1.Clear();
+        }
+
+        private void listView3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

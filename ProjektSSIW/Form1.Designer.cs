@@ -131,6 +131,7 @@ namespace ProjektSSIW
             this.listView3.Size = new System.Drawing.Size(212, 189);
             this.listView3.TabIndex = 11;
             this.listView3.UseCompatibleStateImageBehavior = false;
+            this.listView3.SelectedIndexChanged += new System.EventHandler(this.listView3_SelectedIndexChanged);
             // 
             // button2
             // 

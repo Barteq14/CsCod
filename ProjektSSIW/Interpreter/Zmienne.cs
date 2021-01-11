@@ -13,7 +13,7 @@ namespace ProjektSSIW.Interpreter
         public void InterpretujZmienne()
         {
 
-            switch (tempArray[0])
+         /*   switch (tempArray[0])
             {
                 case "knife":
 
@@ -31,7 +31,7 @@ namespace ProjektSSIW.Interpreter
 
                     break;
             }
-
+         */
 
 
         }

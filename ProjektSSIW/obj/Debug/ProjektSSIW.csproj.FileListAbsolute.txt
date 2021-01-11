@@ -8,3 +8,13 @@ C:\Users\blong\OneDrive\Desktop\projekt\ProjektSSIW\ProjektSSIW\obj\Debug\Projek
 C:\Users\blong\OneDrive\Desktop\projekt\ProjektSSIW\ProjektSSIW\obj\Debug\ProjektSSIW.csproj.CoreCompileInputs.cache
 C:\Users\blong\OneDrive\Desktop\projekt\ProjektSSIW\ProjektSSIW\obj\Debug\ProjektSSIW.exe
 C:\Users\blong\OneDrive\Desktop\projekt\ProjektSSIW\ProjektSSIW\obj\Debug\ProjektSSIW.pdb
+D:\studia\semestr 9\git\Nowy folder\sieci\ProjektSSIW\bin\Debug\ProjektSSIW.exe.config
+D:\studia\semestr 9\git\Nowy folder\sieci\ProjektSSIW\bin\Debug\ProjektSSIW.exe
+D:\studia\semestr 9\git\Nowy folder\sieci\ProjektSSIW\bin\Debug\ProjektSSIW.pdb
+D:\studia\semestr 9\git\Nowy folder\sieci\ProjektSSIW\obj\Debug\ProjektSSIW.csprojAssemblyReference.cache
+D:\studia\semestr 9\git\Nowy folder\sieci\ProjektSSIW\obj\Debug\ProjektSSIW.Form1.resources
+D:\studia\semestr 9\git\Nowy folder\sieci\ProjektSSIW\obj\Debug\ProjektSSIW.Properties.Resources.resources
+D:\studia\semestr 9\git\Nowy folder\sieci\ProjektSSIW\obj\Debug\ProjektSSIW.csproj.GenerateResource.cache
+D:\studia\semestr 9\git\Nowy folder\sieci\ProjektSSIW\obj\Debug\ProjektSSIW.csproj.CoreCompileInputs.cache
+D:\studia\semestr 9\git\Nowy folder\sieci\ProjektSSIW\obj\Debug\ProjektSSIW.exe
+D:\studia\semestr 9\git\Nowy folder\sieci\ProjektSSIW\obj\Debug\ProjektSSIW.pdb
