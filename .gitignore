@@ -5,3 +5,5 @@ _ReSharper.*/
 *.sdf
 bin/
 obj/
+obj
+/ProjektSSIW/bin
