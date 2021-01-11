@@ -18,6 +18,8 @@ namespace ProjektSSIW
         ProjektSSIW.Interpreter.Petle petle = new ProjektSSIW.Interpreter.Petle();
         Składnia składnia = new Składnia();
         Zmienne zmienne = new Zmienne();
+        Funkcje funkcje = new Funkcje();
+
         public Form1()
         {
             InitializeComponent();
@@ -66,6 +68,132 @@ namespace ProjektSSIW
                     string pom = tempArray[1];
                     string[] subs = pom.Split(' ', '\t'); //tablica przechowujaca elementy oprocz ' '
                     string[] subs1 = pom.Split('(', ')', '+', '\t'); //tablica przechowujaca elementy oprocz '(' , ')' oraz '+'
+                    /*
+                    string knife = "knife";
+                    
+                    if (subs.Contains(knife))
+                    {
+                        textBox1.Text = knife;
+                        
+                        //then dodajemy
+                    }
+                    */
+
+
+
+
+                    //Funkcje sprawdzanie czy jest tylko 1 ciąg w linijce
+                    if (subs.Length == 1) //
+                    {
+                        char[] char_arr = subs[0].ToCharArray();//zamieniam stringa na tablicę charów
+                        if (char_arr[char_arr.Length-1] == ')') // jeżeli ostatni znak w tym stringu to )
+                        {
+                            bool test1 = false;//flaga czy jest (
+                            bool test2 = false;//flaga czy jest )
+                            bool test3 = false;//sprawdź czy najpierw jest ( a później )
+                            String pomocniczaIndexNazwaTypu=""; //nazwa operacji funkcji przed ( np. jak będzie ak47(test) no to tutaj będzie ak47
+                            String pomocniczaIndexNazwaZmiennej = ""; // nazwa zmiennej funkcji
+                            foreach (var item in char_arr) //sprawdzam wszystkie znaki tego stringa
+                            {
+                                if (item == '(') // flaga (
+                                {
+                                    test1 = true;
+                                }
+                                if (item == ')') //flaga )
+                                {
+                                    test2 = true;
+                                }
+                                if (test1 == false && test2 == false) //wpisuje do stringa jaka operacje funkcji
+                                {
+                                    pomocniczaIndexNazwaTypu = pomocniczaIndexNazwaTypu + item;
+                                }
+                                if (test2 == true && test1 == false) // jeżeli najpierw znajdzie w ciągu jest ) a później ( to błąd
+                                {
+                                    test3 = false;
+                                    label4.Text = "blad1";
+                                    break;
+                                }
+                                if (test1 == true && test2== false) // wpisuje do stringa nazwę funkcji
+                                {
+                                    if (item != '(') //ten if żeby nie wypisywało "(nazwa" tylko samo "nazwa"
+                                    {
+                                        pomocniczaIndexNazwaZmiennej = pomocniczaIndexNazwaZmiennej + item;
+                                    }
+                                }
+                                if (test1 == true && test2 == true) // jeżeli wszystko ok to jest flaga ustawiana
+                                {
+                                    test3 = true;
+                                    break;
+                                }
+                                
+                            }
+                            if (test3 != true)
+                            {
+                                label4.Text = "Źle wpisana nazwa zmiennej funkcji"; // komunikat
+                            }
+                            else
+                            {
+                                Boolean czyGitZmienna2 = true; // flaga
+                                string specialChar = @"\|!#$%&/()=?»«@£§€{}.-;'<>_,*+`~ąśćźżółęń";
+
+                                char firstLetter = pomocniczaIndexNazwaZmiennej.FirstOrDefault();
+
+                                if (Char.IsDigit(firstLetter))
+                                {
+                                    czyGitZmienna2 = false;
+                                }
+                                else
+                                {
+                                    foreach (var item in specialChar)
+                                    {
+                                        if (pomocniczaIndexNazwaZmiennej.Contains(item))
+                                        {
+                                            czyGitZmienna2 = false;
+                                        }
+                                    }
+                                }
+                                
+                                if (czyGitZmienna2 == true)
+                                {
+                                    switch (pomocniczaIndexNazwaTypu) //przekazywanie do metody funkcji
+                                    {
+                                        case "ak47":
+                                            funkcje.InterpretujReadLine(subs, subs.Length); //i dalej tutaj będzie robione
+                                            break;
+                                        case "m4a1s":
+                                            funkcje.InterpretujReadLine(subs, subs.Length);
+                                            break;
+                                        case "m4a4":
+                                            funkcje.InterpretujWrite(tempArray, subs.Length);
+                                            break;
+                                        case "usp":
+                                            funkcje.InterpretujToString(tempArray, subs.Length);
+                                            break;
+                                        case "glock":
+                                            funkcje.InterpretujToInt(tempArray, subs.Length);
+                                            break;
+                                        case "tec":
+                                            funkcje.InterpretujToFloat(tempArray, subs.Length);
+                                            break;
+                                        default:
+                                            label4.Text = "Taka funkcja nie istnieje";
+                                            break;
+
+                                    }
+                                    label4.Text = pomocniczaIndexNazwaTypu + " " + pomocniczaIndexNazwaZmiennej;
+                                }
+                                else
+                                {
+                                    label4.Text = "Zła nazwa zmiennej";
+                                }
+                            }
+                        }
+                        else
+                        {
+                            label4.Text = "Źle wpisana funkcja";//komunikat
+                        }
+                    }
+
 
                     for(int i =0;i<size;i++)
                     {
@@ -73,6 +201,9 @@ namespace ProjektSSIW
                        
                        
                         switch (subs2[0])
+
+
+                    
                         {
                             case "awp":
                                string[] s= petle.fore(tempArray, i);
@@ -100,7 +231,7 @@ namespace ProjektSSIW
 
 
                     }
-                        /*
+                        /*foreach (var sub in subs)
                         string knife = "knife";
 
                         if (subs.Contains(knife))
