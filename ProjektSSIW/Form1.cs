@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProjektSSIW.Interpreter;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -8,11 +9,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
 namespace ProjektSSIW
 {
     public partial class Form1 : Form
     {
+        public delegate void Delegat(string phrase);
         Składnia składnia = new Składnia();
+        Zmienne zmienne = new Zmienne();
         public Form1()
         {
             InitializeComponent();
@@ -27,6 +31,7 @@ namespace ProjektSSIW
         {
             //tworzymy tablicę naszych elementów z richTextBoxa
             string[] tempArray = richTextBox1.Lines;
+            string[] array = richTextBox1.Lines;
             List<string> pomLista = new List<string>();
             //string[] errors = new string[10];//gg
             List<String> error = new List<string>(); // lista błędów jakie mogą wyskoczyć
@@ -39,7 +44,8 @@ namespace ProjektSSIW
             error.Add("zła intrukcja poczatkowa! (begin)");
             error.Add("zła intrukcja poczatkowa! (begin)");
             error.Add("zła intrukcja poczatkowa! (begin)");
-         
+            
+
             
             if (tempArray.Count() <= 0) // sprawdzenie czy tablica jest pusta
             {
@@ -85,6 +91,7 @@ namespace ProjektSSIW
                 }
                 
             }
+            zmienne.InterpretujZmienne(tempArray);
         }
 
         private void button2_Click(object sender, EventArgs e) //czyszczenie 
