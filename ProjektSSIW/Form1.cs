@@ -199,7 +199,7 @@ namespace ProjektSSIW
 
 
                     
-                    foreach (var sub in zmienne.konsola)
+                    foreach (var sub in Zmienne.konsola)
                     {
                         listView2.Items.Add(sub);
 

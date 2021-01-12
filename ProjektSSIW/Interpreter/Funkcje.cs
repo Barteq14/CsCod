@@ -14,8 +14,7 @@ namespace ProjektSSIW.Interpreter
         public void InterpretujFunkcje(string[] tempArray)
         {
 
-            zmienne.konsola.Add(tempArray);
-
+          
 
             for (int i = 1; i < tempArray.Length; i++)
             {
@@ -54,7 +53,7 @@ namespace ProjektSSIW.Interpreter
         public void InterpretujWrite(string[] tempArray, int i)
         {
 
-            zmienne.konsola.Add(tempArray[0]);
+            
 
 
         }
@@ -62,7 +61,9 @@ namespace ProjektSSIW.Interpreter
 
         public void InterpretujWriteLine(string[] tempArray, object i)
         {
-            throw new NotImplementedException();
+            Zmienne.konsola.Add("test");
+            Zmienne.konsola.Add("test2");
+            Zmienne.konsola.Add("test3");
         }
 
 
