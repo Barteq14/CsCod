@@ -91,8 +91,8 @@ namespace ProjektSSIW
                             bool test1 = false;//flaga czy jest (
                             bool test2 = false;//flaga czy jest )
                             bool test3 = false;//sprawdź czy najpierw jest ( a później )
-                            String pomocniczaIndexNazwaTypu=""; //nazwa operacji funkcji przed ( np. jak będzie ak47(test) no to tutaj będzie ak47
-                            String pomocniczaIndexNazwaZmiennej = ""; // nazwa zmiennej funkcji
+                            String[] test4 = new String[2];
+                            test4[0]=""; test4[1] = "";//
                             foreach (var item in char_arr) //sprawdzam wszystkie znaki tego stringa
                             {
                                 if (item == '(') // flaga (
@@ -105,7 +105,7 @@ namespace ProjektSSIW
                                 }
                                 if (test1 == false && test2 == false) //wpisuje do stringa jaka operacje funkcji
                                 {
-                                    pomocniczaIndexNazwaTypu = pomocniczaIndexNazwaTypu + item;
+                                    test4[0] = test4[0] + item;
                                 }
                                 if (test2 == true && test1 == false) // jeżeli najpierw znajdzie w ciągu jest ) a później ( to błąd
                                 {
@@ -117,7 +117,7 @@ namespace ProjektSSIW
                                 {
                                     if (item != '(') //ten if żeby nie wypisywało "(nazwa" tylko samo "nazwa"
                                     {
-                                        pomocniczaIndexNazwaZmiennej = pomocniczaIndexNazwaZmiennej + item;
+                                        test4[1] = test4[1] + item;
                                     }
                                 }
                                 if (test1 == true && test2 == true) // jeżeli wszystko ok to jest flaga ustawiana
@@ -134,19 +134,19 @@ namespace ProjektSSIW
                             else
                             {
                                 Boolean czyGitZmienna2 = true; // flaga
-                                string specialChar = @"\|!#$%&/()=?»«@£§€{}.-;'<>_,*+`~ąśćźżółęń";
+                                string specialChar2 = @"\|!#$%&/()=?»«@£§€{}.-;<>_,*`~ąśćźżółęń";
 
-                                char firstLetter = pomocniczaIndexNazwaZmiennej.FirstOrDefault();
+                                char firstLetter2 = test4[0].FirstOrDefault();
 
-                                if (Char.IsDigit(firstLetter))
+                                if (Char.IsDigit(firstLetter2))
                                 {
                                     czyGitZmienna2 = false;
                                 }
                                 else
                                 {
-                                    foreach (var item in specialChar)
+                                    foreach (var item in specialChar2)
                                     {
-                                        if (pomocniczaIndexNazwaZmiennej.Contains(item))
+                                        if (test4[1].Contains(item))
                                         {
                                             czyGitZmienna2 = false;
                                         }
@@ -155,17 +155,20 @@ namespace ProjektSSIW
                                 
                                 if (czyGitZmienna2 == true)
                                 {
-                                    switch (pomocniczaIndexNazwaTypu) //przekazywanie do metody funkcji
+                                    switch (test4[0]) //przekazywanie do metody funkcji
                                     {
+                                        /*
                                         case "ak47":
                                             funkcje.InterpretujReadLine(subs, subs.Length); //i dalej tutaj będzie robione
                                             break;
+                                        */
                                         case "m4a1s":
-                                            funkcje.InterpretujReadLine(subs, subs.Length);
+                                            funkcje.InterpretujWriteLine(test4, subs.Length);
                                             break;
                                         case "m4a4":
-                                            funkcje.InterpretujWrite(tempArray, subs.Length);
+                                            funkcje.InterpretujWrite(test4, subs.Length);
                                             break;
+                                            /*
                                         case "usp":
                                             funkcje.InterpretujToString(tempArray, subs.Length);
                                             break;
@@ -175,12 +178,13 @@ namespace ProjektSSIW
                                         case "tec":
                                             funkcje.InterpretujToFloat(tempArray, subs.Length);
                                             break;
+                                            */
                                         default:
                                             label4.Text = "Taka funkcja nie istnieje";
                                             break;
 
                                     }
-                                    label4.Text = pomocniczaIndexNazwaTypu + " " + pomocniczaIndexNazwaZmiennej;
+                                    label4.Text = test4[0] + " " + test4[1];
                                 }
                                 else
                                 {
@@ -229,19 +233,8 @@ namespace ProjektSSIW
                         }
 
 
-
-                    }
-                        /*foreach (var sub in subs)
-                        string knife = "knife";
-
-                        if (subs.Contains(knife))
-                        {
-                            textBox1.Text = knife;
-
-                            //then dodajemy
-                        }
-                        */
-                /*        foreach (var sub in subs)
+                    
+                    foreach (var sub in Zmienne.konsola)
                     {
                         listView2.Items.Add(sub);
 

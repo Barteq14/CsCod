@@ -10,10 +10,10 @@ namespace ProjektSSIW.Interpreter
     {
         Składnia składnia = new Składnia();
         //listy z informacjami o zmiennej 
-        List<dynamic> typZmiennej = new List<dynamic>();
-        List<dynamic> nazwaZmiennej = new List<dynamic>();
-        List<dynamic> wartoscZmiennej = new List<dynamic>();
-        List<dynamic> konsola = new List<dynamic>();
+        public static List<dynamic> typZmiennej = new List<dynamic>(); //muszą być statyczne i mieć get set żeby można było w innych 
+        public static List<dynamic> nazwaZmiennej = new List<dynamic>();
+        public static List<dynamic> wartoscZmiennej = new List<dynamic>();
+        public static List<String> konsola { get; set; } = new List<String>(); // lista dla konsoli
 
         //listy z indeksami
         List<int> IndeksyINT = new List<int>();
@@ -174,5 +174,6 @@ namespace ProjektSSIW.Interpreter
         {
 
         }
+
     }
 }
