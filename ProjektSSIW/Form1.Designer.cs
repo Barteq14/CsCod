@@ -35,12 +35,13 @@ namespace ProjektSSIW
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.listView1 = new System.Windows.Forms.ListView();
             this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.listView2 = new System.Windows.Forms.ListView();
             this.listView3 = new System.Windows.Forms.ListView();
             this.button2 = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.button3 = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -81,11 +82,12 @@ namespace ProjektSSIW
             // listView1
             // 
             this.listView1.HideSelection = false;
-            this.listView1.Location = new System.Drawing.Point(763, 329);
+            this.listView1.Location = new System.Drawing.Point(810, 329);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(225, 189);
+            this.listView1.Size = new System.Drawing.Size(175, 189);
             this.listView1.TabIndex = 6;
             this.listView1.UseCompatibleStateImageBehavior = false;
+            this.listView1.View = System.Windows.Forms.View.List;
             // 
             // label2
             // 
@@ -96,24 +98,6 @@ namespace ProjektSSIW
             this.label2.TabIndex = 7;
             this.label2.Text = "Podaj sekwencję którą chcesz wykonać:";
             // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(114, 566);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(38, 13);
-            this.label3.TabIndex = 8;
-            this.label3.Text = "Błędy:";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(176, 566);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(35, 13);
-            this.label4.TabIndex = 9;
-            this.label4.Text = "label4";
-            // 
             // listView2
             // 
             this.listView2.HideSelection = false;
@@ -122,6 +106,7 @@ namespace ProjektSSIW
             this.listView2.Size = new System.Drawing.Size(500, 206);
             this.listView2.TabIndex = 10;
             this.listView2.UseCompatibleStateImageBehavior = false;
+            this.listView2.View = System.Windows.Forms.View.List;
             // 
             // listView3
             // 
@@ -131,6 +116,7 @@ namespace ProjektSSIW
             this.listView3.Size = new System.Drawing.Size(212, 189);
             this.listView3.TabIndex = 11;
             this.listView3.UseCompatibleStateImageBehavior = false;
+            this.listView3.View = System.Windows.Forms.View.List;
             // 
             // button2
             // 
@@ -151,17 +137,36 @@ namespace ProjektSSIW
             this.label5.TabIndex = 13;
             this.label5.Text = "Konsola";
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(1145, 313);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(35, 13);
+            this.label6.TabIndex = 14;
+            this.label6.Text = "Błędy";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(885, 313);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(24, 13);
+            this.label3.TabIndex = 16;
+            this.label3.Text = "test";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1391, 641);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.button3);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.listView3);
             this.Controls.Add(this.listView2);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.richTextBox1);
@@ -182,12 +187,13 @@ namespace ProjektSSIW
         private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ListView listView2;
         private System.Windows.Forms.ListView listView3;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Label label3;
     }
 }
 

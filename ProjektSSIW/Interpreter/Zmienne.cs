@@ -14,6 +14,7 @@ namespace ProjektSSIW.Interpreter
         public static List<dynamic> nazwaZmiennej = new List<dynamic>();
         public static List<dynamic> wartoscZmiennej = new List<dynamic>();
         public static List<String> konsola { get; set; } = new List<String>(); // lista dla konsoli
+        public static List<String> bledy { get; set; } = new List<string>(); // lista błędów jakie mogą wyskoczyć
 
         //listy z indeksami
         List<int> IndeksyINT = new List<int>();

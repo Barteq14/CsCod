@@ -14,7 +14,9 @@ namespace ProjektSSIW.Interpreter
         public void InterpretujFunkcje(string[] tempArray)
         {
 
-          
+            
+
+
 
             for (int i = 1; i < tempArray.Length; i++)
             {
@@ -50,20 +52,128 @@ namespace ProjektSSIW.Interpreter
 
 
 
-        public void InterpretujWrite(string[] tempArray, int i)
+        public void InterpretujWrite(string[] tempArray, int linijka)
         {
+            string pom = tempArray[1];
+            string[] subs = pom.Split(' ', '\t'); //tablica przechowujaca elementy oprocz ' '
+
+            //temp
+            if (Zmienne.typZmiennej.Count == 0)
+            {
+                przykladoweDane();
+            }
+
+
+
+            if (subs.Length == 1)//jeżeli w nawiasie jeden string to
+            {
+                if (pom[0] == '\'' && pom[pom.Length - 1] == '\'') // sprawdź czy na początku i końcu apostrofy ' '
+                {
+                    if(Zmienne.konsola.Count == 0)// jeżeli nie ma nic w konsoli to dodaje linijke
+                    {
+                        Zmienne.konsola.Add(pom.Substring(1, pom.Length - 2)); // dodaj do konsoli
+                    }
+                    else////jeżeli jest to nadpisuje
+                    {
+                        Zmienne.konsola[Zmienne.konsola.Count-1] = Zmienne.konsola[Zmienne.konsola.Count-1] + pom.Substring(1, pom.Length - 2);
+                    }
+                }
+                else if (pom[0] != '\'' && pom[pom.Length - 1] != '\'')
+                {
+                    //wyszukiwanie zmiennej
+                    int index = Zmienne.nazwaZmiennej.FindIndex(c => c == pom);
+                    if (index < 0)
+                    {
+                        Zmienne.konsola.Clear();
+                        Zmienne.bledy.Add(linijka + ": Nie ma zmiennej z m4a1");
+                    }
+                    else
+                    {
+                        if (Zmienne.konsola.Count == 0) // jeżeli nie ma nic w konsoli to dodaje linijke
+                        {
+                            Zmienne.konsola.Add(Zmienne.wartoscZmiennej[index] + "");
+                        }
+                        else //jeżeli jest to nadpisuje
+                        {
+                            Zmienne.konsola[Zmienne.konsola.Count-1] = Zmienne.konsola[Zmienne.konsola.Count-1] + Zmienne.wartoscZmiennej[index]+"";
+                        }
+                    }
+                }
+                else
+                {
+                    Zmienne.konsola.Clear();
+                    Zmienne.bledy.Add(linijka + ": Źle wpisana zmienna/wartość w m4a1");
+                }
+            }
+            else //jeżeli więcej niż jeden string to będzie sprawdzać dalej
+            {
+                foreach (var item in subs)
+                {
+
+                }
+            }
+
+
+
+        }
+
+
+        public void InterpretujWriteLine(string[] tempArray, int linijka)
+        {
+
+            //temp
+            if (Zmienne.typZmiennej.Count == 0)
+            {
+                przykladoweDane();
+            }
+
+
+            string pom = tempArray[1];
+            string[] subs = pom.Split(' ', '\t'); //tablica przechowujaca elementy oprocz ' '
+
+
+            if (subs.Length == 1)//jeżeli w nawiasie jeden string to
+            {
+                if (pom[0]== '\'' && pom[pom.Length-1]== '\'') // sprawdź czy na początku i końcu apostrofy ' '
+                {
+                    Zmienne.konsola.Add(pom.Substring(1, pom.Length - 2)); // dodaj do konsoli
+                }
+                else if (pom[0] != '\'' && pom[pom.Length - 1] != '\'')
+                {
+                    //wyszukiwanie zmiennej
+                    int index = Zmienne.nazwaZmiennej.FindIndex(c => c == pom);
+                    if (index < 0)
+                    {
+                        Zmienne.konsola.Clear();
+                        Zmienne.bledy.Add(linijka +": Nie ma zmiennej z m4a1s");
+                    }
+                    else
+                    {
+                        Zmienne.konsola.Add(Zmienne.wartoscZmiennej[index]+"");
+                    }
+                }
+                else
+                {
+                    Zmienne.konsola.Clear();
+                    Zmienne.bledy.Add(linijka +": Źle wpisana zmienna/wartość w m4a1s"); 
+                }
+            }
+            else //jeżeli więcej niż jeden string to będzie sprawdzać dalej
+            {
+                foreach (var item in subs)
+                {
+
+                }
+            }
+
+            
 
             
 
 
-        }
+                //Zmienne.konsola.Add(item);
 
 
-        public void InterpretujWriteLine(string[] tempArray, object i)
-        {
-            Zmienne.konsola.Add("test");
-            Zmienne.konsola.Add("test2");
-            Zmienne.konsola.Add("test3");
         }
 
 
@@ -72,7 +182,7 @@ namespace ProjektSSIW.Interpreter
 
 
 
-        public void InterpretujReadLine(string[] tempArray, object i)
+        public void InterpretujReadLine(string[] tempArray, int linijka)
         {
 
 
@@ -83,7 +193,7 @@ namespace ProjektSSIW.Interpreter
 
         }
 
-        public void InterpretujToFloat(string[] tempArray, int i)
+        public void InterpretujToFloat(string[] tempArray, int linijka)
         {
             throw new NotImplementedException();
         }
@@ -98,8 +208,31 @@ namespace ProjektSSIW.Interpreter
             throw new NotImplementedException();
         }
 
-        
+        public static void przykladoweDane()
+        {
 
-        
+            //jakieś tam przykładowe dane
+            Zmienne.typZmiennej.Add("knife");//int
+            Zmienne.nazwaZmiennej.Add("test1");
+            Zmienne.wartoscZmiennej.Add(2);
+
+            Zmienne.typZmiennej.Add("grenade");//double
+            Zmienne.nazwaZmiennej.Add("test2");
+            Zmienne.wartoscZmiennej.Add(5);
+
+            Zmienne.typZmiennej.Add("rifle");//float
+            Zmienne.nazwaZmiennej.Add("test3");
+            Zmienne.wartoscZmiennej.Add("tete a tete");
+
+            Zmienne.typZmiennej.Add("defuse");//string
+            Zmienne.nazwaZmiennej.Add("test4");
+            Zmienne.wartoscZmiennej.Add("tete a tete");
+
+            Zmienne.typZmiennej.Add("zeus");//bool
+            Zmienne.nazwaZmiennej.Add("test5");
+            Zmienne.wartoscZmiennej.Add("tete a tete");
+        }
+
+
     }
 }
