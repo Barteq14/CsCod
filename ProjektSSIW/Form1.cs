@@ -58,7 +58,7 @@ namespace ProjektSSIW
             {
                 int size = tempArray.Length; // pobieram długość tablicy 
 
-                if (tempArray[0] == "rush" && tempArray[size-1] == "save") // sprawdzam czy na poczatku jest 'rush' a na końcu 'save'
+                if (tempArray[0] == "rush" && tempArray[size - 1] == "save") // sprawdzam czy na poczatku jest 'rush' a na końcu 'save'
                 {
                     for (int i = 0; i < tempArray.Length; i++)
                     {
@@ -86,13 +86,13 @@ namespace ProjektSSIW
                     if (subs.Length == 1) //
                     {
                         char[] char_arr = subs[0].ToCharArray();//zamieniam stringa na tablicę charów
-                        if (char_arr[char_arr.Length-1] == ')') // jeżeli ostatni znak w tym stringu to )
+                        if (char_arr[char_arr.Length - 1] == ')') // jeżeli ostatni znak w tym stringu to )
                         {
                             bool test1 = false;//flaga czy jest (
                             bool test2 = false;//flaga czy jest )
                             bool test3 = false;//sprawdź czy najpierw jest ( a później )
                             String[] test4 = new String[2];
-                            test4[0]=""; test4[1] = "";//
+                            test4[0] = ""; test4[1] = "";//
                             foreach (var item in char_arr) //sprawdzam wszystkie znaki tego stringa
                             {
                                 if (item == '(') // flaga (
@@ -113,7 +113,7 @@ namespace ProjektSSIW
                                     label4.Text = "blad1";
                                     break;
                                 }
-                                if (test1 == true && test2== false) // wpisuje do stringa nazwę funkcji
+                                if (test1 == true && test2 == false) // wpisuje do stringa nazwę funkcji
                                 {
                                     if (item != '(') //ten if żeby nie wypisywało "(nazwa" tylko samo "nazwa"
                                     {
@@ -125,7 +125,7 @@ namespace ProjektSSIW
                                     test3 = true;
                                     break;
                                 }
-                                
+
                             }
                             if (test3 != true)
                             {
@@ -152,7 +152,7 @@ namespace ProjektSSIW
                                         }
                                     }
                                 }
-                                
+
                                 if (czyGitZmienna2 == true)
                                 {
                                     switch (test4[0]) //przekazywanie do metody funkcji
@@ -168,17 +168,17 @@ namespace ProjektSSIW
                                         case "m4a4":
                                             funkcje.InterpretujWrite(test4, subs.Length);
                                             break;
-                                            /*
-                                        case "usp":
-                                            funkcje.InterpretujToString(tempArray, subs.Length);
-                                            break;
-                                        case "glock":
-                                            funkcje.InterpretujToInt(tempArray, subs.Length);
-                                            break;
-                                        case "tec":
-                                            funkcje.InterpretujToFloat(tempArray, subs.Length);
-                                            break;
-                                            */
+                                        /*
+                                    case "usp":
+                                        funkcje.InterpretujToString(tempArray, subs.Length);
+                                        break;
+                                    case "glock":
+                                        funkcje.InterpretujToInt(tempArray, subs.Length);
+                                        break;
+                                    case "tec":
+                                        funkcje.InterpretujToFloat(tempArray, subs.Length);
+                                        break;
+                                        */
                                         default:
                                             label4.Text = "Taka funkcja nie istnieje";
                                             break;
@@ -199,51 +199,53 @@ namespace ProjektSSIW
                     }
 
 
-                    for(int i =0;i<size;i++)
+                    for (int i = 0; i < size; i++)
                     {
-                        string[] subs2 = tempArray[i].Split(' ', '(' ,'\t'); //tablica przechowujaca elementy oprocz ' '
-                       
-                       
+                        string[] subs2 = tempArray[i].Split(' ', '(', '\t'); //tablica przechowujaca elementy oprocz ' '
+
+
                         switch (subs2[0])
 
 
-                    
+
                         {
                             case "awp":
-                               string[] s= petle.fore(tempArray, i);
-                                
-                                for(int j = 0; j < s.Length; j++)
+                                string[] s = petle.fore(tempArray, i);
+
+                                for (int j = 0; j < s.Length; j++)
                                 {
                                     listView3.Items.Add(s[j]);
                                 }
                                 break;
                             case "scar":
-                                petle.ife(tempArray,i);
-                             
+                                petle.ife(tempArray, i);
+
                                 break;
                             case "negev":
-                                petle.wailee(tempArray,i);
-                              
+                                petle.wailee(tempArray, i);
+
                                 break;
 
 
 
-                               
+
 
                         }
 
 
-                    
-                    foreach (var sub in Zmienne.konsola)
-                    {
-                        listView2.Items.Add(sub);
 
+                        foreach (var sub in Zmienne.konsola)
+                        {
+                            listView2.Items.Add(sub);
+
+                        }
+                        foreach (var p in subs1)
+                        {
+                            listView3.Items.Add(p);
+                        }
                     }
-                    foreach (var p in subs1)
-                    {
-                        listView3.Items.Add(p);
-                    }*/
                 }
+
                 else
                 {
                     label4.Text = error[0];
