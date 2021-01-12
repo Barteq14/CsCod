@@ -9,14 +9,18 @@ namespace ProjektSSIW.Interpreter
     public class Funkcje
     {
         Składnia składnia = new Składnia();
+        Zmienne zmienne = new Zmienne();
 
         public void InterpretujFunkcje(string[] tempArray)
         {
-            
+
+          
 
             for (int i = 1; i < tempArray.Length; i++)
             {
                 string[] tab = tempArray[i].Split(' ');
+
+                
 
                 switch (tab[0])
                 {
@@ -44,10 +48,37 @@ namespace ProjektSSIW.Interpreter
             
         }
 
-        public void InterpretujReadLine(string[] tempArray, object i)
+
+
+        public void InterpretujWrite(string[] tempArray, int i)
         {
 
             
+
+
+        }
+
+
+        public void InterpretujWriteLine(string[] tempArray, object i)
+        {
+            Zmienne.konsola.Add("test");
+            Zmienne.konsola.Add("test2");
+            Zmienne.konsola.Add("test3");
+        }
+
+
+
+
+
+
+
+        public void InterpretujReadLine(string[] tempArray, object i)
+        {
+
+
+            //zmienne.konsola.Add("test");
+
+
 
 
         }
@@ -67,15 +98,7 @@ namespace ProjektSSIW.Interpreter
             throw new NotImplementedException();
         }
 
-        public void InterpretujWrite(string[] tempArray, int i)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void InterpretujWriteLine(string[] tempArray, object i)
-        {
-            throw new NotImplementedException();
-        }
+        
 
         
     }
