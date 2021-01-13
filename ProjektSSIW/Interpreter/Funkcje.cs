@@ -62,140 +62,140 @@ namespace ProjektSSIW.Interpreter
             string[] subs = tempArray.Split('+', '\t'); //tablica przechowujaca elementy oprocz +
             int pomocnicza1 = 0;
 
-            /*
-            foreach(var item in subs)
-            {
-                Zmienne.bledy.Add(item);
-            }
-            */
-            
 
-            if (subs.Length % 2 == 0)//jeżeli parzysta ilość stringów w środku to błąd
+            foreach (var item in subs)
             {
-                Zmienne.konsola.Clear();
-                Zmienne.bledy.Add(linijka + ": Źle wpisane argumenty w m4a1s");
-            }
-            else
-            {
-                foreach (var item in subs)
+                String pom = item;
+
+                //if (pomocnicza1 % 2 == 0) //sprawdzanie parzystych, czyli tutaj będą sprawdzane wszelkie zmienne/wartości
+                //{
+                if (pomocnicza1 == 0) //jeżeli pierwsza zmienna/wartość to tutaj będzie dodawać do konsoli nową linijkę
                 {
-                    String pom = item;
-
-                    //if (pomocnicza1 % 2 == 0) //sprawdzanie parzystych, czyli tutaj będą sprawdzane wszelkie zmienne/wartości
-                    //{
-                        if (pomocnicza1 == 0) //jeżeli pierwsza zmienna/wartość to tutaj będzie dodawać do konsoli nową linijkę
+                    if (pom.Length >= 2) // sprawdza czy są >=2 znaków w ciągu
+                    {
+                        if (pom[0] == '\'' && pom[pom.Length - 1] == '\'') // sprawdź czy na początku i końcu apostrofy ' '
                         {
-                            if (pom[0] == '\'' && pom[pom.Length - 1] == '\'') // sprawdź czy na początku i końcu apostrofy ' '
-                            {
-                                Zmienne.konsola.Add(pom.Substring(1, pom.Length - 2)); // dodaj do konsoli
-                            }
-                            else if (pom[0] != '\'' && pom[pom.Length - 1] != '\'') //jeżeli nie ma apostrofów to sprawdza czy jest taka zmienna
-                            {
-                                bool isNumeric = int.TryParse(pom, out int n);// sprawdź czy item jest numerem
-                                if (isNumeric) // sprawdź czy item jest numerem
-                                {
-                                    Zmienne.konsola.Add(pom + ""); //dodaj numer do konsoli
-                                }
-                                else
-                                {
-                                    string[] subsPom = pom.Split('.', '\t'); //tablica przechowujaca elementy oprocz .
-                                    if (subsPom.Count() == 2)
-                                    {
-                                        bool isNumeric1 = int.TryParse(subsPom[0], out int nn);// sprawdź czy item jest numerem
-                                        bool isNumeric2 = int.TryParse(subsPom[1], out int nnn);// sprawdź czy item jest numerem
-                                        if (isNumeric1 == true && isNumeric2 == true)
-                                        {
-                                            Zmienne.konsola.Add(pom+"");
-                                        }
-                                        else
-                                        {
-                                            //Zmienne.konsola.Clear();
-                                            Zmienne.bledy.Add(linijka + ": " + subsPom[0] +"    " + subsPom[1]);
-                                            break;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        //wyszukiwanie zmiennej
-                                        int index = Zmienne.nazwaZmiennej.FindIndex(c => c == item);
-                                        if (index < 0)
-                                        {
-                                            //Zmienne.konsola.Clear();
-                                            Zmienne.bledy.Add(linijka + ": Nie ma zmiennej z m4a1s test2 " + pom + pomocnicza1);
-                                            break;
-                                        }
-                                        else
-                                        {
-                                            Zmienne.konsola.Add(Zmienne.wartoscZmiennej[index] + "");
-                                        }
-                                    }
-                                }
-
-                                
-                            }
+                            Zmienne.konsola.Add(pom.Substring(1, pom.Length - 2)); // dodaj do konsoli
                         }
-                        else //tutaj sprawdza te kolejne zmienne/wartości i je dodaje do tego ostatniego writelina
+                        else if (pom[0] != '\'' && pom[pom.Length - 1] != '\'') //jeżeli nie ma apostrofów to sprawdza czy jest taka zmienna
                         {
-                            if (pom[0] == '\'' && pom[pom.Length - 1] == '\'') // sprawdź czy na początku i końcu apostrofy ' '
+                            bool isNumeric = int.TryParse(pom, out int n);// sprawdź czy item jest numerem
+                            if (isNumeric) // sprawdź czy item jest numerem
                             {
-                                Zmienne.konsola[Zmienne.konsola.Count - 1] = Zmienne.konsola[Zmienne.konsola.Count - 1] + pom.Substring(1, pom.Length - 2);
+                                Zmienne.konsola.Add(pom + ""); //dodaj numer do konsoli
                             }
-                            else if (pom[0] != '\'' && pom[pom.Length - 1] != '\'')
+                            else
                             {
-                                bool isNumeric = int.TryParse(pom, out int n);// sprawdź czy item jest numerem
-                                if (isNumeric) // sprawdź czy item jest numerem
+                                string[] subsPom = pom.Split('.', '\t'); //tablica przechowujaca elementy oprocz .
+                                if (subsPom.Count() == 2)
                                 {
-                                Zmienne.konsola[Zmienne.konsola.Count - 1] = Zmienne.konsola[Zmienne.konsola.Count - 1] + pom;
-                                }
-                                else
-                                {
-                                    string[] subsPom = pom.Split('.', '\t'); //tablica przechowujaca elementy oprocz .
-                                    if (subsPom.Count() == 2)
+                                    bool isNumeric1 = int.TryParse(subsPom[0], out int nn);// sprawdź czy item jest numerem
+                                    bool isNumeric2 = int.TryParse(subsPom[1], out int nnn);// sprawdź czy item jest numerem
+                                    if (isNumeric1 == true && isNumeric2 == true)
                                     {
-                                        bool isNumeric1 = int.TryParse(subsPom[0], out int nn);// sprawdź czy item jest numerem
-                                        bool isNumeric2 = int.TryParse(subsPom[1], out int nnn);// sprawdź czy item jest numerem
-                                        if (isNumeric1 == true && isNumeric2 == true)
-                                        {
-                                            Zmienne.konsola[Zmienne.konsola.Count - 1] = Zmienne.konsola[Zmienne.konsola.Count - 1] + pom;
-                                        }
-                                        else
-                                        {
-                                            //Zmienne.konsola.Clear();
-                                            Zmienne.bledy.Add(linijka + ": " + subsPom[0] +"    " + subsPom[1]);
-                                            break;
-                                        }
+                                        Zmienne.konsola.Add(pom + "");
                                     }
                                     else
                                     {
-                                        //wyszukiwanie zmiennej
-                                        int index = Zmienne.nazwaZmiennej.FindIndex(c => c == item);
-                                        if (index < 0)
-                                        {
-                                            //Zmienne.konsola.Clear();
-                                            Zmienne.bledy.Add(linijka + ": Nie ma zmiennej z m4a1s test2 " + pom + pomocnicza1);
-                                            break;
-                                        }
-                                        else
-                                        {
-                                            Zmienne.konsola[Zmienne.konsola.Count - 1] = Zmienne.konsola[Zmienne.konsola.Count - 1] + pom.Substring(1, pom.Length - 2);
-                                        }
+                                        tymczasowyBlad("Źle wpisana liczba", linijka); break;
+                                    }
+                                }
+                                else
+                                {
+                                    //wyszukiwanie zmiennej
+                                    int index = Zmienne.nazwaZmiennej.FindIndex(c => c == item);
+                                    if (index < 0)
+                                    {
+                                        tymczasowyBlad("Brak zmiennej o nazwie " + pom, linijka); break;
+                                    }
+                                    else
+                                    {
+                                        Zmienne.konsola.Add(Zmienne.wartoscZmiennej[index] + "");
                                     }
                                 }
                             }
                         }
-                    /*}
+                        else
+                        {
+                            tymczasowyBlad("Źle wpisana wartość/zmienna", linijka); break;
+                        }
+                    }
                     else
                     {
-                        if (pom != "+")
-                        {
-                            //Zmienne.konsola.Clear();
-                            Zmienne.bledy.Add(linijka + ": Źle wpisane  bbbbbbbbb");
-                            break;
-                        }
-                    }*/
-                    pomocnicza1++;
+                        tymczasowyBlad("Źle wpisana wartość/zmienna", linijka); break;
+                    }
                 }
+                else //tutaj sprawdza te kolejne zmienne/wartości i je dodaje do tego ostatniego writelina
+                {
+                    if (pom.Length >= 2) // sprawdza czy są >=2 znaków w ciągu
+                    {
+                        if (pom[0] == '\'' && pom[pom.Length - 1] == '\'') // sprawdź czy na początku i końcu apostrofy ' '
+                        {
+                            Zmienne.konsola[Zmienne.konsola.Count - 1] = Zmienne.konsola[Zmienne.konsola.Count - 1] + pom.Substring(1, pom.Length - 2);
+                        }
+                        else if (pom[0] != '\'' && pom[pom.Length - 1] != '\'')
+                        {
+                            bool isNumeric = int.TryParse(pom, out int n);// sprawdź czy item jest numerem
+                            if (isNumeric) // sprawdź czy item jest numerem
+                            {
+                                Zmienne.konsola[Zmienne.konsola.Count - 1] = Zmienne.konsola[Zmienne.konsola.Count - 1] + pom;
+                            }
+                            else
+                            {
+                                string[] subsPom = pom.Split('.', '\t'); //tablica przechowujaca elementy oprocz .
+                                if (subsPom.Count() == 2)
+                                {
+                                    bool isNumeric1 = int.TryParse(subsPom[0], out int nn);// sprawdź czy item jest numerem
+                                    bool isNumeric2 = int.TryParse(subsPom[1], out int nnn);// sprawdź czy item jest numerem
+                                    if (isNumeric1 == true && isNumeric2 == true)
+                                    {
+                                        Zmienne.konsola[Zmienne.konsola.Count - 1] = Zmienne.konsola[Zmienne.konsola.Count - 1] + pom;
+                                    }
+                                    else
+                                    {
+                                        tymczasowyBlad("Źle wpisana liczba", linijka); break;
+                                    }
+                                }
+                                else
+                                {
+                                    //wyszukiwanie zmiennej
+                                    int index = Zmienne.nazwaZmiennej.FindIndex(c => c == item);
+                                    if (index < 0)
+                                    {
+                                        tymczasowyBlad("Brak zmiennej o nazwie " + pom, linijka); break;
+                                    }
+                                    else
+                                    {
+                                        Zmienne.konsola[Zmienne.konsola.Count - 1] = Zmienne.konsola[Zmienne.konsola.Count - 1] + pom.Substring(1, pom.Length - 2);
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            tymczasowyBlad("Źle wpisana wartość/zmienna", linijka); break;
+                        }
+                    }
+                    else
+                    {
+                        tymczasowyBlad("Źle wpisana wartość/zmienna", linijka); break;
+                    }
+
+
+                }
+                /*}
+                else
+                {
+                    if (pom != "+")
+                    {
+                        //Zmienne.konsola.Clear();
+                        Zmienne.bledy.Add(linijka + ": Źle wpisane  bbbbbbbbb");
+                        break;
+                    }
+                }*/
+                pomocnicza1++;
             }
+
         }
 
 
@@ -252,6 +252,12 @@ namespace ProjektSSIW.Interpreter
             Zmienne.typZmiennej.Add("zeus");//bool
             Zmienne.nazwaZmiennej.Add("test5");
             Zmienne.wartoscZmiennej.Add("tete a tete");
+        }
+
+        public static void tymczasowyBlad(String komunikat, int linijka)
+        {
+            Zmienne.konsola.Clear();
+            Zmienne.bledy.Add(linijka + ": " + komunikat);
         }
 
 
