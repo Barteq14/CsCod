@@ -201,7 +201,7 @@ namespace ProjektSSIW
 
                     for (int i = 0; i < size; i++)
                     {
-                        string[] subs2 = tempArray[i].Split(' ', '(', '\t'); //tablica przechowujaca elementy oprocz ' '
+                        string[] subs2 = tempArray[i].Split(' ', '('); //tablica przechowujaca elementy oprocz ' '
 
 
                         switch (subs2[0])
@@ -234,7 +234,7 @@ namespace ProjektSSIW
 
 
 
-                        foreach (var sub in Zmienne.konsola)
+                     /*   foreach (var sub in Zmienne.konsola)
                         {
                             listView2.Items.Add(sub);
 
@@ -242,7 +242,7 @@ namespace ProjektSSIW
                         foreach (var p in subs1)
                         {
                             listView3.Items.Add(p);
-                        }
+                        }*/
                     }
                 }
 
