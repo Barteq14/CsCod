@@ -45,168 +45,9 @@ namespace ProjektSSIW.Interpreter
         */
 
 
-        public void InterpretujWrite(string tempArray, int linijka)//m4a1
+        public void InterpretujWrite(string tempArray, int linijka)
         {
-            //temp
-            if (Zmienne.typZmiennej.Count == 0)
-            {
-                przykladoweDane();
-            }
-
-
-            string[] subs = tempArray.Split('+', '\t'); //tablica przechowujaca elementy oprocz +
-            int pomocnicza1 = 0;
-
-
-            foreach (var item in subs)
-            {
-                String pom = item;
-
-                if (pomocnicza1 == 0) //jeżeli pierwsza zmienna/wartość to tutaj będzie dodawać do konsoli nową linijkę
-                {
-                    if (pom.Length >= 2) // sprawdza czy są >=2 znaków w ciągu
-                    {
-                        if (pom[0] == '\'' && pom[pom.Length - 1] == '\'') // sprawdź czy na początku i końcu apostrofy ' '
-                        {
-                            if (Zmienne.konsola.Count == 0)
-                            {
-                                Zmienne.konsola.Add(pom.Substring(1, pom.Length - 2)); // dodaj do konsoli
-                            }
-                            else
-                            {
-                                Zmienne.konsola[Zmienne.konsola.Count - 1] = Zmienne.konsola[Zmienne.konsola.Count - 1] + pom.Substring(1, pom.Length - 2);
-                            }
-                        }
-                        else if (pom[0] != '\'' && pom[pom.Length - 1] != '\'') //jeżeli nie ma apostrofów to sprawdza czy jest taka zmienna
-                        {
-                            bool isNumeric = int.TryParse(pom, out int n);// sprawdź czy item jest numerem
-                            if (isNumeric) // sprawdź czy item jest numerem
-                            {
-                                if(Zmienne.konsola.Count == 0){
-                                    Zmienne.konsola.Add(pom + ""); //dodaj numer do konsoli
-                                }
-                                else
-                                {
-                                    Zmienne.konsola[Zmienne.konsola.Count - 1] = Zmienne.konsola[Zmienne.konsola.Count - 1] + pom;
-                                }
-                                
-                            }
-                            else
-                            {
-                                string[] subsPom = pom.Split('.', '\t'); //tablica przechowujaca elementy oprocz .
-                                if (subsPom.Count() == 2)
-                                {
-                                    bool isNumeric1 = int.TryParse(subsPom[0], out int nn);// sprawdź czy item jest numerem
-                                    bool isNumeric2 = int.TryParse(subsPom[1], out int nnn);// sprawdź czy item jest numerem
-                                    if (isNumeric1 == true && isNumeric2 == true)
-                                    {
-                                        if (Zmienne.konsola.Count == 0)
-                                        {
-                                            Zmienne.konsola.Add(pom + ""); //dodaj numer do konsoli
-                                        }
-                                        else
-                                        {
-                                            Zmienne.konsola[Zmienne.konsola.Count - 1] = Zmienne.konsola[Zmienne.konsola.Count - 1] + pom;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        tymczasowyBlad("Źle wpisana liczba", linijka); break;
-                                    }
-                                }
-                                else
-                                {
-                                    //wyszukiwanie zmiennej
-                                    int index = Zmienne.nazwaZmiennej.FindIndex(c => c == item);
-                                    if (index < 0)
-                                    {
-                                        tymczasowyBlad("Brak zmiennej o nazwie " + pom, linijka); break;
-                                    }
-                                    else
-                                    {
-                                        if (Zmienne.konsola.Count == 0)
-                                        {
-                                            Zmienne.konsola.Add(Zmienne.wartoscZmiennej[index] + ""); //dodaj numer do konsoli
-                                        }
-                                        else
-                                        {
-                                            Zmienne.konsola[Zmienne.konsola.Count - 1] = Zmienne.konsola[Zmienne.konsola.Count - 1] + Zmienne.wartoscZmiennej[index];
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        else
-                        {
-                            tymczasowyBlad("Źle wpisana wartość/zmienna", linijka); break;
-                        }
-                    }
-                    else
-                    {
-                        tymczasowyBlad("Źle wpisana wartość/zmienna", linijka); break;
-                    }
-                }
-                else //tutaj sprawdza te kolejne zmienne/wartości i je dodaje do tego ostatniego writelina
-                {
-                    if (pom.Length >= 2) // sprawdza czy są >=2 znaków w ciągu
-                    {
-                        if (pom[0] == '\'' && pom[pom.Length - 1] == '\'') // sprawdź czy na początku i końcu apostrofy ' '
-                        {
-                            Zmienne.konsola[Zmienne.konsola.Count - 1] = Zmienne.konsola[Zmienne.konsola.Count - 1] + pom.Substring(1, pom.Length - 2);
-                        }
-                        else if (pom[0] != '\'' && pom[pom.Length - 1] != '\'')
-                        {
-                            bool isNumeric = int.TryParse(pom, out int n);// sprawdź czy item jest numerem
-                            if (isNumeric) // sprawdź czy item jest numerem
-                            {
-                                Zmienne.konsola[Zmienne.konsola.Count - 1] = Zmienne.konsola[Zmienne.konsola.Count - 1] + pom;
-                            }
-                            else
-                            {
-                                string[] subsPom = pom.Split('.', '\t'); //tablica przechowujaca elementy oprocz .
-                                if (subsPom.Count() == 2)
-                                {
-                                    bool isNumeric1 = int.TryParse(subsPom[0], out int nn);// sprawdź czy item jest numerem
-                                    bool isNumeric2 = int.TryParse(subsPom[1], out int nnn);// sprawdź czy item jest numerem
-                                    if (isNumeric1 == true && isNumeric2 == true)
-                                    {
-                                        Zmienne.konsola[Zmienne.konsola.Count - 1] = Zmienne.konsola[Zmienne.konsola.Count - 1] + pom;
-                                    }
-                                    else
-                                    {
-                                        tymczasowyBlad("Źle wpisana liczba", linijka); break;
-                                    }
-                                }
-                                else
-                                {
-                                    //wyszukiwanie zmiennej
-                                    int index = Zmienne.nazwaZmiennej.FindIndex(c => c == item);
-                                    if (index < 0)
-                                    {
-                                        tymczasowyBlad("Brak zmiennej o nazwie " + pom, linijka); break;
-                                    }
-                                    else
-                                    {
-                                        Zmienne.konsola[Zmienne.konsola.Count - 1] = Zmienne.konsola[Zmienne.konsola.Count - 1] + pom.Substring(1, pom.Length - 2);
-                                    }
-                                }
-                            }
-                        }
-                        else
-                        {
-                            tymczasowyBlad("Źle wpisana wartość/zmienna", linijka); break;
-                        }
-                    }
-                    else
-                    {
-                        tymczasowyBlad("Źle wpisana wartość/zmienna", linijka); break;
-                    }
-                }
-                pomocnicza1++;
-            }
         }
-
-
 
 
         public void InterpretujWriteLine(string tempArray, int linijka)//m4a1s
@@ -226,6 +67,8 @@ namespace ProjektSSIW.Interpreter
             {
                 String pom = item;
 
+                //if (pomocnicza1 % 2 == 0) //sprawdzanie parzystych, czyli tutaj będą sprawdzane wszelkie zmienne/wartości
+                //{
                 if (pomocnicza1 == 0) //jeżeli pierwsza zmienna/wartość to tutaj będzie dodawać do konsoli nową linijkę
                 {
                     if (pom.Length >= 2) // sprawdza czy są >=2 znaków w ciągu
@@ -337,9 +180,22 @@ namespace ProjektSSIW.Interpreter
                     {
                         tymczasowyBlad("Źle wpisana wartość/zmienna", linijka); break;
                     }
+
+
                 }
+                /*}
+                else
+                {
+                    if (pom != "+")
+                    {
+                        //Zmienne.konsola.Clear();
+                        Zmienne.bledy.Add(linijka + ": Źle wpisane  bbbbbbbbb");
+                        break;
+                    }
+                }*/
                 pomocnicza1++;
             }
+
         }
 
 
