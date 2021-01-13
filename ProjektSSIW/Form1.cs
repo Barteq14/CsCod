@@ -54,21 +54,9 @@ namespace ProjektSSIW
                 {
 
 
-                    for (int i = 0; i < tempArray.Length; i++)
+                    for (int i = 1; i < tempArray.Length-1; i++)
                     {
                         string pom = tempArray[i];
-                        string[] subs = pom.Split(' ', '\t'); //tablica przechowujaca elementy oprocz ' '
-                        string[] subs1 = pom.Split('(', ')', '+', '\t'); //tablica przechowujaca elementy oprocz '(' , ')' oraz '+'
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -78,100 +66,28 @@ namespace ProjektSSIW
 
                         //WRITE WRITELN
                         //Funkcje sprawdzanie czy jest tylko 1 ciąg w linijce, przydatne do write i writeln tylko
-                        if (subs.Length == 1) //
+                        //if (subs.Length == 1) //
+                        //{
+                        if(pom.Substring(0, 6)=="m4a1s(" && pom.EndsWith(")"))
                         {
-                            char[] char_arr = subs[0].ToCharArray();//zamieniam stringa na tablicę charów
-                            if (char_arr[char_arr.Length - 1] == ')') // jeżeli ostatni znak w tym stringu to )
-                            {
-                                bool test1 = false;//flaga czy jest (
-                                bool test2 = false;//flaga czy jest )
-                                bool test3 = false;//sprawdź czy najpierw jest ( a później )
-                                String[] test4 = new String[2];
-                                test4[0] = ""; test4[1] = "";//
-                                foreach (var item in char_arr) //sprawdzam wszystkie znaki tego stringa
-                                {
-                                    if (item == '(') // flaga (
-                                    {
-                                        test1 = true;
-                                    }
-                                    if (item == ')') //flaga )
-                                    {
-                                        test2 = true;
-                                    }
-                                    if (test1 == false && test2 == false) //wpisuje do stringa jaka operacje funkcji
-                                    {
-                                        test4[0] = test4[0] + item;
-                                    }
-                                    if (test2 == true && test1 == false) // jeżeli najpierw znajdzie w ciągu jest ) a później ( to błąd
-                                    {
-                                        test3 = false;
-                                        break;
-                                    }
-                                    if (test1 == true && test2 == false) // wpisuje do stringa nazwę funkcji
-                                    {
-                                        if (item != '(') //ten if żeby nie wypisywało "(nazwa" tylko samo "nazwa"
-                                        {
-                                            test4[1] = test4[1] + item;
-                                        }
-                                    }
-                                    if (test1 == true && test2 == true) // jeżeli wszystko ok to jest flaga ustawiana
-                                    {
-                                        test3 = true;
-                                        break;
-                                    }
-                                }
-                                if (test3 != true)
-                                {
-                                    Zmienne.bledy.Add(i+": Błąd składni");
-                                }
-                                else
-                                {
-                                    Boolean czyGitZmienna2 = true; // flaga
-                                    string specialChar2 = @"\|!#$%&/()=?»«@£§€{}.-;<>_,*`~ąśćźżółęń";
-
-                                    char firstLetter2 = test4[0].FirstOrDefault();
-
-                                    if (Char.IsDigit(firstLetter2))
-                                    {
-                                        czyGitZmienna2 = false;
-                                    }
-                                    else
-                                    {
-                                        foreach (var item in specialChar2)
-                                        {
-                                            if (test4[1].Contains(item))
-                                            {
-                                                czyGitZmienna2 = false;
-                                            }
-                                        }
-                                    }
-
-                                    if (czyGitZmienna2 == true)
-                                    {
-                                        switch (test4[0]) //przekazywanie do metody funkcji
-                                        {
-                                            case "m4a1s":
-                                                funkcje.InterpretujWriteLine(test4, i);
-                                                break;
-                                            case "m4a1":
-                                                funkcje.InterpretujWrite(test4, i);
-                                                break;
-                                            case "rush":
-                                                    break;
-                                            case "save":
-                                                break;
-                                            default:
-                                                Zmienne.bledy.Add(i+": Błąd składni ");
-                                                break;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        Zmienne.bledy.Add(i+": Błąd składni");
-                                    }
-                                }
-                            }
+                            String pomWnawiasach = pom.Substring(6, pom.Length - 7);
+                            funkcje.InterpretujWriteLine(pomWnawiasach,i);
                         }
+                        else if (pom.Substring(0, 5) == "m4a1(" && pom.EndsWith(")"))
+                        {
+                            String pomWnawiasach = pom.Substring(5, pom.Length - 6);
+                            funkcje.InterpretujWrite(pomWnawiasach, i);
+                        }
+
+
+
+
+
+
+
+
+
+
                     }
                     
 

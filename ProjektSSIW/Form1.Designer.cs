@@ -82,7 +82,7 @@ namespace ProjektSSIW
             // listView1
             // 
             this.listView1.HideSelection = false;
-            this.listView1.Location = new System.Drawing.Point(810, 329);
+            this.listView1.Location = new System.Drawing.Point(763, 329);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(175, 189);
             this.listView1.TabIndex = 6;
@@ -111,9 +111,9 @@ namespace ProjektSSIW
             // listView3
             // 
             this.listView3.HideSelection = false;
-            this.listView3.Location = new System.Drawing.Point(1051, 329);
+            this.listView3.Location = new System.Drawing.Point(966, 329);
             this.listView3.Name = "listView3";
-            this.listView3.Size = new System.Drawing.Size(212, 189);
+            this.listView3.Size = new System.Drawing.Size(297, 189);
             this.listView3.TabIndex = 11;
             this.listView3.UseCompatibleStateImageBehavior = false;
             this.listView3.View = System.Windows.Forms.View.List;
@@ -145,6 +145,13 @@ namespace ProjektSSIW
             this.label6.Size = new System.Drawing.Size(35, 13);
             this.label6.TabIndex = 14;
             this.label6.Text = "Błędy";
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(0, 0);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.TabIndex = 17;
             // 
             // label3
             // 
