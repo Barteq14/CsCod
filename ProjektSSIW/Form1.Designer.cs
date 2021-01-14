@@ -86,6 +86,7 @@ namespace ProjektSSIW
             this.listView1.Size = new System.Drawing.Size(225, 189);
             this.listView1.TabIndex = 6;
             this.listView1.UseCompatibleStateImageBehavior = false;
+         
             // 
             // label2
             // 
@@ -131,7 +132,7 @@ namespace ProjektSSIW
             this.listView3.Size = new System.Drawing.Size(212, 189);
             this.listView3.TabIndex = 11;
             this.listView3.UseCompatibleStateImageBehavior = false;
-            this.listView3.SelectedIndexChanged += new System.EventHandler(this.listView3_SelectedIndexChanged);
+         
             // 
             // button2
             // 

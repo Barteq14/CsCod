@@ -15,7 +15,7 @@ namespace ProjektSSIW
     public partial class Form1 : Form
     {
         public delegate void Delegat(string phrase);
-        ProjektSSIW.Interpreter.Petle petle = new ProjektSSIW.Interpreter.Petle();
+        Petle petle = new Petle();
         Składnia składnia = new Składnia();
         Zmienne zmienne = new Zmienne();
         Funkcje funkcje = new Funkcje();
@@ -198,40 +198,10 @@ namespace ProjektSSIW
                         }
                     }
 
+                   
 
-                    for (int i = 0; i < size; i++)
-                    {
-                        string[] subs2 = tempArray[i].Split(' ', '('); //tablica przechowujaca elementy oprocz ' '
-
-
-                        switch (subs2[0])
-
-
-
-                        {
-                            case "awp":
-                                string[] s = petle.fore(tempArray, i);
-
-                                for (int j = 0; j < s.Length; j++)
-                                {
-                                    listView3.Items.Add(s[j]);
-                                }
-                                break;
-                            case "scar":
-                                petle.ife(tempArray, i);
-
-                                break;
-                            case "negev":
-                                petle.wailee(tempArray, i);
-
-                                break;
-
-
-
-
-
-                        }
-
+                    petle.InterpretujPetle(tempArray);
+                   
 
 
                      /*   foreach (var sub in Zmienne.konsola)
@@ -243,7 +213,7 @@ namespace ProjektSSIW
                         {
                             listView3.Items.Add(p);
                         }*/
-                    }
+
                 }
 
                 else
@@ -265,10 +235,9 @@ namespace ProjektSSIW
             //richTextBox1.Clear();
         }
 
-        private void listView3_SelectedIndexChanged(object sender, EventArgs e)
-        {
+       
 
-        }
+     
     }
 }
 /*

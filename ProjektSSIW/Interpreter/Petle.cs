@@ -3,21 +3,53 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ProjektSSIW.Interpreter
 {
-    class Petle
+    class Petle : Składnia
     {
-        public void InterpretujPetle()
+        public void InterpretujPetle(string[] tempArray)
         {
+            Form1 ff = new Form1();
 
-            
-              
+            for (int i = 0; i <tempArray.Length; i++)
+            {
+                string[] subs2 = tempArray[i].Split(' ', '('); //tablica przechowujaca elementy oprocz ' '
+
+
+                switch (subs2[0])
+
+
+
+                {
+                    case awp:
+                         fore(tempArray, i);
+
+                    
+                        break;
+                    case scar:
+                        ife(tempArray, i);
+
+                        break;
+                    case negev:
+                        wailee(tempArray, i);
+
+                        break;
+
+
+
+
+
+                }
+
+
+            }
 
 
 
         }
-       public string[] fore(string[] tempArray, int size)
+       public void fore(string[] tempArray, int size)
         {
              //tablica przechowujaca elementy oprocz ' '
            
@@ -52,8 +84,8 @@ namespace ProjektSSIW.Interpreter
                            if (zamkniecie[zamkniecie.Length-1 ] == '}')
                             {
 
+                                // zapisanie do  tablicy wyników
                                 
-                                return subs2;
                            }
 
                         }
@@ -70,9 +102,9 @@ namespace ProjektSSIW.Interpreter
               for (int i = 0; i < size; i++)
               {
 
-              }*/
+              }
             string[] t= new string[1];
-            return t ;
+            return t ;*/
         }
         public void ife(string[] linijka , int size)
         {
