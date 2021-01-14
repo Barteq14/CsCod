@@ -87,12 +87,27 @@ namespace ProjektSSIW.Interpreter
                             {
                                 case 0:
                                     string[] cos = warunek1[i].Split(' ', '=');
+                                    if (warunek1[0].Contains("="))
+                                        {
+                                       
 
+                                    }
 
                                     break;
                                 case 1:
+                                    string[] bb = new string[] { "==", "<=", ">=", "<", ">" };
+                            
+                                    for(int g = 0; g < bb.Length; g++)
+                                    {
 
-                                     cos = warunek1[i].Split(new string[] { "==","<=",">=","<",">" }, StringSplitOptions.None);
+                                  
+                                     if(  warunek1[g].Contains(bb[g]))
+                                        {
+                                            return;
+                                        }
+
+                                    }
+                                   // cos = warunek1[i].Split(new string[] { "==","<=",">=","<",">" }, StringSplitOptions.None);
 
                                     break;
                                 case 2:
