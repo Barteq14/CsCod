@@ -96,21 +96,26 @@ namespace ProjektSSIW.Interpreter
 
                                     break;
                                 case 2:
-                                    
-
+                                    bool b = warunek1[2].Contains("++" );
+                                    bool c = warunek1[2].Contains("--");
+                                    if (b||c)
+                                    {
+                                        cos= warunek1[i].Split(new string[] { "++", "--" }, StringSplitOptions.None);
+                                   
+                                        if(cos[1]==""&&  cos.Length==2)
+                                        {
+                                            return;
+                                        }
+                                    }
                                     break;
                             }
                             /*
-                            if(i==0){
-                                
-                            }else if (i == 1)
-                            {
-
-                            }
-                            else
-                            {
-
-                            }*/
+                            
+rush
+awp( ss=s;ss<5;ss++){
+}
+save
+                          */
                         }
 
                         //**********************
