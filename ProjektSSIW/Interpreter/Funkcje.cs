@@ -214,7 +214,7 @@ namespace ProjektSSIW.Interpreter
                         bool isNumeric = int.TryParse(pom, out int n);// sprawdź czy item jest numerem
                         if (isNumeric) // sprawdź czy item jest numerem
                         {
-                                Zmienne.konsola[Zmienne.konsola.Count - 1] = Zmienne.konsola[Zmienne.konsola.Count - 1] + pom;
+                            Zmienne.konsola[Zmienne.konsola.Count - 1] = Zmienne.konsola[Zmienne.konsola.Count - 1] + pom;
                         }
                         else
                         {
@@ -373,7 +373,7 @@ namespace ProjektSSIW.Interpreter
                         bool isNumeric = int.TryParse(pom, out int n);// sprawdź czy item jest numerem
                         if (isNumeric) // sprawdź czy item jest numerem
                         {
-                                Zmienne.konsola[Zmienne.konsola.Count - 1] = Zmienne.konsola[Zmienne.konsola.Count - 1] + pom;
+                            Zmienne.konsola[Zmienne.konsola.Count - 1] = Zmienne.konsola[Zmienne.konsola.Count - 1] + pom;
                         }
                         else
                         {
@@ -390,66 +390,107 @@ namespace ProjektSSIW.Interpreter
 
 
 
-        public void InterpretujReadLine(string[] tempArray, int linijka)
+
+        public void InterpretujToString(String nazwaZmiennej, int linijka) //usp
         {
+           
+                int index = Zmienne.nazwaZmiennej.FindIndex(c => c == nazwaZmiennej);
+                if (index < 0)
+                {
+                    tymczasowyBlad("Brak zmiennej o nazwie " + nazwaZmiennej, linijka);
+                }
+                else
+                {
+                    if (Zmienne.typZmiennej[index] != "defuse")
+                    {
+                            Zmienne.wartoscZmiennej[index] = Convert.ToString(Zmienne.wartoscZmiennej[index]);
+                            Zmienne.typZmiennej[index] = "defuse";
+                    }
+                    else if (Zmienne.typZmiennej[index] == "defuse")
+                    {
+                        tymczasowyBlad("Nie można zamienić stringa w stringa ", linijka);
+                    }
+                    else if (Zmienne.typZmiennej[index] == "zeus")
+                    {
+                        tymczasowyBlad("Nie można zamienić booleana w stringa ", linijka);
+                    }
+                }
+            
+        }
 
 
-            //zmienne.konsola.Add("test");
+
+
+        public void InterpretujToInt(String nazwaZmiennej, int linijka) //glock
+        {
+           
+
 
 
 
 
         }
+    
 
-        public void InterpretujToFloat(string[] tempArray, int linijka)
-        {
-            throw new NotImplementedException();
-        }
 
-        public void InterpretujToInt(string[] tempArray, int i)
-        {
-            throw new NotImplementedException();
-        }
 
-        public void InterpretujToString(string[] tempArray, int i)
-        {
-            throw new NotImplementedException();
-        }
 
-        public static void przykladoweDane()
-        {
 
-            //jakieś tam przykładowe dane
-            Zmienne.typZmiennej.Add("knife");//int
-            Zmienne.nazwaZmiennej.Add("test1");
-            Zmienne.wartoscZmiennej.Add(2);
 
-            Zmienne.typZmiennej.Add("grenade");//double
-            Zmienne.nazwaZmiennej.Add("test2");
-            Zmienne.wartoscZmiennej.Add(5);
 
-            Zmienne.typZmiennej.Add("rifle");//float
-            Zmienne.nazwaZmiennej.Add("test3");
-            Zmienne.wartoscZmiennej.Add("tete a tete");
 
-            Zmienne.typZmiennej.Add("defuse");//string
-            Zmienne.nazwaZmiennej.Add("test4");
-            Zmienne.wartoscZmiennej.Add("tete a tete");
 
-            Zmienne.typZmiennej.Add("zeus");//bool
-            Zmienne.nazwaZmiennej.Add("test5");
-            Zmienne.wartoscZmiennej.Add("true");
-        }
 
-        public static void tymczasowyBlad(String komunikat, int linijka)
-        {
-            //Zmienne.konsola.Clear();
-            Zmienne.bledy.Add(linijka + ": " + komunikat);
-        }
+    public void InterpretujReadLine(string[] tempArray, int linijka)
+    {
 
+
+        //zmienne.konsola.Add("test");
 
 
 
 
     }
+
+    public void InterpretujToFloat(string[] tempArray, int linijka)
+    {
+        throw new NotImplementedException();
+    }
+
+
+
+
+
+    public void przykladoweDane()
+    {
+
+        //jakieś tam przykładowe dane
+        Zmienne.typZmiennej.Add("knife");//int
+        Zmienne.nazwaZmiennej.Add("test1");
+        Zmienne.wartoscZmiennej.Add(2);
+
+        Zmienne.typZmiennej.Add("grenade");//double
+        Zmienne.nazwaZmiennej.Add("test2");
+        Zmienne.wartoscZmiennej.Add(Convert.ToDouble(255));
+
+        Zmienne.typZmiennej.Add("defuse");//string
+        Zmienne.nazwaZmiennej.Add("test3");
+        Zmienne.wartoscZmiennej.Add("tete a tete");
+
+        Zmienne.typZmiennej.Add("zeus");//bool
+        Zmienne.nazwaZmiennej.Add("test4");
+        Zmienne.wartoscZmiennej.Add(true);
+    }
+
+    public static void tymczasowyBlad(String komunikat, int linijka)
+    {
+        //Zmienne.konsola.Clear();
+        Zmienne.bledy.Add(linijka + ": " + komunikat);
+    }
+
+
+
+
+
+}
 }

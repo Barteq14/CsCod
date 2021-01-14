@@ -64,47 +64,73 @@ namespace ProjektSSIW
 
 
 
+
+
+
+
+
+
+
                         //WRITE WRITELN
                         //Funkcje sprawdzanie czy jest tylko 1 ciąg w linijce, przydatne do write i writeln tylko
                         //if (subs.Length == 1) //
                         //{
-                        if(pom.Substring(0, 6)=="m4a1s(" && pom.EndsWith(")"))
+                        if (pom.Length >= 5)
                         {
-                            String pomWnawiasach = pom.Substring(6, pom.Length - 7);
-                            funkcje.InterpretujWriteLine(pomWnawiasach,i);
+                            if (pom.Substring(0, 6) == "m4a1s(" && pom.EndsWith(")"))
+                            {
+                                String pomWnawiasach = pom.Substring(6, pom.Length - 7);
+                                funkcje.InterpretujWriteLine(pomWnawiasach, i);
+                            }
+                            else if (pom.Substring(0, 5) == "m4a1(" && pom.EndsWith(")"))
+                            {
+                                String pomWnawiasach = pom.Substring(5, pom.Length - 6);
+                                funkcje.InterpretujWrite(pomWnawiasach, i);
+                            }
                         }
-                        else if (pom.Substring(0, 5) == "m4a1(" && pom.EndsWith(")"))
-                        {
-                            String pomWnawiasach = pom.Substring(5, pom.Length - 6);
-                            funkcje.InterpretujWrite(pomWnawiasach, i);
-                        }
-
-
-
-
-
 
 
 
 
 
                     }
+
+                    //funkcje.przykladoweDane();
+                    //funkcje.InterpretujToString("test5",100);
+
                     
-
-
-
 
 
                     //dodawanie do konsoli
                     foreach (var sub in Zmienne.konsola)
                     {
-                        listView2.Items.Add(sub);
-
+                        listView1.Items.Add(sub);
                     }
                     //dodawanie do bledów
                     foreach (var p in Zmienne.bledy)
                     {
                         listView3.Items.Add(p);
+                    }
+
+
+
+
+
+
+
+                    //wypisywanie zmiennych typów, nazw, wartości i prawdziwych wartości
+                    foreach (var sub in Zmienne.typZmiennej)
+                    {
+                        listView1.Items.Add(sub);
+                    }
+                    foreach (var sub in Zmienne.nazwaZmiennej)
+                    {
+                        listView4.Items.Add(sub);
+                    }
+                    foreach (var sub in Zmienne.wartoscZmiennej)
+                    {
+                        listView5.Items.Add(sub + "");
+                        listView6.Items.Add(sub.GetType()+"");
                     }
 
 
@@ -120,6 +146,9 @@ namespace ProjektSSIW
             listView1.Clear();
             listView2.Clear();
             listView3.Clear();
+            listView4.Clear();
+            listView5.Clear();
+            listView6.Clear();
             Zmienne.konsola.Clear();
             Zmienne.typZmiennej.Clear();
             Zmienne.nazwaZmiennej.Clear();
