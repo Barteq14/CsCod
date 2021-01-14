@@ -9,6 +9,7 @@ namespace ProjektSSIW.Interpreter
 {
     class Petle : Składnia
     {
+        Zmienne zmienne = new Zmienne();
         public void InterpretujPetle(string[] tempArray)
         {
             Form1 ff = new Form1();
@@ -59,52 +60,90 @@ namespace ProjektSSIW.Interpreter
 
             //***********************
             //warunek pętli for
-            if (tab1[0]=='(') {//sprawdzanie czy czy nawias jest po awp
+            if (tab1[0]=='(')   //sprawdzanie czy czy nawias jest po awp
+            {
+              
 
                 string pom1 = tempArray[size+1].TrimStart(' ');
                 char[] tab = pom1.ToCharArray();
                 string pom3 = pom.TrimEnd(' ', '{');
                 char[] warunek = pom3.ToCharArray();
-
-                if (warunek[warunek.Length -1] == ')')// sprawdzenie zamknięcia wrunku
-
+                
+                if (warunek[warunek.Length -1] == ')')// sprawdzenie zamknięcia wrunku     
                 {
-                    //**********************
-                    string[] subs2 = tempArray[size].Split(' ');
-
-                    int size1 = subs2.Length;
-
-                    if (subs2[size1-1 ] == "{" || tab[0] == '{')// sprawdzanie czy jest otwarcie metody
+                    pom3 = pom3.TrimEnd(')');
+                    pom3 = pom3.TrimStart('(');
+                    string[] warunek1 = pom3.Split(';');
+                    int d = warunek1.Length;
+                    if(d  == 3) //sprawdzenie czy warunek jest poprawny
                     {
-                        for(int i = size + 1;i < tempArray.Length;i++ )
-                       {
-                           pom3 = tempArray[i].TrimEnd(' ');
 
-                            char[] zamkniecie = pom3.ToCharArray();
-                           if (zamkniecie[zamkniecie.Length-1 ] == '}')
+                        for(int i=0;i<warunek1.Length;i++)
+                        {
+                           
+
+                            switch (i)
+
+                            {
+                                case 0:
+                                    string[] cos = warunek1[i].Split(' ', '=');
+
+
+                                    break;
+                                case 1:
+
+                                     cos = warunek1[i].Split(new string[] { "==","<=",">=","<",">" }, StringSplitOptions.None);
+
+                                    break;
+                                case 2:
+                                    
+
+                                    break;
+                            }
+                            /*
+                            if(i==0){
+                                
+                            }else if (i == 1)
                             {
 
-                                // zapisanie do  tablicy wyników
-                                
-                           }
+                            }
+                            else
+                            {
 
+                            }*/
                         }
-                       
-                   }
-               }
-          }
-            /* warunek
-             * 
-             * 
+
+                        //**********************
 
 
-              }
-              for (int i = 0; i < size; i++)
-              {
 
-              }
-            string[] t= new string[1];
-            return t ;*/
+                        string[] subs2 = tempArray[size].Split(' ');
+
+                        int size1 = subs2.Length;
+
+                        if (subs2[size1 - 1] == "{" || tab[0] == '{')// sprawdzanie czy jest otwarcie metody
+                        {
+                            for (int i = size + 1; i < tempArray.Length; i++)
+                            {
+                                pom3 = tempArray[i].TrimEnd(' ');
+
+                                char[] zamkniecie = pom3.ToCharArray();
+                                if (zamkniecie[zamkniecie.Length - 1] == '}')
+                                {
+                                    return;
+                                    // zapisanie do  tablicy wyników
+
+                                }
+
+                            }
+
+                        }//błąd brak {
+                    }// błąd zle wprowadony warunek
+               }//błąd brak )
+          }// błąd brak (
+
+           
+           
         }
         public void ife(string[] linijka , int size)
         {
