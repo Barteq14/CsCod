@@ -38,7 +38,7 @@ namespace ProjektSSIW
             List<string> pomLista = new List<string>();
            
 
-
+            
             
 
 
@@ -95,9 +95,14 @@ namespace ProjektSSIW
 
                     }
 
-                    //funkcje.przykladoweDane();
-                    //funkcje.InterpretujToString("test5",100);
 
+
+
+                    //tymczasowe do sprawdzania
+                    funkcje.przykladoweDane();
+                    funkcje.InterpretujToDouble("test6",100);
+
+                    
                     
 
 
@@ -111,6 +116,7 @@ namespace ProjektSSIW
                     {
                         listView3.Items.Add(p);
                     }
+
 
 
 

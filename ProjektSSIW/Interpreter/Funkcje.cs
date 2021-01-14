@@ -393,104 +393,162 @@ namespace ProjektSSIW.Interpreter
 
         public void InterpretujToString(String nazwaZmiennej, int linijka) //usp
         {
-           
-                int index = Zmienne.nazwaZmiennej.FindIndex(c => c == nazwaZmiennej);
-                if (index < 0)
-                {
-                    tymczasowyBlad("Brak zmiennej o nazwie " + nazwaZmiennej, linijka);
-                }
-                else
+            int index = Zmienne.nazwaZmiennej.FindIndex(c => c == nazwaZmiennej);
+            if (index < 0)
+            {
+                tymczasowyBlad("Brak zmiennej o nazwie " + nazwaZmiennej, linijka);
+            }
+            else
+            {
+                try
                 {
                     if (Zmienne.typZmiennej[index] != "defuse")
                     {
-                            Zmienne.wartoscZmiennej[index] = Convert.ToString(Zmienne.wartoscZmiennej[index]);
-                            Zmienne.typZmiennej[index] = "defuse";
+                        Zmienne.wartoscZmiennej[index] = Convert.ToString(Zmienne.wartoscZmiennej[index]);
+                        Zmienne.typZmiennej[index] = "defuse";
                     }
                     else if (Zmienne.typZmiennej[index] == "defuse")
                     {
                         tymczasowyBlad("Nie można zamienić stringa w stringa ", linijka);
                     }
-                    else if (Zmienne.typZmiennej[index] == "zeus")
-                    {
-                        tymczasowyBlad("Nie można zamienić booleana w stringa ", linijka);
-                    }
                 }
-            
+                catch
+                {
+                    tymczasowyBlad("Nie można zamienić na stringa ", linijka);
+                }
+
+            }
         }
-
-
-
 
         public void InterpretujToInt(String nazwaZmiennej, int linijka) //glock
         {
-           
+            int index = Zmienne.nazwaZmiennej.FindIndex(c => c == nazwaZmiennej);
+            if (index < 0)
+            {
+                tymczasowyBlad("Brak zmiennej o nazwie " + nazwaZmiennej, linijka);
+            }
+            else
+            {
+                try
+                {
+                    if (Zmienne.typZmiennej[index] != "knife" && Zmienne.typZmiennej[index] != "zeus")
+                    {
+                        Zmienne.wartoscZmiennej[index] = Convert.ToInt32(Zmienne.wartoscZmiennej[index]);
+                        Zmienne.typZmiennej[index] = "knife";
+                    }
+                    else if (Zmienne.typZmiennej[index] == "knife")
+                    {
+                        tymczasowyBlad("Nie można zamienić inta w inta ", linijka);
+                    }
+                    else if (Zmienne.typZmiennej[index] == "zeus")
+                    {
+                        tymczasowyBlad("Nie można zamienić booleana w inta ", linijka);
+                    }
+                }
+                catch
+                {
+                    tymczasowyBlad("Nie można zamienić na inta ", linijka);
+                }
+            }
+        }
 
+        public void InterpretujToDouble(String nazwaZmiennej, int linijka) //
+        {
+            int index = Zmienne.nazwaZmiennej.FindIndex(c => c == nazwaZmiennej);
+            if (index < 0)
+            {
+                tymczasowyBlad("Brak zmiennej o nazwie " + nazwaZmiennej, linijka);
+            }
+            else
+            {
+                try
+                {
+                    if (Zmienne.typZmiennej[index] != "grenade" && Zmienne.typZmiennej[index] != "zeus")
+                    {
+                        Zmienne.wartoscZmiennej[index] = double.Parse(Zmienne.wartoscZmiennej[index], System.Globalization.CultureInfo.InvariantCulture);
+                        Zmienne.typZmiennej[index] = "grenade";
+                    }
+                    else if (Zmienne.typZmiennej[index] == "grenade")
+                    {
+                        tymczasowyBlad("Nie można zamienić double w double ", linijka);
+                    }
+                    else if (Zmienne.typZmiennej[index] == "zeus")
+                    {
+                        tymczasowyBlad("Nie można zamienić booleana w double ", linijka);
+                    }
+                }
+                catch
+                {
+                    tymczasowyBlad("Nie można zamienić na double ", linijka);
+                }
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+        public void InterpretujReadLine(string[] tempArray, int linijka)
+        {
+
+
+            //zmienne.konsola.Add("test");
 
 
 
 
         }
-    
+
+        
 
 
 
 
 
+        public void przykladoweDane()
+        {
 
+            //jakieś tam przykładowe dane
+            Zmienne.typZmiennej.Add("knife");//int
+            Zmienne.nazwaZmiennej.Add("test1");
+            Zmienne.wartoscZmiennej.Add(2);
 
+            Zmienne.typZmiennej.Add("grenade");//double
+            Zmienne.nazwaZmiennej.Add("test2");
+            Zmienne.wartoscZmiennej.Add(Convert.ToDouble(255));
 
+            Zmienne.typZmiennej.Add("defuse");//string
+            Zmienne.nazwaZmiennej.Add("test3");
+            Zmienne.wartoscZmiennej.Add("tete a tete");
 
+            Zmienne.typZmiennej.Add("zeus");//bool
+            Zmienne.nazwaZmiennej.Add("test4");
+            Zmienne.wartoscZmiennej.Add(true);
 
-    public void InterpretujReadLine(string[] tempArray, int linijka)
-    {
+            Zmienne.typZmiennej.Add("defuse");//string
+            Zmienne.nazwaZmiennej.Add("test5");
+            Zmienne.wartoscZmiennej.Add("46");
 
+            Zmienne.typZmiennej.Add("defuse");//string
+            Zmienne.nazwaZmiennej.Add("test6");
+            Zmienne.wartoscZmiennej.Add("55.25");
+        }
 
-        //zmienne.konsola.Add("test");
+        public static void tymczasowyBlad(String komunikat, int linijka)
+        {
+            //Zmienne.konsola.Clear();
+            Zmienne.bledy.Add(linijka + ": " + komunikat);
+        }
+
 
 
 
 
     }
-
-    public void InterpretujToFloat(string[] tempArray, int linijka)
-    {
-        throw new NotImplementedException();
-    }
-
-
-
-
-
-    public void przykladoweDane()
-    {
-
-        //jakieś tam przykładowe dane
-        Zmienne.typZmiennej.Add("knife");//int
-        Zmienne.nazwaZmiennej.Add("test1");
-        Zmienne.wartoscZmiennej.Add(2);
-
-        Zmienne.typZmiennej.Add("grenade");//double
-        Zmienne.nazwaZmiennej.Add("test2");
-        Zmienne.wartoscZmiennej.Add(Convert.ToDouble(255));
-
-        Zmienne.typZmiennej.Add("defuse");//string
-        Zmienne.nazwaZmiennej.Add("test3");
-        Zmienne.wartoscZmiennej.Add("tete a tete");
-
-        Zmienne.typZmiennej.Add("zeus");//bool
-        Zmienne.nazwaZmiennej.Add("test4");
-        Zmienne.wartoscZmiennej.Add(true);
-    }
-
-    public static void tymczasowyBlad(String komunikat, int linijka)
-    {
-        //Zmienne.konsola.Clear();
-        Zmienne.bledy.Add(linijka + ": " + komunikat);
-    }
-
-
-
-
-
-}
 }
