@@ -8,7 +8,8 @@ namespace ProjektSSIW.Interpreter
 {
     public class Zmienne 
     {
-        Składnia składnia = new Składnia();
+       
+        Składnia skladnia = new Składnia();
         //listy z informacjami o zmiennej 
         public static List<dynamic> typZmiennej = new List<dynamic>(); //muszą być statyczne i mieć get set żeby można było w innych 
         public static List<dynamic> nazwaZmiennej = new List<dynamic>();
@@ -23,12 +24,8 @@ namespace ProjektSSIW.Interpreter
         List<int> IndeksySTRING = new List<int>();
         List<int> IndeksyBOOLEAN = new List<int>();
 
-        public void InterpretujZmienne(string[] tempArray)
+        public void InterpretujZmienne(string[] tempArray,int i)
         {
-
-
-            for (int i = 1; i < tempArray.Length; i++)
-            {
 
                 string[] tab = tempArray[i].Split(' ');
                 switch (tab[0])
@@ -54,9 +51,10 @@ namespace ProjektSSIW.Interpreter
                         IndeksyBOOLEAN.Add(i);
                         break;
                 }
-
-            }
+            
+            
         }
+
         public bool InterpretujInt(string[] lines,int indeks)
         {
             int liczba;

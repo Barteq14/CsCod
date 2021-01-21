@@ -39,10 +39,6 @@ namespace ProjektSSIW
             List<string> pomLista = new List<string>();
            
 
-
-            
-
-
             if (tempArray.Count() <= 0) // sprawdzenie czy tablica jest pusta
             {
                 Zmienne.bledy.Add("Nie wpisałeś żadnego kodu.");
@@ -58,20 +54,6 @@ namespace ProjektSSIW
                     for (int i = 1; i < tempArray.Length-1; i++)
                     {
                         string pom = tempArray[i];
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                         //WRITE WRITELN
                         //Funkcje sprawdzanie czy jest tylko 1 ciąg w linijce, przydatne do write i writeln tylko
                         //if (subs.Length == 1) //
@@ -90,7 +72,9 @@ namespace ProjektSSIW
                             }
                         }
 
+                        petle.InterpretujPetle(tempArray,i);
 
+                        zmienne.InterpretujZmienne(tempArray, i);
 
 
 
@@ -136,15 +120,13 @@ namespace ProjektSSIW
 
                    
 
-                    petle.InterpretujPetle(tempArray);
                    
-
 
 
                 }
                 
             }
-            zmienne.InterpretujZmienne(tempArray);
+            
          
         }
 

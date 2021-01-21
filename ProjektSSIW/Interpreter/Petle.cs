@@ -7,53 +7,38 @@ using System.Windows.Forms;
 
 namespace ProjektSSIW.Interpreter
 {
-    class Petle : Składnia
+    public class Petle : Składnia
     {
         Zmienne zmienne = new Zmienne();
-        public void InterpretujPetle(string[] tempArray)
-        {
-            Form1 ff = new Form1();
+        // List<int> nawiasyOtwierajace = new List<int>();
+        // List<int> nawiasyZamykajace = new List<int>();
+        //  Składnia skladnia = new Składnia();
 
-            for (int i = 0; i <tempArray.Length; i++)
-            {
+        public void InterpretujPetle(string[] tempArray,int i)
+        {
                 string[] subs2 = tempArray[i].Split(' ', '('); //tablica przechowujaca elementy oprocz ' '
 
-
                 switch (subs2[0])
-
-
-
                 {
                     case awp:
                          fore(tempArray, i);
-
-                    
                         break;
+
                     case scar:
                         ife(tempArray, i);
-
                         break;
+
                     case negev:
                         wailee(tempArray, i);
-
                         break;
-
-
-
-
-
                 }
-
-
-            }
-
-
-
         }
+
        public void fore(string[] tempArray, int size)
         {
-             //tablica przechowujaca elementy oprocz ' '
-           
+            Zmienne zmienne = new Zmienne();
+            //tablica przechowujaca elementy oprocz ' '
+
             string pom = tempArray[size].TrimStart('a', 'w', 'p', ' ');
             char[] tab1 = pom.ToCharArray();
            
@@ -77,7 +62,8 @@ namespace ProjektSSIW.Interpreter
                     int d = warunek1.Length;
                     if(d  == 3) //sprawdzenie czy warunek jest poprawny
                     {
-
+                        
+                        sprawdzanieNawiasow(warunek1, d);
                         for(int i=0;i<warunek1.Length;i++)
                         {
                            
@@ -86,11 +72,24 @@ namespace ProjektSSIW.Interpreter
 
                             {
                                 case 0:
-                                    string[] cos = warunek1[i].Split(' ', '=');
-                                    if (warunek1[0].Contains("="))
-                                        {
-                                       
+                                     string[] cos = warunek1[i].Split('=');
+                                    if (warunek1[0].Contains("=")==true && cos.Length==2)
+                                    {
+                                        // for(int f;f<)
 
+                                        if (Zmienne.nazwaZmiennej.Contains(cos[0]))
+                                        {
+
+                                        }
+                                        else
+                                        {
+                                            zmienne.InterpretujZmienne(warunek1, 0);
+
+                                        }
+                                    }
+                                    else
+                                    {
+                                        return;
                                     }
 
                                     break;
@@ -115,7 +114,7 @@ namespace ProjektSSIW.Interpreter
                                     bool c = warunek1[2].Contains("--");
                                     if (b||c)
                                     {
-                                        cos= warunek1[i].Split(new string[] { "++", "--" }, StringSplitOptions.None);
+                                       cos= warunek1[i].Split(new string[] { "++", "--" }, StringSplitOptions.None);
                                    
                                         if(cos[1]==""&&  cos.Length==2)
                                         {
@@ -165,6 +164,28 @@ save
            
            
         }
+
+        private void sprawdzanieNawiasow(string[] warunek1, int d)
+        {
+         /*  char[] g = warunek1[d].ToCharArray();
+            for(int i = 0; i < g.Length; i++)
+            {
+                if (warunek1[i].Contains("("))
+                {
+                    nawiasyOtwierajace.Add(i);
+                    
+                }
+                else if (true==warunek1[i].Contains(")") && !nawiasyZamykajace.Any())
+                {
+                    
+                    
+                        nawiasyZamykajace.Add(i);
+                    
+                }
+
+            }*/
+        }
+
         public void ife(string[] linijka , int size)
         {
             for (int j = 0; j < size; j++)
