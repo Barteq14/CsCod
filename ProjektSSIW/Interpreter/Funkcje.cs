@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace ProjektSSIW.Interpreter
 {
@@ -11,38 +13,31 @@ namespace ProjektSSIW.Interpreter
 
         Składnia składnia = new Składnia();
         Zmienne zmienne = new Zmienne();
+        
 
-        /*
-        public void InterpretujFunkcje(string[] tempArray)
-        {
-            for (int i = 1; i < tempArray.Length; i++)
-            {
-                string[] tab = tempArray[i].Split(' ');
 
-                switch (tab[0])
-                {
-                    case "ak47":
-                        InterpretujReadLine(tempArray, i);
-                        break;
-                    case "m4a1s":
-                        InterpretujWriteLine(tempArray, i);
-                        break;
-                    case "m4a4":
-                        InterpretujWrite(tempArray, i);
-                        break;
-                    case "usp":
-                        InterpretujToString(tempArray, i);
-                        break;
-                    case "glock":
-                        InterpretujToInt(tempArray, i);
-                        break;
-                    case "tec":
-                        InterpretujToFloat(tempArray, i);
-                        break;
-                }
-            }
-        }
-        */
+        [DllImport("kernel32.dll")]
+        static extern IntPtr GetConsoleWindow();
+
+        [DllImport("user32.dll")]
+        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        const int SW_HIDE = 0;
+        const int SW_SHOW = 5;
+
+        // P/Invoke required:
+        private const UInt32 StdOutputHandle = 0xFFFFFFF5;
+        [DllImport("kernel32.dll")]
+        private static extern IntPtr GetStdHandle(UInt32 nStdHandle);
+        [DllImport("kernel32.dll")]
+        private static extern void SetStdHandle(UInt32 nStdHandle, IntPtr handle);
+
+        //ŻEBY wywołało KONSOLĘ
+        [DllImport("kernel32.dll", SetLastError = true)]
+        static extern bool AllocConsole();
+
+
+
 
 
         public void InterpretujWrite(string tempArray, int linijka)//m4a1
@@ -487,25 +482,218 @@ namespace ProjektSSIW.Interpreter
 
 
 
-
-
-
-
-
-
-
-        public void InterpretujReadLine(string[] tempArray, int linijka)
+        public void pokazKonsole(string komunikat, int linijka)
         {
+            //Console.WriteLine("Wpisz wartość knife (int): "); //do poprawy
+            IntPtr handle = GetConsoleWindow();
+            if (handle == IntPtr.Zero)
+            {
+                AllocConsole();
+                handle = GetConsoleWindow();
+            }
+            else
+            {
+                ShowWindow(handle, 5);
+            }
+            Console.WriteLine(linijka + komunikat);
 
 
-            //zmienne.konsola.Add("test");
+        }
+
+        public void ukryjKonsole()
+        {
+            var handle = GetConsoleWindow();
+
+            try
+            {
+                Console.Clear();
+            }
+            catch
+            {
+
+            }
+
+            ShowWindow(handle, 0);
+
+
+        }
+
+
+
+
+        public void InterpretujReadLine2(int linijka)
+        {
+            try
+            {
+                pokazKonsole("Wypisz na konsolę", linijka);
+                dynamic temporary = Console.ReadLine(); // sczytywanie
+                ukryjKonsole();
+                Zmienne.konsola.Add(temporary);
+            }
+            catch
+            {
+                tymczasowyBlad("Błąd", linijka);
+            }
+        }
+
+        public void InterpretujReadLine(string[] tempArray, int linijka) //ak47() lub typ zmienna = ak47()
+        {
+            string specialChar = @"\|!#$%&/()=?»«@£§€{}.-;'<>_,*+`~ąśćźżółęń";
+
+            //sprawdzanie czy element za knife jest stringiem
+            char firstLetter = tempArray[1].FirstOrDefault();
+            bool pom1 = false;
+
+            if (Char.IsDigit(firstLetter))
+            {
+                tymczasowyBlad("Źle wpisana nazwa zmiennej", linijka);
+            }
+            else
+            {
+                foreach (var item in specialChar)
+                {
+                    if (tempArray[1].Contains(item))
+                    {
+                        pom1 = true;
+                        break;
+                    }
+                }
+                if (pom1 == true)
+                {
+                    tymczasowyBlad("Źle wpisana nazwa zmiennej", linijka);
+                }
+                else
+                {
+                    if (tempArray.Length == 4 && tempArray[0] == "knife" && tempArray[2] == "=" && tempArray[3] == "ak47()") //int
+                    {
+                        int index = Zmienne.nazwaZmiennej.FindIndex(c => c == tempArray[1]);
+                        if (index > 0)
+                        {
+                            tymczasowyBlad("Istnieje zmienna o nazwie " + tempArray[1], linijka);
+                        }
+                        else
+                        {
+                            pokazKonsole("Wpisz zmienną typu knife (int)", linijka);
+                            dynamic temporary = Console.ReadLine(); // sczytywanie
+                            ukryjKonsole();
+
+                            try
+                            {
+                                int temporary2 = Convert.ToInt32(temporary);
+                                Zmienne.typZmiennej.Add(tempArray[0]);
+                                Zmienne.nazwaZmiennej.Add(tempArray[1]);
+                                Zmienne.wartoscZmiennej.Add(temporary2);
+                                Zmienne.konsola.Add(temporary2.ToString());
+                            }
+                            catch
+                            {
+                                tymczasowyBlad("Źle wpisana zmienna knife (int).", linijka);
+                            }
+
+                        }
+                    }
+                    else if (tempArray.Length == 4 && tempArray[0] == "grenade" && tempArray[2] == "=" && tempArray[3] == "ak47()") //double
+                    {
+                        int index = Zmienne.nazwaZmiennej.FindIndex(c => c == tempArray[1]);
+                        if (index > 0)
+                        {
+                            tymczasowyBlad("Istnieje zmienna o nazwie " + tempArray[1], linijka);
+                        }
+                        else
+                        {
+                            pokazKonsole("Wpisz zmienną typu grenade (double)", linijka);
+                            dynamic temporary = Console.ReadLine(); // sczytywanie
+                            ukryjKonsole();
+
+                            try
+                            {
+                                double temporary2 = double.Parse(temporary, System.Globalization.CultureInfo.InvariantCulture);
+                                Zmienne.typZmiennej.Add(tempArray[0]);
+                                Zmienne.nazwaZmiennej.Add(tempArray[1]);
+                                Zmienne.wartoscZmiennej.Add(temporary2);
+                                Zmienne.konsola.Add(temporary2.ToString());
+                            }
+                            catch
+                            {
+                                tymczasowyBlad("Źle wpisana zmienna grenade (double)", linijka);
+                            }
+                        }
+                    }
+                    else if (tempArray.Length == 4 && tempArray[0] == "defuse" && tempArray[2] == "=" && tempArray[3] == "ak47()") //string
+                    {
+                        int index = Zmienne.nazwaZmiennej.FindIndex(c => c == tempArray[1]);
+                        if (index > 0)
+                        {
+                            tymczasowyBlad("Istnieje zmienna o nazwie " + tempArray[1], linijka);
+                        }
+                        else
+                        {
+                            pokazKonsole("Wpisz zmienną typu defuse (string)", linijka);
+                            string temporary = Console.ReadLine(); // sczytywanie
+                            ukryjKonsole();
+
+                            try
+                            {
+                                //string temporary2 = temporary;
+                                Zmienne.typZmiennej.Add(tempArray[0]);
+                                Zmienne.nazwaZmiennej.Add(tempArray[1]);
+                                Zmienne.wartoscZmiennej.Add(temporary);
+                                Zmienne.konsola.Add(temporary);
+                            }
+                            catch
+                            {
+                                tymczasowyBlad("Źle wpisana zmienna defuse (string).", linijka);
+                            }
+                        }
+                    }
+                    else if (tempArray.Length == 4 && tempArray[0] == "zeus" && tempArray[2] == "=" && tempArray[3] == "ak47()") //bool
+                    {
+                        int index = Zmienne.nazwaZmiennej.FindIndex(c => c == tempArray[1]);
+                        if (index > 0)
+                        {
+                            tymczasowyBlad("Istnieje zmienna o nazwie " + tempArray[1], linijka);
+                        }
+                        else
+                        {
+                            pokazKonsole("Wpisz zmienną typu zeus (bool)", linijka);
+                            string temporary = Console.ReadLine(); // sczytywanie
+                            ukryjKonsole();
+
+                            try
+                            {
+                                if(temporary == "terrorist")
+                                {
+                                    Zmienne.typZmiennej.Add(tempArray[0]);
+                                    Zmienne.nazwaZmiennej.Add(tempArray[1]);
+                                    Zmienne.wartoscZmiennej.Add(false);
+                                    Zmienne.konsola.Add("false");
+                                }else if (temporary == "antiterrorist")
+                                {
+                                    Zmienne.typZmiennej.Add(tempArray[0]);
+                                    Zmienne.nazwaZmiennej.Add(tempArray[1]);
+                                    Zmienne.wartoscZmiennej.Add(true);
+                                    Zmienne.konsola.Add("true");
+                                }
+                            }
+                            catch
+                            {
+                                tymczasowyBlad("Źle wpisana zmienna zeus (bool).", linijka);
+                            }
+                        }
+                    }
+                }
+            }
+
+
+
+
 
 
 
 
         }
 
-        
+
 
 
 
@@ -540,11 +728,22 @@ namespace ProjektSSIW.Interpreter
             Zmienne.wartoscZmiennej.Add("55.25");
         }
 
+
+
+
+
+
+
+
+
+
+
         public static void tymczasowyBlad(String komunikat, int linijka)
         {
             //Zmienne.konsola.Clear();
             Zmienne.bledy.Add(linijka + ": " + komunikat);
         }
+
 
 
 

@@ -154,10 +154,11 @@ namespace ProjektSSIW
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(0, 0);
+            this.button3.Location = new System.Drawing.Point(869, 556);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 17;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // label3
             // 

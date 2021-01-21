@@ -37,7 +37,10 @@ namespace ProjektSSIW
             string[] tempArray = richTextBox1.Lines;
             string[] array = richTextBox1.Lines;
             List<string> pomLista = new List<string>();
-           
+
+            //tymczasowe do sprawdzania
+            funkcje.przykladoweDane();
+
 
             if (tempArray.Count() <= 0) // sprawdzenie czy tablica jest pusta
             {
@@ -54,6 +57,8 @@ namespace ProjektSSIW
                     for (int i = 1; i < tempArray.Length-1; i++)
                     {
                         string pom = tempArray[i];
+                        string[] tab = tempArray[i].Split(' ');
+
                         //WRITE WRITELN
                         //Funkcje sprawdzanie czy jest tylko 1 ciąg w linijce, przydatne do write i writeln tylko
                         //if (subs.Length == 1) //
@@ -71,6 +76,15 @@ namespace ProjektSSIW
                                 funkcje.InterpretujWrite(pomWnawiasach, i);
                             }
                         }
+                        if(tab.Length == 4 && tab[3] == "ak47()")
+                        {
+                            funkcje.InterpretujReadLine(tab,i);
+                        }
+                        else if(tab.Length == 1 && tab[0] == "ak47()")
+                        {
+                            funkcje.InterpretujReadLine2(i);
+                        }
+
 
                         petle.InterpretujPetle(tempArray,i);
 
@@ -83,15 +97,13 @@ namespace ProjektSSIW
 
 
 
-                    //tymczasowe do sprawdzania
-                    funkcje.przykladoweDane();
-                    //funkcje.InterpretujToDouble("test6",100);
-
                     
-                    
+                   
 
 
-                    
+
+
+
 
 
 
@@ -148,12 +160,14 @@ namespace ProjektSSIW
             Zmienne.konsola.Clear();
             Zmienne.typZmiennej.Clear();
             Zmienne.nazwaZmiennej.Clear();
+            Zmienne.wartoscZmiennej.Clear();
             Zmienne.bledy.Clear();
         }
 
-       
+        private void button3_Click(object sender, EventArgs e)
+        {
 
-     
+        }
     }
 }
 /*
