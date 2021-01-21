@@ -13,7 +13,8 @@ namespace ProjektSSIW.Interpreter
 
         Składnia składnia = new Składnia();
         Zmienne zmienne = new Zmienne();
-        
+
+
 
 
         [DllImport("kernel32.dll")]
@@ -42,13 +43,6 @@ namespace ProjektSSIW.Interpreter
 
         public void InterpretujWrite(string tempArray, int linijka)//m4a1
         {
-            //temp
-            if (Zmienne.typZmiennej.Count == 0)
-            {
-                przykladoweDane();
-            }
-
-
             string[] subs = tempArray.Split('+', '\t'); //tablica przechowujaca elementy oprocz +
             int pomocnicza1 = 0;
 
@@ -226,13 +220,6 @@ namespace ProjektSSIW.Interpreter
 
         public void InterpretujWriteLine(string tempArray, int linijka)//m4a1s
         {
-            //temp
-            if (Zmienne.typZmiennej.Count == 0)
-            {
-                przykladoweDane();
-            }
-
-
             string[] subs = tempArray.Split('+', '\t'); //tablica przechowujaca elementy oprocz +
             int pomocnicza1 = 0;
 
@@ -661,13 +648,14 @@ namespace ProjektSSIW.Interpreter
 
                             try
                             {
-                                if(temporary == "terrorist")
+                                if (temporary == "terrorist")
                                 {
                                     Zmienne.typZmiennej.Add(tempArray[0]);
                                     Zmienne.nazwaZmiennej.Add(tempArray[1]);
                                     Zmienne.wartoscZmiennej.Add(false);
                                     Zmienne.konsola.Add("false");
-                                }else if (temporary == "antiterrorist")
+                                }
+                                else if (temporary == "antiterrorist")
                                 {
                                     Zmienne.typZmiennej.Add(tempArray[0]);
                                     Zmienne.nazwaZmiennej.Add(tempArray[1]);

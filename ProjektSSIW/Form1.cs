@@ -38,8 +38,10 @@ namespace ProjektSSIW
             string[] array = richTextBox1.Lines;
             List<string> pomLista = new List<string>();
 
+
             //tymczasowe do sprawdzania
             funkcje.przykladoweDane();
+
 
 
             if (tempArray.Count() <= 0) // sprawdzenie czy tablica jest pusta
