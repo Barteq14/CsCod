@@ -85,22 +85,13 @@ namespace ProjektSSIW
 
                     //tymczasowe do sprawdzania
                     funkcje.przykladoweDane();
-                    funkcje.InterpretujToDouble("test6",100);
+                    //funkcje.InterpretujToDouble("test6",100);
 
                     
                     
 
 
-                    //dodawanie do konsoli
-                    foreach (var sub in Zmienne.konsola)
-                    {
-                        listView1.Items.Add(sub);
-                    }
-                    //dodawanie do bledów
-                    foreach (var p in Zmienne.bledy)
-                    {
-                        listView3.Items.Add(p);
-                    }
+                    
 
 
 
@@ -123,10 +114,20 @@ namespace ProjektSSIW
                         listView5.Items.Add(sub + "");
                         listView6.Items.Add(sub.GetType()+"");
                     }
+                    //dodawanie do konsoli
+                    foreach (var sub in Zmienne.konsola)
+                    {
+                        listView2.Items.Add(sub);
+                    }
+                    //dodawanie do bledów
+                    foreach (var p in Zmienne.bledy)
+                    {
+                        listView3.Items.Add(p);
+                    }
 
-                   
 
-                   
+
+
 
 
                 }

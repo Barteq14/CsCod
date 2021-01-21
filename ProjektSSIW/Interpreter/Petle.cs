@@ -83,7 +83,7 @@ namespace ProjektSSIW.Interpreter
                                         }
                                         else
                                         {
-                                            zmienne.InterpretujZmienne(warunek1, 0);
+                                            //zmienne.InterpretujZmienne(warunek1, 0);
 
                                         }
                                     }
