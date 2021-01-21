@@ -13,6 +13,8 @@ namespace ProjektSSIW.Interpreter
         public static List<dynamic> typZmiennej = new List<dynamic>(); //muszą być statyczne i mieć get set żeby można było w innych 
         public static List<dynamic> nazwaZmiennej = new List<dynamic>();
         public static List<dynamic> wartoscZmiennej = new List<dynamic>();
+        public static List<String> konsola { get; set; } = new List<String>(); // lista dla konsoli
+        public static List<String> bledy { get; set; } = new List<string>(); // lista błędów jakie mogą wyskoczyć
 
         public static string znakiArytmetyczne = @"+-*/";
 
@@ -21,7 +23,8 @@ namespace ProjektSSIW.Interpreter
         public static int StringLength = 6;
         public static int BoolLength = 4;
   
-        public static List<String> konsola { get; set; } = new List<String>(); // lista dla konsoli
+        //public static List<String> konsola { get; set; } = new List<String>(); // lista dla konsoli
+
         //przechowywane wyniki operacji
         public static int wynikBezNawiasow;
         public static int wynikWnawiasie;
