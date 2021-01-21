@@ -18,6 +18,7 @@ namespace ProjektSSIW
         Składnia składnia = new Składnia();
         Zmienne zmienne = new Zmienne();
         Funkcje funkcje = new Funkcje();
+        
 
         public Form1()
         {
@@ -35,23 +36,15 @@ namespace ProjektSSIW
             string[] tempArray = richTextBox1.Lines;
             string[] array = richTextBox1.Lines;
             List<string> pomLista = new List<string>();
-            //string[] errors = new string[10];//gg
-            List<String> error = new List<string>(); // lista błędów jakie mogą wyskoczyć
-            error.Add("błąd składni");
-            error.Add("brak średnika na końcu!");
-            error.Add("zła intrukcja poczatkowa! (begin)");
-            error.Add("zła intrukcja poczatkowa! (begin)");
-            error.Add("zła intrukcja poczatkowa! (begin)");
-            error.Add("zła intrukcja poczatkowa! (begin)");
-            error.Add("zła intrukcja poczatkowa! (begin)");
-            error.Add("zła intrukcja poczatkowa! (begin)");
-            error.Add("zła intrukcja poczatkowa! (begin)");
-            
+           
 
             
+            
+
+
             if (tempArray.Count() <= 0) // sprawdzenie czy tablica jest pusta
             {
-                label4.Text = "Nie wpisałeś żadnego kodu.";
+                Zmienne.bledy.Add("Nie wpisałeś żadnego kodu.");
             }
             else 
             {
@@ -59,159 +52,95 @@ namespace ProjektSSIW
 
                 if (tempArray[0] == "rush" && tempArray[size-1] == "save") // sprawdzam czy na poczatku jest 'rush' a na końcu 'save'
                 {
-                    for (int i = 0; i < tempArray.Length; i++)
+
+
+                    for (int i = 1; i < tempArray.Length-1; i++)
                     {
-                        label4.Text = "Wszystko jest OK";
-                        listView1.Items.Add(tempArray[i]);
-                    }
-                    string pom = tempArray[1];
-                    string[] subs = pom.Split(' ', '\t'); //tablica przechowujaca elementy oprocz ' '
-                    string[] subs1 = pom.Split('(', ')', '+', '\t'); //tablica przechowujaca elementy oprocz '(' , ')' oraz '+'
-                    /*
-                    string knife = "knife";
-                    
-                    if (subs.Contains(knife))
-                    {
-                        textBox1.Text = knife;
-                        
-                        //then dodajemy
-                    }
-                    */
+                        string pom = tempArray[i];
 
 
 
 
-                    //Funkcje sprawdzanie czy jest tylko 1 ciąg w linijce
-                    if (subs.Length == 1) //
-                    {
-                        char[] char_arr = subs[0].ToCharArray();//zamieniam stringa na tablicę charów
-                        if (char_arr[char_arr.Length-1] == ')') // jeżeli ostatni znak w tym stringu to )
+
+
+
+
+
+
+
+
+
+
+                        //WRITE WRITELN
+                        //Funkcje sprawdzanie czy jest tylko 1 ciąg w linijce, przydatne do write i writeln tylko
+                        //if (subs.Length == 1) //
+                        //{
+                        if (pom.Length >= 5)
                         {
-                            bool test1 = false;//flaga czy jest (
-                            bool test2 = false;//flaga czy jest )
-                            bool test3 = false;//sprawdź czy najpierw jest ( a później )
-                            String[] test4 = new String[2];
-                            test4[0]=""; test4[1] = "";//
-                            foreach (var item in char_arr) //sprawdzam wszystkie znaki tego stringa
+                            if (pom.Substring(0, 6) == "m4a1s(" && pom.EndsWith(")"))
                             {
-                                if (item == '(') // flaga (
-                                {
-                                    test1 = true;
-                                }
-                                if (item == ')') //flaga )
-                                {
-                                    test2 = true;
-                                }
-                                if (test1 == false && test2 == false) //wpisuje do stringa jaka operacje funkcji
-                                {
-                                    test4[0] = test4[0] + item;
-                                }
-                                if (test2 == true && test1 == false) // jeżeli najpierw znajdzie w ciągu jest ) a później ( to błąd
-                                {
-                                    test3 = false;
-                                    label4.Text = "blad1";
-                                    break;
-                                }
-                                if (test1 == true && test2== false) // wpisuje do stringa nazwę funkcji
-                                {
-                                    if (item != '(') //ten if żeby nie wypisywało "(nazwa" tylko samo "nazwa"
-                                    {
-                                        test4[1] = test4[1] + item;
-                                    }
-                                }
-                                if (test1 == true && test2 == true) // jeżeli wszystko ok to jest flaga ustawiana
-                                {
-                                    test3 = true;
-                                    break;
-                                }
-                                
+                                String pomWnawiasach = pom.Substring(6, pom.Length - 7);
+                                funkcje.InterpretujWriteLine(pomWnawiasach, i);
                             }
-                            if (test3 != true)
+                            else if (pom.Substring(0, 5) == "m4a1(" && pom.EndsWith(")"))
                             {
-                                label4.Text = "Źle wpisana nazwa zmiennej funkcji"; // komunikat
-                            }
-                            else
-                            {
-                                Boolean czyGitZmienna2 = true; // flaga
-                                string specialChar2 = @"\|!#$%&/()=?»«@£§€{}.-;<>_,*`~ąśćźżółęń";
-
-                                char firstLetter2 = test4[0].FirstOrDefault();
-
-                                if (Char.IsDigit(firstLetter2))
-                                {
-                                    czyGitZmienna2 = false;
-                                }
-                                else
-                                {
-                                    foreach (var item in specialChar2)
-                                    {
-                                        if (test4[1].Contains(item))
-                                        {
-                                            czyGitZmienna2 = false;
-                                        }
-                                    }
-                                }
-                                
-                                if (czyGitZmienna2 == true)
-                                {
-                                    switch (test4[0]) //przekazywanie do metody funkcji
-                                    {
-                                        /*
-                                        case "ak47":
-                                            funkcje.InterpretujReadLine(subs, subs.Length); //i dalej tutaj będzie robione
-                                            break;
-                                        */
-                                        case "m4a1s":
-                                            funkcje.InterpretujWriteLine(test4, subs.Length);
-                                            break;
-                                        case "m4a4":
-                                            funkcje.InterpretujWrite(test4, subs.Length);
-                                            break;
-                                            /*
-                                        case "usp":
-                                            funkcje.InterpretujToString(tempArray, subs.Length);
-                                            break;
-                                        case "glock":
-                                            funkcje.InterpretujToInt(tempArray, subs.Length);
-                                            break;
-                                        case "tec":
-                                            funkcje.InterpretujToFloat(tempArray, subs.Length);
-                                            break;
-                                            */
-                                        default:
-                                            label4.Text = "Taka funkcja nie istnieje";
-                                            break;
-
-                                    }
-                                    label4.Text = test4[0] + " " + test4[1];
-                                }
-                                else
-                                {
-                                    label4.Text = "Zła nazwa zmiennej";
-                                }
+                                String pomWnawiasach = pom.Substring(5, pom.Length - 6);
+                                funkcje.InterpretujWrite(pomWnawiasach, i);
                             }
                         }
-                        else
-                        {
-                            label4.Text = "Źle wpisana funkcja";//komunikat
-                        }
+
+
+
+
+
                     }
 
 
+
+
+                    //tymczasowe do sprawdzania
+                    funkcje.przykladoweDane();
+                    funkcje.InterpretujToDouble("test6",100);
+
                     
+                    
+
+
+                    //dodawanie do konsoli
                     foreach (var sub in Zmienne.konsola)
                     {
-                        listView2.Items.Add(sub);
-
+                        listView1.Items.Add(sub);
                     }
-                    foreach (var p in subs1)
+                    //dodawanie do bledów
+                    foreach (var p in Zmienne.bledy)
                     {
                         listView3.Items.Add(p);
                     }
-                }
-                else
-                {
-                    label4.Text = error[0];
+
+
+
+
+
+
+
+
+                    //wypisywanie zmiennych typów, nazw, wartości i prawdziwych wartości
+                    foreach (var sub in Zmienne.typZmiennej)
+                    {
+                        listView1.Items.Add(sub);
+                    }
+                    foreach (var sub in Zmienne.nazwaZmiennej)
+                    {
+                        listView4.Items.Add(sub);
+                    }
+                    foreach (var sub in Zmienne.wartoscZmiennej)
+                    {
+                        listView5.Items.Add(sub + "");
+                        listView6.Items.Add(sub.GetType()+"");
+                    }
+
+
+
                 }
                 
             }
@@ -220,11 +149,16 @@ namespace ProjektSSIW
 
         private void button2_Click(object sender, EventArgs e) //czyszczenie 
         {
-            label4.Text = "";
             listView1.Clear();
             listView2.Clear();
             listView3.Clear();
-            //richTextBox1.Clear();
+            listView4.Clear();
+            listView5.Clear();
+            listView6.Clear();
+            Zmienne.konsola.Clear();
+            Zmienne.typZmiennej.Clear();
+            Zmienne.nazwaZmiennej.Clear();
+            Zmienne.bledy.Clear();
         }
     }
 }
