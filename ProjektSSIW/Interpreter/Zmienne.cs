@@ -63,6 +63,8 @@ namespace ProjektSSIW.Interpreter
                 }
                 else //jeżeli nie ma takiej zmiennej to robi dalej
                 {
+                    
+                    /*
                     for (int i = 0; i < ciag.Length; i++) // lecę po tablicy czarów całego ciągu
                     {
                         if(i != 0)
@@ -83,23 +85,13 @@ namespace ProjektSSIW.Interpreter
                                 }
                                 nawiasZamkniety++;
                             }
-                            else if (ciag[i] == ';' && czygitnawias == true)
+                            else if (ciag[i] == ';')
                             {
                                 if ((ciag[i - 1] == '+' || ciag[i - 1] == '-' || ciag[i - 1] == '*' || ciag[i - 1] == '/'))//blad
                                 {
                                     bledy.Add(linijka + ": Na końcu znak " + ciag[i]);
                                 }
                             }
-                            
-                            /*
-                            if(ciag[i] == '(')
-                            {
-                                if ((ciag[i - 1] == '+' || ciag[i - 1] == '-' || ciag[i - 1] == '*' || ciag[i - 1] == '/' || ciag[i - 1] == ';'))
-                                {
-                                    bledy.Add(linijka + ": Przed początkowym nawiasem jest znak " + ciag[i - 1]);
-                                }
-                            }
-                            */
                             if (ciag[i] == ')')
                             {
                                 if ((ciag[i - 1] == '+' || ciag[i - 1] == '-' || ciag[i - 1] == '*' || ciag[i - 1] == '/' || ciag[i - 1] == ';'))
@@ -121,15 +113,77 @@ namespace ProjektSSIW.Interpreter
                         }
                         
                     }
+
+                    */
+
                     //Zmienne.konsola.Add(ciag.Remove(ciag.Length - 1));
 
-                    char[] delimiters = new[] { '+', '-', '*', '/' };  // List of your delimiters
                     string[] test = Regex.Split(ciag.Remove(ciag.Length - 1), "(?<=[()\\-+*/])|(?=[()\\-+*/])");
+                    if ((test[0]== "" || test[0]==null || test[0] == " ") && test[1] == "(")
+                    {
+                        test = test.Where((v, i) => i != 0).ToArray();
+                    }
+                    
                     string ciag3 = "";
 
                     int pom4 = 0;
                     foreach (var match in test)
                     {
+                        if (pom4 != 0)
+                        {
+                            if (test[pom4] == "(")
+                            {
+                                if ((test[pom4 + 1] == "+" || test[pom4 + 1] == "*" || test[pom4 + 1] == "/" || test[pom4 + 1] == ";")) // test[pom4 + 1] == '-' || 
+                                {
+                                    bledy.Add(linijka + ": znak " + test[pom4 + 1] + " po nawiasie rozpoczynającym");
+                                }
+                                if(pom4 != 0 && test[pom4] == "(")
+                                {
+                                    if (test[0] != "(" && !(test[pom4 - 1] == "+" || test[pom4 - 1] == "*" || test[pom4 - 1] == "/"))
+                                    {
+                                        bledy.Add(linijka + ": brak znaku przed nawiasem");
+                                    }
+                                }
+                                nawiasOtwarty++;
+                            }
+                            if (test[pom4] == ")")
+                            {
+                                if ((test[pom4 - 1] == "+" || test[pom4 - 1] == "-" || test[pom4 - 1] == "*" || test[pom4 - 1] == "/" || test[pom4 - 1] == ";"))
+                                {
+                                    bledy.Add(linijka + ": znak " + test[pom4 + 1] + " przed nawiasem zamykającym");
+                                }
+                                nawiasZamkniety++;
+                            }
+                            else if (test[pom4] == ";")
+                            {
+                                if ((test[pom4 - 1] == "+" || test[pom4 - 1] == "-" || test[pom4 - 1] == "*" || test[pom4 - 1] == "/"))//blad
+                                {
+                                    bledy.Add(linijka + ": Na końcu znak " + test[pom4]);
+                                }
+                            }
+                            if (test[pom4] == ")")
+                            {
+                                if ((test[pom4 - 1] == "+" || test[pom4 - 1] == "-" || test[pom4 - 1] == "*" || test[pom4 - 1] == "/" || test[pom4 - 1] == ";"))
+                                {
+                                    bledy.Add(linijka + ": Przed zamykającym nawiasem jest znak " + test[pom4 - 1]);
+                                }
+                            }
+                            if (test[pom4-1] == "/" && test[pom4] == "0")
+                            {
+                                bledy.Add(linijka +": nie można dzialić przez zero");
+                            } 
+                        }
+                        else
+                        {
+                            if (test[pom4] == "(")
+                            {
+                                nawiasOtwarty++;
+                            }
+                            else if ((test[pom4] == "+" || test[pom4] == "-" || test[pom4] == "*" || test[pom4] == "/" || test[pom4] == ";"))
+                            {
+                                bledy.Add(linijka + ": " + test[pom4] + " na początku działania");
+                            }
+                        }
                         if (czyInt(match) == false)
                         {
                             if ((match == "/" || match == "*" || match == "+" || match == "-" || match == "(" || match == ")" || match == ";"))
@@ -139,9 +193,27 @@ namespace ProjektSSIW.Interpreter
                             else
                             {
                                 int index = Zmienne.nazwaZmiennej.FindIndex(c => c == match);
-                                if (index < 0)
+                                if (index < 0) //żeby nie było double w int
                                 {
-                                    bledy.Add(linijka + ": brak zmiennej o nazwie " + match);
+                                    try
+                                    {
+                                        string[] subsPom = match.Split('.', '\t'); //tablica przechowujaca elementy oprocz .
+                                        if (subsPom.Count() == 2)
+                                        {
+                                            bool isNumeric1 = int.TryParse(subsPom[0], out int nn);// sprawdź czy item jest numerem
+                                            bool isNumeric2 = int.TryParse(subsPom[1], out int nnn);// sprawdź czy item jest numerem
+                                            if (isNumeric1 == true && isNumeric2 == true)
+                                            {
+                                                bledy.Add(linijka + ": liczba " +match + " nie jest typu knife(int)");
+                                            }
+                                        }
+                                    }
+                                    catch
+                                    {
+                                        bledy.Add(linijka + ": brak zmiennej o nazwie " + match);
+                                    }
+                                    
+                                    
                                 }
                                 else
                                 {
@@ -157,12 +229,18 @@ namespace ProjektSSIW.Interpreter
                                 }
                             }
                         }
-                        //Zmienne.konsola.Add(test[pom4]);
+                        Zmienne.konsola.Add(test[pom4]);
                         ciag3 = ciag3 + test[pom4];
                         pom4++;
                     }
-                    //Zmienne.konsola.Add(ciag3);
-                    if (Zmienne.bledy.Count > 0)
+
+                    if (nawiasOtwarty != nawiasZamkniety)
+                    {
+                        bledy.Add(linijka + ": źle zrobione nawiasy");
+                    }
+
+                        //Zmienne.konsola.Add(ciag3);
+                        if (Zmienne.bledy.Count > 0)
                     {
                         string item = bledy[bledy.Count - 1];
                         string item2 = item.Substring(0, 1);
@@ -171,19 +249,19 @@ namespace ProjektSSIW.Interpreter
                         {
                             try
                             {
-                                if(nawiasOtwarty == nawiasZamkniety)
-                                {
+                                //if(nawiasOtwarty == nawiasZamkniety)
+                                //{
                                     DataTable dt = new DataTable();
                                     double answer = (double)dt.Compute(ciag3, "");
                                     wynik = Convert.ToInt32(answer);
                                     Zmienne.typZmiennej.Add("knife");
                                     Zmienne.nazwaZmiennej.Add(nazwaZmiennej2);
                                     Zmienne.wartoscZmiennej.Add(wynik);
-                                }
-                                else
-                                {
-                                    bledy.Add(linijka + ": źle zrobione nawiasy");
-                                }
+                                //}
+                               //else
+                                //{
+                                //    bledy.Add(linijka + ": źle zrobione nawiasy");
+                               // }
                             }
                             catch
                             {
@@ -208,19 +286,19 @@ namespace ProjektSSIW.Interpreter
                     {
                         try
                         {
-                            if (nawiasOtwarty == nawiasZamkniety)
-                            {
+                            //if (nawiasOtwarty == nawiasZamkniety)
+                            //{
                                 DataTable dt = new DataTable();
-                                double answer = (double)dt.Compute(ciag3, "")/1;
+                                double answer = (double)dt.Compute(ciag3, "");
                                 wynik = Convert.ToInt32(answer);
                                 Zmienne.typZmiennej.Add("knife");
                                 Zmienne.nazwaZmiennej.Add(nazwaZmiennej2);
                                 Zmienne.wartoscZmiennej.Add(wynik);
-                            }
-                            else
-                            {
-                                bledy.Add(linijka + ": źle zrobione nawiasy");
-                            }
+                            //}
+                            //else
+                            //{
+                            //    bledy.Add(linijka + ": źle zrobione nawiasy");
+                            //}
                         }
                         catch
                         {
