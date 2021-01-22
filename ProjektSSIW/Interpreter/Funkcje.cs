@@ -554,7 +554,7 @@ namespace ProjektSSIW.Interpreter
                     if (tempArray.Length == 4 && tempArray[0] == "knife" && tempArray[2] == "=" && tempArray[3] == "ak47()") //int
                     {
                         int index = Zmienne.nazwaZmiennej.FindIndex(c => c == tempArray[1]);
-                        if (index > 0)
+                        if (index >= 0)
                         {
                             tymczasowyBlad("Istnieje zmienna o nazwie " + tempArray[1], linijka);
                         }
@@ -582,7 +582,7 @@ namespace ProjektSSIW.Interpreter
                     else if (tempArray.Length == 4 && tempArray[0] == "grenade" && tempArray[2] == "=" && tempArray[3] == "ak47()") //double
                     {
                         int index = Zmienne.nazwaZmiennej.FindIndex(c => c == tempArray[1]);
-                        if (index > 0)
+                        if (index >= 0)
                         {
                             tymczasowyBlad("Istnieje zmienna o nazwie " + tempArray[1], linijka);
                         }
@@ -609,7 +609,7 @@ namespace ProjektSSIW.Interpreter
                     else if (tempArray.Length == 4 && tempArray[0] == "defuse" && tempArray[2] == "=" && tempArray[3] == "ak47()") //string
                     {
                         int index = Zmienne.nazwaZmiennej.FindIndex(c => c == tempArray[1]);
-                        if (index > 0)
+                        if (index >= 0)
                         {
                             tymczasowyBlad("Istnieje zmienna o nazwie " + tempArray[1], linijka);
                         }
@@ -636,7 +636,7 @@ namespace ProjektSSIW.Interpreter
                     else if (tempArray.Length == 4 && tempArray[0] == "zeus" && tempArray[2] == "=" && tempArray[3] == "ak47()") //bool
                     {
                         int index = Zmienne.nazwaZmiennej.FindIndex(c => c == tempArray[1]);
-                        if (index > 0)
+                        if (index >= 0)
                         {
                             tymczasowyBlad("Istnieje zmienna o nazwie " + tempArray[1], linijka);
                         }

@@ -53,10 +53,12 @@ namespace ProjektSSIW.Interpreter
             int nawiasZamkniety = 0;
             int pom4 = 0;
             string ciag3 = "";
+            
 
             if (czyString2(nazwaZmiennej2) == true) //jeżeli nazwaZmiennej to string
             {
-                if (czyIstnieje(nazwaZmiennej2)) // jeżeli zmienna o takiej nazwie istnieje to blad
+                int index2 = Zmienne.nazwaZmiennej.FindIndex(c => c == nazwaZmiennej2);
+                if (index2 >= 0) //jeżeli nie ma takiej zmiennej
                 {
                     bledy.Add(linijka + ": Istnieje zmienna o nazwie " + nazwaZmiennej2);
                 }
@@ -69,6 +71,7 @@ namespace ProjektSSIW.Interpreter
                     }
                     foreach (var match in test) //leci po tablicy stringów test
                     {
+                        bool flaga = false;
                         if (pom4 != 0) // jeżeli nie będziemy sprawdzać test[0] to
                         {
                             if (test[pom4] == "(") // jeżeli znak "("
@@ -138,12 +141,17 @@ namespace ProjektSSIW.Interpreter
                                             if (isNumeric1 == true && isNumeric2 == true)
                                             {
                                                 bledy.Add(linijka + ": liczba " + match + " nie jest typu knife(int)");
+                                                flaga = true;
                                             }
                                         }
                                     }
                                     catch //jeżeli
                                     {
-                                        bledy.Add(linijka + ": blad??? " + match);
+                                        //bledy.Add(linijka + ": blad??? " + match);
+                                    }
+                                    if (flaga == false)
+                                    {
+                                        bledy.Add(linijka +": nie istnieje zmienna o nazwie " +match);
                                     }
                                 }
                                 else // jeżeli jest zmienna to 
@@ -229,7 +237,7 @@ namespace ProjektSSIW.Interpreter
                             catch
                             {
                                 bledy.Add("blad ??");
-                            }//
+                            }
                             //bledy.Add(linijka + ": błąd przy obliczaniu zzz");
                         }
                     }
@@ -237,7 +245,7 @@ namespace ProjektSSIW.Interpreter
             }
             else// jeżeli nazwaZmiennej to nie string
             {
-                bledy.Add(linijka + ": Zła nazwa zmiennej " + nazwaZmiennej);
+                bledy.Add(linijka + ": Zła nazwa zmiennej " + nazwaZmiennej2);
             }
         }
 
