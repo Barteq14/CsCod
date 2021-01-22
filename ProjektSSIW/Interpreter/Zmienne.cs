@@ -229,7 +229,7 @@ namespace ProjektSSIW.Interpreter
                             catch
                             {
                                 bledy.Add("blad ??");
-                            }
+                            }//
                             //bledy.Add(linijka + ": błąd przy obliczaniu zzz");
                         }
                     }
