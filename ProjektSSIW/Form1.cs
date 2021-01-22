@@ -19,7 +19,7 @@ namespace ProjektSSIW
         Składnia składnia = new Składnia();
         Zmienne zmienne = new Zmienne();
         Funkcje funkcje = new Funkcje();
-        
+
 
         public Form1()
         {
@@ -40,7 +40,13 @@ namespace ProjektSSIW
 
 
             //tymczasowe do sprawdzania
-            funkcje.przykladoweDane();
+            //funkcje.przykladoweDane();
+            listView1.Clear();
+            listView2.Clear();
+            listView3.Clear();
+            listView4.Clear();
+            listView5.Clear();
+            listView6.Clear();
 
 
 
@@ -48,7 +54,7 @@ namespace ProjektSSIW
             {
                 Zmienne.bledy.Add("Nie wpisałeś żadnego kodu.");
             }
-            else 
+            else
             {
                 int size = tempArray.Length; // pobieram długość tablicy 
 
@@ -56,7 +62,7 @@ namespace ProjektSSIW
                 {
 
 
-                    for (int i = 1; i < tempArray.Length-1; i++)
+                    for (int i = 1; i < tempArray.Length - 1; i++)
                     {
                         string pom = tempArray[i];
                         string[] tab = tempArray[i].Split(' ');
@@ -78,17 +84,27 @@ namespace ProjektSSIW
                                 funkcje.InterpretujWrite(pomWnawiasach, i);
                             }
                         }
-                        if(tab.Length == 4 && tab[3] == "ak47()")
+                        if (tab.Length == 4 && tab[3] == "ak47()")
                         {
-                            funkcje.InterpretujReadLine(tab,i);
+                            funkcje.InterpretujReadLine(tab, i);
                         }
-                        else if(tab.Length == 1 && tab[0] == "ak47()")
+                        else if (tab.Length == 1 && tab[0] == "ak47()")
                         {
                             funkcje.InterpretujReadLine2(i);
                         }
 
+                        if (tab[0] == "knife" && tab.Length == 4 && tab[3].EndsWith(";"))
+                        {
+                            string pomknife = "";
+                            for (int jk = 3; jk < tab.Length; jk++)
+                            {
+                                pomknife = pomknife + tab[jk];
+                            }
+                            zmienne.TomaszowyInt(tab[1], pomknife, i);
+                        }
 
-                        petle.InterpretujPetle(tempArray,i);
+
+                        petle.InterpretujPetle(tempArray, i);
 
                         //zmienne.InterpretujZmienne(tempArray, i);
 
@@ -99,8 +115,8 @@ namespace ProjektSSIW
 
 
 
-                    
-                   
+
+
 
 
 
@@ -126,7 +142,7 @@ namespace ProjektSSIW
                     foreach (var sub in Zmienne.wartoscZmiennej)
                     {
                         listView5.Items.Add(sub + "");
-                        listView6.Items.Add(sub.GetType()+"");
+                        listView6.Items.Add(sub.GetType() + "");
                     }
                     //dodawanie do konsoli
                     foreach (var sub in Zmienne.konsola)
@@ -145,10 +161,10 @@ namespace ProjektSSIW
 
 
                 }
-                
+
             }
-            
-         
+
+
         }
 
         private void button2_Click(object sender, EventArgs e) //czyszczenie 

@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ProjektSSIW.Interpreter
 {
-    public class Zmienne 
+    public class Zmienne
     {
-       
+
         Składnia skladnia = new Składnia();
         //listy z informacjami o zmiennej 
         public static List<dynamic> typZmiennej = new List<dynamic>(); //muszą być statyczne i mieć get set żeby można było w innych 
@@ -23,7 +25,7 @@ namespace ProjektSSIW.Interpreter
         public static int DoubleLength = 7;
         public static int StringLength = 6;
         public static int BoolLength = 4;
-  
+
         //public static List<String> konsola { get; set; } = new List<String>(); // lista dla konsoli
 
         //przechowywane wyniki operacji
@@ -40,81 +42,217 @@ namespace ProjektSSIW.Interpreter
         List<int> IndeksyFLOAT = new List<int>();
         List<int> IndeksySTRING = new List<int>();
         List<int> IndeksyBOOLEAN = new List<int>();
-        /*
-        public void InterpretujZmienne(string[] tempArray,int i)
+
+
+        public void TomaszowyInt(string nazwaZmiennej2, string ciag, int linijka)
         {
+            //konsola.Add(nazwaZmiennej2 + " = " + ciag + " \t linijka " + linijka);
+            int wynik;
 
-                string[] tab = tempArray[i].Split(' ');
-                switch (tab[0])
+            bool czyNawiasOtwarty = false;
+            bool czygitnawias = true;
+
+            int nawiasOtwarty = 0;
+            int nawiasZamkniety = 0;
+
+            if (czyString2(nazwaZmiennej2) == true) //jeżeli nazwaZmiennej to string
+            {
+                if (czyIstnieje(nazwaZmiennej2)) // jeżeli zmienna o takiej nazwie istnieje to blad
                 {
-                    case "knife":
-                        if (InterpretujInt(tempArray, i) == false)
-                        {
-                            message = "Zła składnia deklaracji zmiennej typu 'int'.";
-                        }
-                        IndeksyINT.Add(i);
-                        break;
-                    case "grenade":
-                        InterpretujDouble();
-                        IndeksyDOUBLE.Add(i);
-                        break;
-                    case "rifle":
-                        InterpretujFloat();
-                        IndeksyFLOAT.Add(i);
-                        break;
-                    case "defuse":
-                        InterpretujString();
-                        IndeksySTRING.Add(i);
-                        break;
-                    case "zeus":
-                        if(InterpretujBoolean(tempArray, i) == false)
-                        {
-                            message = "Zła składnia deklaracji zmiennej typu 'bool'.";
-                        } 
-                        IndeksyBOOLEAN.Add(i);
-                        break;
+                    bledy.Add(linijka + ": Istnieje zmienna o nazwie " + nazwaZmiennej2);
                 }
+                else //jeżeli nie ma takiej zmiennej to robi dalej
+                {
+                    for (int i = 0; i < ciag.Length; i++) // lecę po tablicy czarów całego ciągu
+                    {
+                        if(i != 0)
+                        {
+                            if (ciag[i] == '(')
+                            {
+                                if ((ciag[i + 1] == '+' || ciag[i + 1] == '*' || ciag[i + 1] == '/' || ciag[i + 1] == ';')) // ciag[i + 1] == '-' || 
+                                {
+                                    bledy.Add(linijka +": znak " + ciag[i+1] + " przed nawiasem rozpoczynającym");
+                                }
+                                nawiasOtwarty++;
+                            }
+                            if (ciag[i] == ')')
+                            {
+                                if ((ciag[i - 1] == '+' || ciag[i - 1] == '-' || ciag[i - 1] == '*' || ciag[i - 1] == '/' || ciag[i - 1] == ';'))
+                                {
+                                    bledy.Add(linijka + ": znak " + ciag[i + 1] + " przed nawiasem zamykającym");
+                                }
+                                nawiasZamkniety++;
+                            }
+                            else if (ciag[i] == ';' && czygitnawias == true)
+                            {
+                                if ((ciag[i - 1] == '+' || ciag[i - 1] == '-' || ciag[i - 1] == '*' || ciag[i - 1] == '/'))//blad
+                                {
+                                    bledy.Add(linijka + ": Na końcu znak " + ciag[i]);
+                                }
+                            }
+                            
+                            /*
+                            if(ciag[i] == '(')
+                            {
+                                if ((ciag[i - 1] == '+' || ciag[i - 1] == '-' || ciag[i - 1] == '*' || ciag[i - 1] == '/' || ciag[i - 1] == ';'))
+                                {
+                                    bledy.Add(linijka + ": Przed początkowym nawiasem jest znak " + ciag[i - 1]);
+                                }
+                            }
+                            */
+                            if (ciag[i] == ')')
+                            {
+                                if ((ciag[i - 1] == '+' || ciag[i - 1] == '-' || ciag[i - 1] == '*' || ciag[i - 1] == '/' || ciag[i - 1] == ';'))
+                                {
+                                    bledy.Add(linijka + ": Przed zamykającym nawiasem jest znak " + ciag[i - 1]);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if(ciag[i] == '(')
+                            {
+                                nawiasOtwarty++;
+                            }
+                            else if((ciag[i] == '+' || ciag[i] == '-' || ciag[i] == '*' || ciag[i] == '/' || ciag[i] == ';'))
+                            {
+                                bledy.Add(linijka +": " +ciag[i] + " na początku działania");
+                            }
+                        }
+                        
+                    }
+                    //Zmienne.konsola.Add(ciag.Remove(ciag.Length - 1));
 
+                    char[] delimiters = new[] { '+', '-', '*', '/' };  // List of your delimiters
+                    string[] test = Regex.Split(ciag.Remove(ciag.Length - 1), "(?<=[()\\-+*/])|(?=[()\\-+*/])");
+                    string ciag3 = "";
 
-                //zastępcze // nie zawsze knife musi byc na poczatku linii...
-                
-                    if (tab[i].Contains("knife") || tab[0] == "knife")//INT
+                    int pom4 = 0;
+                    foreach (var match in test)
                     {
-                        if (InterpretujInt(tempArray, i) == false)
+                        if (czyInt(match) == false)
                         {
-                            message = "Zła składnia deklaracji zmiennej typu 'int'.";
+                            if ((match == "/" || match == "*" || match == "+" || match == "-" || match == "(" || match == ")" || match == ";"))
+                            {
+
+                            }
+                            else
+                            {
+                                int index = Zmienne.nazwaZmiennej.FindIndex(c => c == match);
+                                if (index < 0)
+                                {
+                                    bledy.Add(linijka + ": brak zmiennej o nazwie " + match);
+                                }
+                                else
+                                {
+                                    if (Zmienne.typZmiennej[index] == "knife")
+                                    {
+                                        test[pom4] = (Zmienne.wartoscZmiennej[index]) + "";
+                                        //bledy.Add("debug");
+                                    }
+                                    else
+                                    {
+                                        bledy.Add(linijka + ": zmienna o nazwie " + match + " to nie knife(int)");
+                                    }
+                                }
+                            }
                         }
-                        IndeksyINT.Add(i);
+                        //Zmienne.konsola.Add(test[pom4]);
+                        ciag3 = ciag3 + test[pom4];
+                        pom4++;
                     }
-                    if (tab[i].Contains("grenade"))//FLOAT
+                    //Zmienne.konsola.Add(ciag3);
+                    if (Zmienne.bledy.Count > 0)
                     {
-                        if (InterpretujInt(tempArray, i) == false)
+                        string item = bledy[bledy.Count - 1];
+                        string item2 = item.Substring(0, 1);
+                        string item3 = linijka + "";
+                        if (item2 != item3)
                         {
-                            message = "Zła składnia deklaracji zmiennej typu 'int'.";
+                            try
+                            {
+                                if(nawiasOtwarty == nawiasZamkniety)
+                                {
+                                    DataTable dt = new DataTable();
+                                    double answer = (double)dt.Compute(ciag3, "");
+                                    wynik = Convert.ToInt32(answer);
+                                    Zmienne.typZmiennej.Add("knife");
+                                    Zmienne.nazwaZmiennej.Add(nazwaZmiennej2);
+                                    Zmienne.wartoscZmiennej.Add(wynik);
+                                }
+                                else
+                                {
+                                    bledy.Add(linijka + ": źle zrobione nawiasy");
+                                }
+                            }
+                            catch
+                            {
+                                try
+                                {
+                                    DataTable dt = new DataTable();
+                                    int answer = (int)dt.Compute(ciag3, "");
+                                    wynik = Convert.ToInt32(answer);
+                                    Zmienne.typZmiennej.Add("knife");
+                                    Zmienne.nazwaZmiennej.Add(nazwaZmiennej2);
+                                    Zmienne.wartoscZmiennej.Add(wynik);
+                                }
+                                catch
+                                {
+                                    bledy.Add("blad ?");
+                                }
+                                //bledy.Add(linijka + ": błąd przy obliczaniu ddd");
+                            }
                         }
-                        IndeksyINT.Add(i);
                     }
-                    if (tab[i].Contains("defuse"))//STRING
+                    else
                     {
-                        if (InterpretujInt(tempArray, i) == false)
+                        try
                         {
-                            message = "Zła składnia deklaracji zmiennej typu 'int'.";
+                            if (nawiasOtwarty == nawiasZamkniety)
+                            {
+                                DataTable dt = new DataTable();
+                                double answer = (double)dt.Compute(ciag3, "")/1;
+                                wynik = Convert.ToInt32(answer);
+                                Zmienne.typZmiennej.Add("knife");
+                                Zmienne.nazwaZmiennej.Add(nazwaZmiennej2);
+                                Zmienne.wartoscZmiennej.Add(wynik);
+                            }
+                            else
+                            {
+                                bledy.Add(linijka + ": źle zrobione nawiasy");
+                            }
                         }
-                        IndeksyINT.Add(i);
-                    }
-                    if (tab[i].Contains("zeus") || tab[0] == "zeus")
-                    {
-                        if (InterpretujBoolean(tempArray, i) == false)//BOOLEAN
+                        catch
                         {
-                            message = "Zła składnia deklaracji zmiennej typu 'bool'.";
+                            try
+                            {
+                                DataTable dt = new DataTable();
+                                int answer = (int)dt.Compute(ciag3, "");
+                                wynik = Convert.ToInt32(answer);
+                                Zmienne.typZmiennej.Add("knife");
+                                Zmienne.nazwaZmiennej.Add(nazwaZmiennej2);
+                                Zmienne.wartoscZmiennej.Add(wynik);
+                            }
+                            catch
+                            {
+                                bledy.Add("blad ??");
+                            }
+                            //bledy.Add(linijka + ": błąd przy obliczaniu zzz");
                         }
-                        IndeksyBOOLEAN.Add(i);
                     }
-                
-               
+                }
             }
-        }*/
-        public bool InterpretujInt(string[] lines,int indeks)
+            else// jeżeli nazwaZmiennej to nie string
+            {
+                bledy.Add(linijka + ": Zła nazwa zmiennej " + nazwaZmiennej);
+            }
+        }
+
+
+
+
+
+        public bool InterpretujInt(string[] lines, int indeks)
         {
             int liczba;
             int liczba2;
@@ -136,17 +274,17 @@ namespace ProjektSSIW.Interpreter
             //probuje od nowa 
 
             for (int t = 0; t < liniaChar.Length; t++)
-            { 
-                if(liniaChar[t] == '=')//sprawdzam na ktorym indeksie jest '='
+            {
+                if (liniaChar[t] == '=')//sprawdzam na ktorym indeksie jest '='
                 {
                     indeksRownasie = t;
                 }
             }
             //dzielenie linii na 2 czesci (deklaracja | inicjalizacja)
-            int dlugoscLewaStrona = 0 + indeksRownasie+1;
+            int dlugoscLewaStrona = 0 + indeksRownasie + 1;
             string lewaStrona = lines[indeks].Substring(0, dlugoscLewaStrona);//tablica lewa ze znakiem równa się
 
-            int dlugoscPrawaStrona = linia.Length - indeksRownasie-1;
+            int dlugoscPrawaStrona = linia.Length - indeksRownasie - 1;
             string prawaStrona = lines[indeks].Substring(indeksRownasie + 1, dlugoscPrawaStrona);//tablica prawa
 
             string[] lewa = lewaStrona.Split();
@@ -156,7 +294,7 @@ namespace ProjektSSIW.Interpreter
                 if (lewa[i] == "knife" && czyString(lewa[i + 1]) == true)
                 {
                     typZmiennej.Add("int");
-                    nazwaZmiennej.Add(lewa[i+1]);
+                    nazwaZmiennej.Add(lewa[i + 1]);
                     break;
                 }
             }
@@ -476,7 +614,7 @@ namespace ProjektSSIW.Interpreter
 
         public bool InterpretujBoolean(string[] lines, int indeks)
         {
-            int indeksRownasie = 0 ;
+            int indeksRownasie = 0;
             string[] pomBOOL = lines[indeks].Split();
             bool wynikBool = true;
             int pierwszaLiczba = 0;
@@ -486,7 +624,7 @@ namespace ProjektSSIW.Interpreter
             string linia = lines[indeks];
             char[] liniaChar = linia.ToCharArray();
 
-           
+
             for (int t = 0; t < liniaChar.Length; t++)
             {
                 if (liniaChar[t] == '=')//sprawdzam na ktorym indeksie jest '='
@@ -496,7 +634,7 @@ namespace ProjektSSIW.Interpreter
                 }
             }
 
-            
+
 
             //dzielenie linii na 2 czesci (deklaracja | inicjalizacja)
             int dlugoscLewaStrona = 0 + indeksRownasie + 1;
@@ -508,17 +646,17 @@ namespace ProjektSSIW.Interpreter
 
 
             string[] lewa = lewaStrona.Split();
-            
+
             char[] prawaChar = prawaStrona.ToCharArray();
-            string[] prawa = prawaStrona.Split(' ',';');
+            string[] prawa = prawaStrona.Split(' ', ';');
             string[] prawa2 = prawaStrona.Split(';');
-           
-            for(int i = 0; i < lewa.Length; i++)
+
+            for (int i = 0; i < lewa.Length; i++)
             {
-                if (lewa[i] == "zeus" &&  czyString(lewa[i + 1]) == true) 
+                if (lewa[i] == "zeus" && czyString(lewa[i + 1]) == true)
                 {
                     typZmiennej.Add("bool");
-                    nazwaZmiennej.Add(lewa[i+1]);
+                    nazwaZmiennej.Add(lewa[i + 1]);
                     break;
                 }
             }
@@ -530,11 +668,13 @@ namespace ProjektSSIW.Interpreter
             {
                 wartoscZmiennej.Add("antiterrorist");
                 return true;
-            }else if (prawa.Contains("false") && prawa.Count() <= 3) //czy zawiera false
+            }
+            else if (prawa.Contains("false") && prawa.Count() <= 3) //czy zawiera false
             {
                 wartoscZmiennej.Add("terrorist");
                 return true;
-            }else if (prawaChar.Contains('<') || prawaChar.Contains('>')) //czy zawiera znaki 
+            }
+            else if (prawaChar.Contains('<') || prawaChar.Contains('>')) //czy zawiera znaki 
             {
                 for (int i = 0; i < prawaChar.Length; i++)
                 {
@@ -555,7 +695,7 @@ namespace ProjektSSIW.Interpreter
                     //sprawdzanie warunku
                     if (prawaChar[i] == '>')
                     {
-                        if(czyInt2(prawaChar[i+1]) == true)
+                        if (czyInt2(prawaChar[i + 1]) == true)
                         {
                             if (pierwszaLiczba > int.Parse(prawaChar[i + 1].ToString()))
                             {
@@ -570,7 +710,7 @@ namespace ProjektSSIW.Interpreter
                                 return true;
                             }
                         }
-                        
+
                     }
                     if (prawaChar[i] == '<')
                     {
@@ -658,6 +798,129 @@ namespace ProjektSSIW.Interpreter
             return true;
         }
 
-       
+
+
+        public bool czyIstnieje(string nazwaZmiennej) //Tomaszowe 
+        {
+            int index = Zmienne.nazwaZmiennej.FindIndex(c => c == nazwaZmiennej);
+            if (index > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool czyString2(string element) //Tomaszowe 
+        {
+            string specialChar = @"\|!#$%&/()=?»«@£§€{}.-;'<>_,*+`~ąśćźżółęń";
+
+            //sprawdzanie czy element za knife jest stringiem
+            char firstLetter = element.FirstOrDefault();
+
+
+            if (Char.IsDigit(firstLetter))
+            {
+                return false;
+            }
+            else
+            {
+                foreach (var item in specialChar)
+                {
+                    if (element.Contains(item))
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+
+
+
+
+        /*
+        public void InterpretujZmienne(string[] tempArray,int i)
+        {
+
+                string[] tab = tempArray[i].Split(' ');
+                switch (tab[0])
+                {
+                    case "knife":
+                        if (InterpretujInt(tempArray, i) == false)
+                        {
+                            message = "Zła składnia deklaracji zmiennej typu 'int'.";
+                        }
+                        IndeksyINT.Add(i);
+                        break;
+                    case "grenade":
+                        InterpretujDouble();
+                        IndeksyDOUBLE.Add(i);
+                        break;
+                    case "rifle":
+                        InterpretujFloat();
+                        IndeksyFLOAT.Add(i);
+                        break;
+                    case "defuse":
+                        InterpretujString();
+                        IndeksySTRING.Add(i);
+                        break;
+                    case "zeus":
+                        if(InterpretujBoolean(tempArray, i) == false)
+                        {
+                            message = "Zła składnia deklaracji zmiennej typu 'bool'.";
+                        } 
+                        IndeksyBOOLEAN.Add(i);
+                        break;
+                }
+
+
+                //zastępcze // nie zawsze knife musi byc na poczatku linii...
+                
+                    if (tab[i].Contains("knife") || tab[0] == "knife")//INT
+                    {
+                        if (InterpretujInt(tempArray, i) == false)
+                        {
+                            message = "Zła składnia deklaracji zmiennej typu 'int'.";
+                        }
+                        IndeksyINT.Add(i);
+                    }
+                    if (tab[i].Contains("grenade"))//FLOAT
+                    {
+                        if (InterpretujInt(tempArray, i) == false)
+                        {
+                            message = "Zła składnia deklaracji zmiennej typu 'int'.";
+                        }
+                        IndeksyINT.Add(i);
+                    }
+                    if (tab[i].Contains("defuse"))//STRING
+                    {
+                        if (InterpretujInt(tempArray, i) == false)
+                        {
+                            message = "Zła składnia deklaracji zmiennej typu 'int'.";
+                        }
+                        IndeksyINT.Add(i);
+                    }
+                    if (tab[i].Contains("zeus") || tab[0] == "zeus")
+                    {
+                        if (InterpretujBoolean(tempArray, i) == false)//BOOLEAN
+                        {
+                            message = "Zła składnia deklaracji zmiennej typu 'bool'.";
+                        }
+                        IndeksyBOOLEAN.Add(i);
+                    }
+                
+               
+            }
+        }*/
+
+
+
+
+
+
+
     }
 }
