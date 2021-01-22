@@ -804,7 +804,7 @@ namespace ProjektSSIW.Interpreter
         public bool czyIstnieje(string nazwaZmiennej) //Tomaszowe 
         {
             int index = Zmienne.nazwaZmiennej.FindIndex(c => c == nazwaZmiennej);
-            if (index > 0)
+            if (index >= 0)
             {
                 return true;
             }
