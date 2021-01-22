@@ -49,11 +49,10 @@ namespace ProjektSSIW.Interpreter
             //konsola.Add(nazwaZmiennej2 + " = " + ciag + " \t linijka " + linijka);
             int wynik;
 
-            bool czyNawiasOtwarty = false;
-            bool czygitnawias = true;
-
             int nawiasOtwarty = 0;
             int nawiasZamkniety = 0;
+            int pom4 = 0;
+            string ciag3 = "";
 
             if (czyString2(nazwaZmiennej2) == true) //jeżeli nazwaZmiennej to string
             {
@@ -63,139 +62,73 @@ namespace ProjektSSIW.Interpreter
                 }
                 else //jeżeli nie ma takiej zmiennej to robi dalej
                 {
-                    
-                    /*
-                    for (int i = 0; i < ciag.Length; i++) // lecę po tablicy czarów całego ciągu
-                    {
-                        if(i != 0)
-                        {
-                            if (ciag[i] == '(')
-                            {
-                                if ((ciag[i + 1] == '+' || ciag[i + 1] == '*' || ciag[i + 1] == '/' || ciag[i + 1] == ';')) // ciag[i + 1] == '-' || 
-                                {
-                                    bledy.Add(linijka +": znak " + ciag[i+1] + " przed nawiasem rozpoczynającym");
-                                }
-                                nawiasOtwarty++;
-                            }
-                            if (ciag[i] == ')')
-                            {
-                                if ((ciag[i - 1] == '+' || ciag[i - 1] == '-' || ciag[i - 1] == '*' || ciag[i - 1] == '/' || ciag[i - 1] == ';'))
-                                {
-                                    bledy.Add(linijka + ": znak " + ciag[i + 1] + " przed nawiasem zamykającym");
-                                }
-                                nawiasZamkniety++;
-                            }
-                            else if (ciag[i] == ';')
-                            {
-                                if ((ciag[i - 1] == '+' || ciag[i - 1] == '-' || ciag[i - 1] == '*' || ciag[i - 1] == '/'))//blad
-                                {
-                                    bledy.Add(linijka + ": Na końcu znak " + ciag[i]);
-                                }
-                            }
-                            if (ciag[i] == ')')
-                            {
-                                if ((ciag[i - 1] == '+' || ciag[i - 1] == '-' || ciag[i - 1] == '*' || ciag[i - 1] == '/' || ciag[i - 1] == ';'))
-                                {
-                                    bledy.Add(linijka + ": Przed zamykającym nawiasem jest znak " + ciag[i - 1]);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if(ciag[i] == '(')
-                            {
-                                nawiasOtwarty++;
-                            }
-                            else if((ciag[i] == '+' || ciag[i] == '-' || ciag[i] == '*' || ciag[i] == '/' || ciag[i] == ';'))
-                            {
-                                bledy.Add(linijka +": " +ciag[i] + " na początku działania");
-                            }
-                        }
-                        
-                    }
-
-                    */
-
-                    //Zmienne.konsola.Add(ciag.Remove(ciag.Length - 1));
-
-                    string[] test = Regex.Split(ciag.Remove(ciag.Length - 1), "(?<=[()\\-+*/])|(?=[()\\-+*/])");
-                    if ((test[0]== "" || test[0]==null || test[0] == " ") && test[1] == "(")
+                    string[] test = Regex.Split(ciag.Remove(ciag.Length - 1), "(?<=[()\\-+*/])|(?=[()\\-+*/])"); // rozdziela na tablicę stringów cały ciąg
+                    if ((test[0] == "" || test[0] == null || test[0] == " ") && test[1] == "(") //jak rozdziela tablicę i na samym początku jest nawias otwierający to test[0] = " " więc usuwamy ten pierwszy element
                     {
                         test = test.Where((v, i) => i != 0).ToArray();
                     }
-                    
-                    string ciag3 = "";
-
-                    int pom4 = 0;
-                    foreach (var match in test)
+                    foreach (var match in test) //leci po tablicy stringów test
                     {
-                        if (pom4 != 0)
+                        if (pom4 != 0) // jeżeli nie będziemy sprawdzać test[0] to
                         {
-                            if (test[pom4] == "(")
+                            if (test[pom4] == "(") // jeżeli znak "("
                             {
-                                if ((test[pom4 + 1] == "+" || test[pom4 + 1] == "*" || test[pom4 + 1] == "/" || test[pom4 + 1] == ";")) // test[pom4 + 1] == '-' || 
+                                if ((test[pom4 + 1] == "+" || test[pom4 + 1] == "*" || test[pom4 + 1] == "/" || test[pom4 + 1] == ";")) // jeżeli po znaku ( jest znak (nie minus) to błąd
                                 {
                                     bledy.Add(linijka + ": znak " + test[pom4 + 1] + " po nawiasie rozpoczynającym");
                                 }
-                                if(pom4 != 0 && test[pom4] == "(")
+                                if (pom4 != 0 && test[pom4] == "(") // jeżeli przed ( nie ma znaku operacji i nie sprawdzamy pierwszego test[0] to blad
                                 {
                                     if (test[0] != "(" && !(test[pom4 - 1] == "+" || test[pom4 - 1] == "*" || test[pom4 - 1] == "/"))
                                     {
                                         bledy.Add(linijka + ": brak znaku przed nawiasem");
                                     }
                                 }
-                                nawiasOtwarty++;
+                                nawiasOtwarty++; // do sprawdzenia czy dobra ilosc nawiasow
                             }
-                            if (test[pom4] == ")")
+                            if (test[pom4] == ")") //jezeli jest nawias zamykajacy
                             {
-                                if ((test[pom4 - 1] == "+" || test[pom4 - 1] == "-" || test[pom4 - 1] == "*" || test[pom4 - 1] == "/" || test[pom4 - 1] == ";"))
+                                if ((test[pom4 - 1] == "+" || test[pom4 - 1] == "-" || test[pom4 - 1] == "*" || test[pom4 - 1] == "/" || test[pom4 - 1] == ";")) // jezeli przed ) jest jakis znak operacji to blad
                                 {
                                     bledy.Add(linijka + ": znak " + test[pom4 + 1] + " przed nawiasem zamykającym");
                                 }
-                                nawiasZamkniety++;
+                                nawiasZamkniety++;// do sprawdzenia czy dobra ilosc nawiasow
                             }
-                            else if (test[pom4] == ";")
+                            else if (test[pom4] == ";") // jezeli koniec to
                             {
-                                if ((test[pom4 - 1] == "+" || test[pom4 - 1] == "-" || test[pom4 - 1] == "*" || test[pom4 - 1] == "/"))//blad
+                                if ((test[pom4 - 1] == "+" || test[pom4 - 1] == "-" || test[pom4 - 1] == "*" || test[pom4 - 1] == "/"))//jezeli koniec a przed koncem jest jakis znak operacji to blad
                                 {
                                     bledy.Add(linijka + ": Na końcu znak " + test[pom4]);
                                 }
                             }
-                            if (test[pom4] == ")")
+                            if (test[pom4 - 1] == "/" && test[pom4] == "0") // blad z dzieleniem przez zero
                             {
-                                if ((test[pom4 - 1] == "+" || test[pom4 - 1] == "-" || test[pom4 - 1] == "*" || test[pom4 - 1] == "/" || test[pom4 - 1] == ";"))
-                                {
-                                    bledy.Add(linijka + ": Przed zamykającym nawiasem jest znak " + test[pom4 - 1]);
-                                }
+                                bledy.Add(linijka + ": nie można dzialić przez zero");
                             }
-                            if (test[pom4-1] == "/" && test[pom4] == "0")
-                            {
-                                bledy.Add(linijka +": nie można dzialić przez zero");
-                            } 
                         }
-                        else
+                        else //tutaj będzie sprawdzanie pierwszego elementu z tablicy test
                         {
                             if (test[pom4] == "(")
                             {
-                                nawiasOtwarty++;
+                                nawiasOtwarty++; // do sprawdzenia czy dobra ilosc nawiasow
                             }
-                            else if ((test[pom4] == "+" || test[pom4] == "-" || test[pom4] == "*" || test[pom4] == "/" || test[pom4] == ";"))
+                            else if ((test[pom4] == "+" || test[pom4] == "-" || test[pom4] == "*" || test[pom4] == "/" || test[pom4] == ";"))// jeżeli na samym początku znak operacji to blad
                             {
                                 bledy.Add(linijka + ": " + test[pom4] + " na początku działania");
                             }
                         }
-                        if (czyInt(match) == false)
+                        if (czyInt(match) == false) // element test[pom4] to nie int to
                         {
                             if ((match == "/" || match == "*" || match == "+" || match == "-" || match == "(" || match == ")" || match == ";"))
                             {
 
                             }
-                            else
+                            else // jeżeli to nie znak operacji to
                             {
                                 int index = Zmienne.nazwaZmiennej.FindIndex(c => c == match);
-                                if (index < 0) //żeby nie było double w int
+                                if (index < 0) //jeżeli nie ma takiej zmiennej
                                 {
-                                    try
+                                    try// tutaj będziemy sprawdzać czy liczba jest doublem
                                     {
                                         string[] subsPom = match.Split('.', '\t'); //tablica przechowujaca elementy oprocz .
                                         if (subsPom.Count() == 2)
@@ -204,64 +137,53 @@ namespace ProjektSSIW.Interpreter
                                             bool isNumeric2 = int.TryParse(subsPom[1], out int nnn);// sprawdź czy item jest numerem
                                             if (isNumeric1 == true && isNumeric2 == true)
                                             {
-                                                bledy.Add(linijka + ": liczba " +match + " nie jest typu knife(int)");
+                                                bledy.Add(linijka + ": liczba " + match + " nie jest typu knife(int)");
                                             }
                                         }
                                     }
-                                    catch
+                                    catch //jeżeli
                                     {
-                                        bledy.Add(linijka + ": brak zmiennej o nazwie " + match);
+                                        bledy.Add(linijka + ": blad??? " + match);
                                     }
-                                    
-                                    
                                 }
-                                else
+                                else // jeżeli jest zmienna to 
                                 {
-                                    if (Zmienne.typZmiennej[index] == "knife")
+                                    if (Zmienne.typZmiennej[index] == "knife") // jezeli jest taka zmienna to sprawdza czy to jest int
                                     {
                                         test[pom4] = (Zmienne.wartoscZmiennej[index]) + "";
                                         //bledy.Add("debug");
                                     }
-                                    else
+                                    else //jezeli to nie int to blad
                                     {
                                         bledy.Add(linijka + ": zmienna o nazwie " + match + " to nie knife(int)");
                                     }
                                 }
                             }
                         }
-                        Zmienne.konsola.Add(test[pom4]);
-                        ciag3 = ciag3 + test[pom4];
-                        pom4++;
+                        //Zmienne.konsola.Add(test[pom4]);
+                        ciag3 = ciag3 + test[pom4]; //dodaje ciag po prawej stronie wraz z przetworzonymi zmiennymi
+                        pom4++; //pomocnicza
                     }
-
-                    if (nawiasOtwarty != nawiasZamkniety)
+                    if (nawiasOtwarty != nawiasZamkniety) // jeżeli ilość nawiasów się nie zgadza
                     {
                         bledy.Add(linijka + ": źle zrobione nawiasy");
                     }
-
-                        //Zmienne.konsola.Add(ciag3);
-                        if (Zmienne.bledy.Count > 0)
+                    //Zmienne.konsola.Add(ciag3);
+                    if (Zmienne.bledy.Count > 0) // jeżeli jest jakiś błąd to
                     {
-                        string item = bledy[bledy.Count - 1];
-                        string item2 = item.Substring(0, 1);
+                        string item = bledy[bledy.Count - 1]; 
+                        string item2 = item.Substring(0, 1); 
                         string item3 = linijka + "";
-                        if (item2 != item3)
+                        if (item2 != item3) //sprawdza czy ostatni blad jest z linijki w której jest działanie wykonywane jeżeli nie to
                         {
-                            try
+                            try //są tutaj try oraz catch bo jak w działaniu jest samo - + to wystarczy (int)dt.Compute a jeżeli jest * / to trzeba (double)dt.Compute i później zmienić na inta
                             {
-                                //if(nawiasOtwarty == nawiasZamkniety)
-                                //{
-                                    DataTable dt = new DataTable();
-                                    double answer = (double)dt.Compute(ciag3, "");
-                                    wynik = Convert.ToInt32(answer);
-                                    Zmienne.typZmiennej.Add("knife");
-                                    Zmienne.nazwaZmiennej.Add(nazwaZmiennej2);
-                                    Zmienne.wartoscZmiennej.Add(wynik);
-                                //}
-                               //else
-                                //{
-                                //    bledy.Add(linijka + ": źle zrobione nawiasy");
-                               // }
+                                DataTable dt = new DataTable();
+                                double answer = (double)dt.Compute(ciag3, "");
+                                wynik = Convert.ToInt32(answer);
+                                Zmienne.typZmiennej.Add("knife");
+                                Zmienne.nazwaZmiennej.Add(nazwaZmiennej2);
+                                Zmienne.wartoscZmiennej.Add(wynik);
                             }
                             catch
                             {
@@ -282,23 +204,16 @@ namespace ProjektSSIW.Interpreter
                             }
                         }
                     }
-                    else
+                    else // jeżeli nie ma błędów z tej linijki to odrazu przechodzi do dodawania do list
                     {
                         try
                         {
-                            //if (nawiasOtwarty == nawiasZamkniety)
-                            //{
-                                DataTable dt = new DataTable();
-                                double answer = (double)dt.Compute(ciag3, "");
-                                wynik = Convert.ToInt32(answer);
-                                Zmienne.typZmiennej.Add("knife");
-                                Zmienne.nazwaZmiennej.Add(nazwaZmiennej2);
-                                Zmienne.wartoscZmiennej.Add(wynik);
-                            //}
-                            //else
-                            //{
-                            //    bledy.Add(linijka + ": źle zrobione nawiasy");
-                            //}
+                            DataTable dt = new DataTable();
+                            double answer = (double)dt.Compute(ciag3, "");
+                            wynik = Convert.ToInt32(answer);
+                            Zmienne.typZmiennej.Add("knife");
+                            Zmienne.nazwaZmiennej.Add(nazwaZmiennej2);
+                            Zmienne.wartoscZmiennej.Add(wynik);
                         }
                         catch
                         {
