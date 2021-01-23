@@ -117,7 +117,26 @@ namespace ProjektSSIW
                         listView3.Items.Add(p);
                     }
 
-
+                    for(int i = 0; i < tempArray.Length; i++)
+                    {
+                        if (tempArray[i].Contains("knife") || tempArray[0] == "knife")//INT
+                        {
+                            zmienne.InterpretujInt2(tempArray, i);
+                        }
+                        if (tempArray[i].Contains("grenade"))//FLOAT
+                        {
+                           
+                        }
+                        if (tempArray[i].Contains("defuse"))//STRING
+                        {
+                            zmienne.InterpretujString(tempArray, i);
+                        }
+                        if (tempArray[i].Contains("zeus") || tempArray[0] == "zeus")
+                        {
+                            zmienne.InterpretujBoolean(tempArray,i);
+                        }
+                    }
+                    
 
 
 

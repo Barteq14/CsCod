@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -81,46 +82,12 @@ namespace ProjektSSIW.Interpreter
 
                 //zastępcze // nie zawsze knife musi byc na poczatku linii...
                 
-                    if (tab[i].Contains("knife") || tab[0] == "knife")//INT
-                    {
-                        if (InterpretujInt(tempArray, i) == false)
-                        {
-                            message = "Zła składnia deklaracji zmiennej typu 'int'.";
-                        }
-                        IndeksyINT.Add(i);
-                    }
-                    if (tab[i].Contains("grenade"))//FLOAT
-                    {
-                        if (InterpretujInt(tempArray, i) == false)
-                        {
-                            message = "Zła składnia deklaracji zmiennej typu 'int'.";
-                        }
-                        IndeksyINT.Add(i);
-                    }
-                    if (tab[i].Contains("defuse"))//STRING
-                    {
-                        if (InterpretujInt(tempArray, i) == false)
-                        {
-                            message = "Zła składnia deklaracji zmiennej typu 'int'.";
-                        }
-                        IndeksyINT.Add(i);
-                    }
-                    if (tab[i].Contains("zeus") || tab[0] == "zeus")
-                    {
-                        if (InterpretujBoolean(tempArray, i) == false)//BOOLEAN
-                        {
-                            message = "Zła składnia deklaracji zmiennej typu 'bool'.";
-                        }
-                        IndeksyBOOLEAN.Add(i);
-                    }
-                
+                 
                
             }
         }
         public bool InterpretujInt(string[] lines,int indeks)
         {
-            int liczba;
-            int liczba2;
             string msg = "";
             string linia = lines[indeks];
             char[] liniaChar = linia.ToCharArray();
@@ -136,7 +103,8 @@ namespace ProjektSSIW.Interpreter
             wynikPrzed_i_wNawiasie = 0;
             wynikKoncowy = 0;
 
-            //probuje od nowa 
+            //knife liczba = 2;
+            //knife cos = liczba + 1;
 
             for (int t = 0; t < liniaChar.Length; t++)
             { 
@@ -158,23 +126,35 @@ namespace ProjektSSIW.Interpreter
             {
                 if (lewa[i] == "knife" && czyString(lewa[i + 1]) == true)
                 {
-                    typZmiennej.Add("int");
-                    nazwaZmiennej.Add(lewa[i+1]);
-                    break;
+                    if (nazwaZmiennej.Contains(lewa[i + 1]))
+                    {
+                        bledy.Add("Istnieje juz taka zmienna!");
+                        return false;
+                    }
+                    else
+                    {
+                        typZmiennej.Add("int");
+                        nazwaZmiennej.Add(lewa[i + 1]);
+                        break;
+                    }
                 }
             }
 
             char[] znakiPrawaStrona = prawaStrona.ToCharArray();
-            char znak;
-            int wynikZmiennej = 0;
-            int liczbaZeZnaku = 0;
+            string[] prawaZeZmienna = prawaStrona.Split('+', '-', '*', '/');
+            List<char> pozyskane2 = new List<char>();
+            char[] pozyskane = new char[100];
 
             if (!znakiPrawaStrona.Contains('(') && !znakiPrawaStrona.Contains(')'))
             {
 
                 for (int o = 0; o < znakiPrawaStrona.Length; o++)
                 {
-
+                    
+                    if(czyInt2(znakiPrawaStrona[o]) == false && znakiPrawaStrona[o] != '+' && znakiPrawaStrona[o] != '-'  && znakiPrawaStrona[o] != '*' && znakiPrawaStrona[o] != '/')
+                    {
+                        pozyskane2.Add(znakiPrawaStrona[o]);
+                    }
                     if (czyInt2(znakiPrawaStrona[o]) == true)//jesli pierwszy element to liczba to zapisuje pod wynik
                     {
                         wynikBezNawiasow = int.Parse(znakiPrawaStrona[o].ToString());
@@ -185,8 +165,19 @@ namespace ProjektSSIW.Interpreter
                         wynikBezNawiasow = 0;
                         break;
                     }
+                    else
+                    {
+                        wynikBezNawiasow = 0;
+                    }
                 }
 
+                string napis = "";
+                for(int i = 0; i < pozyskane2.Count; i++)
+                {
+                    napis = napis + pozyskane2[i];
+                }
+
+                //if(napis.Contains(""))
 
                 for (int q = 0; q < znakiPrawaStrona.Length; q++)
                 {
@@ -206,32 +197,34 @@ namespace ProjektSSIW.Interpreter
                         }
                         if (znakiPrawaStrona[q] == '-')
                         {
-                            if (czyInt2(znakiwNawiasie[q + 1]) == true)
+                            if (czyInt2(znakiPrawaStrona[q + 1]) == true)
                             {
                                 wynikBezNawiasow = wynikBezNawiasow - int.Parse(znakiPrawaStrona[q + 1].ToString());
                             }
                         }
                         if (znakiPrawaStrona[q] == '*')
                         {
-                            if (czyInt2(znakiwNawiasie[q + 1]) == true)
+                            if (czyInt2(znakiPrawaStrona[q + 1]) == true)
                             {
                                 wynikBezNawiasow = wynikBezNawiasow * int.Parse(znakiPrawaStrona[q + 1].ToString());
                             }
                         }
                         if (znakiPrawaStrona[q] == '/')
                         {
-                            if (czyInt2(znakiwNawiasie[q + 1]) == true)
+                            if (czyInt2(znakiPrawaStrona[q + 1]) == true && znakiPrawaStrona[q+1] != 0)
                             {
                                 wynikBezNawiasow = wynikBezNawiasow / int.Parse(znakiPrawaStrona[q + 1].ToString());
+                            }
+                            else
+                            {
+                                msg = "Nie wolno dzielic przez 0";
+                                return false;
                             }
                         }
                     }
 
 
                 }
-
-                typZmiennej.Add("int");
-                nazwaZmiennej.Add(lewa[1]);
                 wartoscZmiennej.Add(wynikBezNawiasow);
             }
             else if (znakiPrawaStrona.Contains('(') && znakiPrawaStrona.Contains(')'))
@@ -357,6 +350,34 @@ namespace ProjektSSIW.Interpreter
                                         }
                                     }
                                 }
+                                else if(q > item2 && znakiPrawaStrona[q] == ';' && wynikPoNawiasie == 0)//jezeli nie ma nic po nawiasie , to obliczam wynik koncowy
+                                {
+                                    //obliczanie wyniku przed i w nawiasie
+                                    if (znakiPrawaStrona[item - 1] == '+')
+                                    {
+                                        wynikPrzed_i_wNawiasie = wynikPrzedNawiasem + wynikWnawiasie;
+                                        wartoscZmiennej.Add(wynikPrzed_i_wNawiasie);
+                                        return true;
+                                    }
+                                    if (znakiPrawaStrona[item - 1] == '-')
+                                    {
+                                        wynikPrzed_i_wNawiasie = wynikPrzedNawiasem - wynikWnawiasie;
+                                        wartoscZmiennej.Add(wynikPrzed_i_wNawiasie);
+                                        return true;
+                                    }
+                                    if (znakiPrawaStrona[item - 1] == '*')
+                                    {
+                                        wynikPrzed_i_wNawiasie = wynikPrzedNawiasem * wynikWnawiasie;
+                                        wartoscZmiennej.Add(wynikPrzed_i_wNawiasie);
+                                        return true;
+                                    }
+                                    if (znakiPrawaStrona[item - 1] == '/')
+                                    {
+                                        wynikPrzed_i_wNawiasie = wynikPrzedNawiasem / wynikWnawiasie;
+                                        wartoscZmiennej.Add(wynikPrzed_i_wNawiasie);
+                                        return true;
+                                    } 
+                                }
                                 else if (q > item2 && znakiPrawaStrona[q] != ';')//jezeli jest cos po nawiasie
                                 {
                                     if (znakiPrawaStrona[q] == '+')
@@ -377,14 +398,112 @@ namespace ProjektSSIW.Interpreter
                                     {
                                         if (czyInt2(znakiPrawaStrona[q + 1]) == true)
                                         {
-                                            wynikPoNawiasie = wynikPoNawiasie * int.Parse(znakiPrawaStrona[q + 1].ToString());
+                                            if(wynikPoNawiasie == 0)
+                                            {
+                                                wynikPoNawiasie = int.Parse(znakiPrawaStrona[q + 1].ToString());
+                                            }
+                                            else
+                                            {
+                                                wynikPoNawiasie = wynikPoNawiasie * int.Parse(znakiPrawaStrona[q + 1].ToString());
+                                            } 
                                         }
                                     }
                                     if (znakiPrawaStrona[q] == '/')
                                     {
                                         if (czyInt2(znakiPrawaStrona[q + 1]) == true)
                                         {
-                                            wynikPoNawiasie = wynikPoNawiasie / int.Parse(znakiPrawaStrona[q + 1].ToString());
+                                            if (wynikPoNawiasie == 0)
+                                            {
+                                                wynikPoNawiasie = int.Parse(znakiPrawaStrona[q + 1].ToString());
+                                            }
+                                            else
+                                            {
+                                                wynikPoNawiasie = wynikPoNawiasie / int.Parse(znakiPrawaStrona[q + 1].ToString());
+                                            }
+                                        }
+                                    }
+                                }
+                                else if (znakiPrawaStrona[q] == ';')//jesli koniec to obliczam calosc 
+                                {
+                                    if (wynikPrzedNawiasem != 0 && wynikWnawiasie != 0)//jesli przed nawiasem  i w nawiasie sa liczby to obliczam to razem
+                                    {
+                                        if (znakiPrawaStrona[item - 1] == '+')
+                                        {
+                                            wynikPrzed_i_wNawiasie = wynikPrzedNawiasem + wynikWnawiasie;
+                                        }
+                                        if (znakiPrawaStrona[item - 1] == '-')
+                                        { 
+                                            wynikPrzed_i_wNawiasie = wynikPrzedNawiasem - wynikWnawiasie;
+                                        }
+                                        if (znakiPrawaStrona[item - 1] == '*')
+                                        { 
+                                            wynikPrzed_i_wNawiasie = wynikPrzedNawiasem * wynikWnawiasie;
+                                        }
+                                        if (znakiPrawaStrona[item - 1] == '/')
+                                        {
+                                            wynikPrzed_i_wNawiasie = wynikPrzedNawiasem / wynikWnawiasie; 
+                                        }
+                                    }
+
+                                    if (znakiPrawaStrona[item2 + 1] == '+')
+                                    {
+                                        if(wynikPrzedNawiasem == 0)
+                                        {
+                                            wynikKoncowy = wynikWnawiasie + wynikPoNawiasie;
+                                            wartoscZmiennej.Add(wynikKoncowy);
+                                            return true;
+                                        }
+                                        else
+                                        {
+                                            wynikKoncowy = wynikPrzed_i_wNawiasie + wynikPoNawiasie;
+                                            wartoscZmiennej.Add(wynikKoncowy);
+                                            return true;
+                                        }
+                                    }
+                                    if (znakiPrawaStrona[item2 + 1] == '-')//jesli jest -1 na koncu to mi do wyniku po nawiasie wpisuje -1 a nie 1 
+                                    {
+                                       
+                                        if (wynikPrzedNawiasem == 0)
+                                        {
+                                            wynikKoncowy = wynikWnawiasie - wynikPoNawiasie;
+                                            wartoscZmiennej.Add(wynikKoncowy);
+                                            return true;
+                                        }
+                                        else
+                                        {
+                                            wynikKoncowy = wynikPrzed_i_wNawiasie - wynikPoNawiasie;
+                                            wartoscZmiennej.Add(wynikKoncowy);
+                                            return true;
+                                        }
+                                    }
+                                    if (znakiPrawaStrona[item2 + 1] == '*')
+                                    {
+                                        if (wynikPrzedNawiasem == 0)
+                                        {
+                                            wynikKoncowy = wynikWnawiasie * wynikPoNawiasie;
+                                            wartoscZmiennej.Add(wynikKoncowy);
+                                            return true;
+                                        }
+                                        else
+                                        {
+                                            wynikKoncowy = wynikPrzed_i_wNawiasie * wynikPoNawiasie; // czyli jesli mam przed nawiasem cos i po naw to inaczej musze liczyc 
+                                            wartoscZmiennej.Add(wynikKoncowy);
+                                            return true;
+                                        }
+                                    }
+                                    if (znakiPrawaStrona[item2 + 1] == '/')
+                                    {
+                                        if (wynikPrzedNawiasem == 0)
+                                        {
+                                            wynikKoncowy = wynikWnawiasie / wynikPoNawiasie;
+                                            wartoscZmiennej.Add(wynikKoncowy);
+                                            return true;
+                                        }
+                                        else
+                                        {
+                                            wynikKoncowy = wynikPrzed_i_wNawiasie / wynikPoNawiasie;
+                                            wartoscZmiennej.Add(wynikKoncowy);
+                                            return true;
                                         }
                                     }
                                 }
@@ -393,55 +512,9 @@ namespace ProjektSSIW.Interpreter
                                     break;
                                 }
 
-                                //obliczanie wyniku przed i w nawiasie
-                                if (znakiPrawaStrona[item - 1] == '+')
-                                {
-                                    wynikPrzed_i_wNawiasie = wynikPrzedNawiasem + wynikWnawiasie;
-                                }
-                                if (znakiPrawaStrona[item - 1] == '-')
-                                {
-                                    wynikPrzed_i_wNawiasie = wynikPrzedNawiasem - wynikWnawiasie;
-                                }
-                                if (znakiPrawaStrona[item - 1] == '*')
-                                {
-                                    wynikPrzed_i_wNawiasie = wynikPrzedNawiasem * wynikWnawiasie;
-                                }
-                                if (znakiPrawaStrona[item - 1] == '/')
-                                {
-                                    wynikPrzed_i_wNawiasie = wynikPrzedNawiasem / wynikWnawiasie;
-                                }
                             }
                         }
 
-                    }
-
-
-                    //obliczanie wyniku koncowego
-
-                    for (int q = 0; q < znakiPrawaStrona.Length; q++)
-                    {
-                        foreach (var item in listaNawiasowOtw)
-                        {
-                            foreach (var item2 in listaNawiasowZam)
-                            {
-                                if (znakiPrawaStrona[item2 + 1] == '+')
-                                {
-                                    wynikKoncowy = wynikPrzed_i_wNawiasie + wynikPoNawiasie;
-                                }
-                                if (znakiPrawaStrona[item2 + 1] == '-')//jesli jest -1 na koncu to mi do wyniku po nawiasie wpisuje -1 a nie 1 
-                                {
-                                    wynikKoncowy = wynikPrzed_i_wNawiasie - wynikPoNawiasie;
-                                }
-                                if (znakiPrawaStrona[item2 + 1] == '*')
-                                {
-                                    wynikKoncowy = wynikPrzed_i_wNawiasie * wynikPoNawiasie;
-                                }
-                                if (znakiPrawaStrona[item2 + 1] == '/')
-                                {
-                                    wynikKoncowy = wynikPrzed_i_wNawiasie / wynikPoNawiasie;
-                                }
-                            }
-                        }
                     }
                 }
                 else
@@ -472,9 +545,124 @@ namespace ProjektSSIW.Interpreter
 
         }
 
-        public void InterpretujString()
+        public bool InterpretujString(string[] lines, int indeks)
         {
+            int indeksRownasie = 0;
+            string[] pomSTRING = lines[indeks].Split();
 
+            int pierwszaLiczba = 0;
+            string msg = "";
+            string wynikStringa = "";
+            int indexZmiennej = 0;
+
+            string linia = lines[indeks];
+            char[] liniaChar = linia.ToCharArray();
+            List<int> listaCudzyslowow = new List<int>();
+
+
+            for (int t = 0; t < liniaChar.Length; t++)
+            {
+                if (liniaChar[t] == '=')//sprawdzam na ktorym indeksie jest '='
+                {
+                    indeksRownasie = t;
+                    break;
+                }
+            }
+
+
+
+            //dzielenie linii na 2 czesci (deklaracja | inicjalizacja)
+            int dlugoscLewaStrona = 0 + indeksRownasie + 1;
+            string lewaStrona = lines[indeks].Substring(0, dlugoscLewaStrona);//tablica lewa ze znakiem równa się
+
+            int dlugoscPrawaStrona = linia.Length - indeksRownasie - 1;
+            string prawaStrona = lines[indeks].Substring(indeksRownasie + 1, dlugoscPrawaStrona);//tablica prawa
+
+
+
+            string[] lewa = lewaStrona.Split();
+
+            char[] prawaChar = prawaStrona.ToCharArray();
+            string[] prawa = prawaStrona.Split(' ');
+            string[] prawa2 = prawaStrona.Split(';');
+
+            for (int i = 0; i < lewa.Length; i++)
+            {
+                if (lewa[i] == "defuse" && czyString(lewa[i + 1]) == true)
+                {
+                    if (nazwaZmiennej.Contains(lewa[i + 1]))
+                    {
+                        bledy.Add("Linia: " + linia + " Istnieje już taka zmienna!");
+                    }
+                    else
+                    {
+                        typZmiennej.Add("string");
+                        nazwaZmiennej.Add(lewa[i + 1]);
+                        break;
+                    }
+                }
+            }
+
+
+            for (int i = 0; i < prawaChar.Length; i++)
+            {
+                if (prawaChar[i] == '"')
+                {
+                    listaCudzyslowow.Add(i);
+                }
+            }
+
+            if (listaCudzyslowow.Count % 2 == 0)
+            {
+                for(int p = 0; p < listaCudzyslowow.Count; p++)
+                {
+                    for (int i = listaCudzyslowow[p]+1; i < prawaChar.Length; i++)
+                    {
+                        if(prawaChar[i] == ';')
+                        {
+                            msg = "napotkalem srednik!";
+                            wartoscZmiennej.Add(wynikStringa);
+                            return true;
+                        }
+                        else if(prawaChar[i] == '"')
+                        {
+                            if(prawaChar[i] == '+' || prawaChar[i+1] == '+')
+                            {
+                                wynikStringa = wynikStringa + " ";
+                            }
+                        }else if (prawaChar[i] == '+' && prawaChar[i+1] != '"')//tutaj jeszcze poprawic to narazie działa tylko jesli podamy wartosc stringa w cudzyslowach
+                        {
+                            indexZmiennej = i;   
+                        }
+                        else
+                        {
+                            wynikStringa = wynikStringa + prawaChar[i];
+                        }
+                    }
+                }
+            }
+            else
+            {
+                bledy.Add("Linijka: " + indeks + "Nie poprawna ilośc cudzyslowow!");
+                return false;
+            }
+            /*
+                if (listaCudzyslowow.Count % 2 == 0)
+            {
+                for (int i = 0; i < prawaChar.Length; i++)
+                {
+                    for (int j = 0; j < listaCudzyslowow.Count; j++)
+                    {
+                        if(i >= listaCudzyslowow[j])
+                        {
+                            wynikStringa = wynikStringa + prawaChar[i];
+                        }
+                    }
+                }
+            }*/
+        
+
+            return false;
         }
 
         public bool InterpretujBoolean(string[] lines, int indeks)
@@ -509,7 +697,7 @@ namespace ProjektSSIW.Interpreter
             string prawaStrona = lines[indeks].Substring(indeksRownasie + 1, dlugoscPrawaStrona);//tablica prawa
 
 
-
+    
             string[] lewa = lewaStrona.Split();
             
             char[] prawaChar = prawaStrona.ToCharArray();
@@ -603,10 +791,220 @@ namespace ProjektSSIW.Interpreter
             return false;
         }
 
+        public bool InterpretujInt2(string[] lines, int indeks)
+        {
+            string msg = "";
+            string linia = lines[indeks];
+            char[] liniaChar = linia.ToCharArray();
+            string[] pomINT = lines[indeks].Split(' '); //dziele wyrazy na podstawie spacji
+            List<int> listaNawiasowOtw = new List<int>();
+            List<int> listaNawiasowZam = new List<int>();
+            List<char> znakiwNawiasie = new List<char>();
+            List<int> zmienneWykryte = new List<int>();
+            List<string> liczby = new List<string>();
+            List<string> znaki = new List<string>();
+            List<string> liczby_w_nawiasie = new List<string>();
+            List<string> znaki_w_nawiasie = new List<string>();
+            List<string> zmienne = new List<string>();
+            int indeksRownasie = 0;
+            int wynik = 0;
+            //knife liczba = 2;
+            //knife cos = liczba + 1;
 
+            for (int t = 0; t < liniaChar.Length; t++)
+            {
+                if (liniaChar[t] == '=')//sprawdzam na ktorym indeksie jest '='
+                {
+                    indeksRownasie = t;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            //dzielenie linii na 2 czesci (deklaracja | inicjalizacja)
+            int dlugoscLewaStrona = 0 + indeksRownasie + 1;
+            string lewaStrona = lines[indeks].Substring(0, dlugoscLewaStrona);//tablica lewa ze znakiem równa się
+
+            int dlugoscPrawaStrona = linia.Length - indeksRownasie - 1;
+            string prawaStrona = lines[indeks].Substring(indeksRownasie + 1, dlugoscPrawaStrona);//tablica prawa
+
+            string[] lewa = lewaStrona.Split();
+
+            for (int i = 0; i < lewa.Length; i++)
+            {
+                if (lewa[i] == "knife" && czyString(lewa[i + 1]) == true)
+                {
+                    if (nazwaZmiennej.Contains(lewa[i + 1]))
+                    {
+                        bledy.Add("Istnieje juz taka zmienna!");
+                        return false;
+                    }
+                    else
+                    {
+                        typZmiennej.Add("int");
+                        nazwaZmiennej.Add(lewa[i + 1]);
+                        break;
+                    }
+                }
+            }
+
+            char[] prawaChar = prawaStrona.ToCharArray();
+            string temp = "";
+            string temp2 = "";
+            string tempNawias = "";
+            string znakiNawias = "";
+            string zmienneTemp = "";
+            string znakiTemp = "";
+            int result = 0;
+            //dobra nie wiem jak te nawiasy ogarnąc ;/
+            
+            for(int i = 0; i < prawaChar.Length; i++)
+            {/*
+                if (czyInt2(prawaChar[i]) == true)
+                {
+                    temp = temp + prawaChar[i];
+                }
+                else if(prawaChar[i] == '+' || prawaChar[i] == '-' || prawaChar[i] == '*' || prawaChar[i] == '/')
+                {
+                    if (czyInt(temp) == false)
+                    {
+                        if (czyIstnieje(temp) == true)
+                        {
+                            int index = nazwaZmiennej.Find(c => c == temp);
+                            liczby.Add(wartoscZmiennej[index]);
+                            znaki.Add(prawaChar[i].ToString());
+                            temp = "";
+                        }
+                        else
+                        {
+                            bledy.Add(linia + "Brak zmiennej o nazmie: " + temp);
+                            return false;
+                        }
+                    }
+                    else 
+                    {
+
+                    }
+                }
+                else
+                {
+
+                }*/
+                //jesli liczba to do stringów , jesli znak to do listy, jestli litera to do listy 
+               
+                if(czyInt2(prawaChar[i]) == true && prawaChar[i+1] != ';' || prawaChar[i] == '(')
+                {
+                    temp = temp + prawaChar[i];
+                }
+                else if(czyInt2(prawaChar[i]) == false  && prawaChar[i] == '+' || prawaChar[i] == '-' || prawaChar[i] == '*' || prawaChar[i] == '/')
+                {
+                    liczby.Add(temp);
+                    
+                    temp2 = temp2 + prawaChar[i];
+                    znaki.Add(temp2);
+                    if(temp2 == "+")
+                    {
+                        result = result + int.Parse(temp);
+                    }
+                    if (temp2 == "-")
+                    {
+                        result = result - int.Parse(temp);
+                    }
+                    if (temp2 == "*")
+                    {
+                        if(result == 0)
+                        {
+                            result = int.Parse(temp);
+                        }
+                        else
+                        {
+                            result = result * int.Parse(temp);
+                        }                     
+                    }
+                    if (temp2 == "/")
+                    {
+                        if (result == 0)
+                        {
+                            bledy.Add("Nie można dzielić zera!");
+                        }
+                        else
+                        {
+                            result = result / int.Parse(temp);
+                        }
+                    }
+                    temp = "";
+                    temp2 = "";
+                }
+                else if(czyInt2(prawaChar[i]) == true && prawaChar[i+1] == ';')
+                {
+                    temp = temp + prawaChar[i];
+                    liczby.Add(temp);
+                    temp = "";
+                    
+                }
+                else if(prawaChar[i] == ' ')
+                {
+
+                }    
+                else if(prawaChar[i] == ';')
+                {
+                    string zmienna2 = "";
+                    foreach(var item in zmienne)
+                    {
+                        zmienna2 = zmienna2 + item;
+                    }
+                    if (nazwaZmiennej.Contains(zmienna2))
+                    {
+
+                    }
+                    break;
+                }else if(czyInt2(prawaChar[i]) == false)
+                {
+                    zmienneTemp = zmienneTemp + prawaChar[i];
+                    zmienne.Add(zmienneTemp);
+                    zmienneTemp = "";
+
+                    if (prawaChar[i] == '+' || prawaChar[i] == '-' || prawaChar[i] == '*' || prawaChar[i] == '/')
+                    {
+                        temp2 = temp2 + prawaChar[i + 1];
+                        znaki.Add(temp2);
+                        temp2 = "";
+                    }
+                    
+                }
+            }
+
+            //for(int i=0;i<)
+
+            int a = 1;
+            //musze sprawdzic 
+            /*
+             * czy dany element to liczba
+             * czy dany element to zmienna jakas
+             * czy kolejny element to liczba badz zmienna 
+             * jakie mam znaki i na jakich miejscach 
+             * i te walone nawiasy ...
+             */
+
+            string[] prawa = prawaStrona.Split('+');
+            //if(prawa)
+
+
+            return false;
+        }
+        
         /*
          metody do sprawdzania czy dany element ciagu jest liczbą czy stringiem
          */
+        public bool czyIstnieje(string zmienna)
+        {
+            if (nazwaZmiennej.Contains(zmienna))
+            {
+                return true;
+            }
+            return false;
+        }
         public bool czyString(string element)
         {
             string specialChar = @"\|!#$%&/()=?»«@£§€{}.-;'<>_,*+`~ąśćźżółęń";
@@ -661,6 +1059,67 @@ namespace ProjektSSIW.Interpreter
             return true;
         }
 
-       
+        public bool sprawdzZmienna(string zmienna)
+        {
+            int wartZmiennej = 0;
+            string tyZmiennej = "";
+            int indeksZmiennej = 0;
+
+            if (nazwaZmiennej.Contains(zmienna))
+            {
+                for (int i = 0; i < nazwaZmiennej.Count(); i++)
+                {
+                    if (nazwaZmiennej[i] == zmienna)
+                    {
+                        indeksZmiennej = i;
+                    }
+                }
+            }
+
+            for (int i = 0; i < wartoscZmiennej.Count; i++)
+            {
+                wartZmiennej = wartoscZmiennej[indeksZmiennej];
+            }
+
+            for (int i = 0; i < typZmiennej.Count; i++)
+            {
+                tyZmiennej = typZmiennej[indeksZmiennej];
+            }
+
+            return false;
+        }
+        public int sprawdzZmienna2(string zmienna)
+        {
+            int wartZmiennej = 0;
+            string tyZmiennej = "";
+            int indeksZmiennej = 0;
+
+            if (nazwaZmiennej.Contains(zmienna))
+            {
+                for (int i = 0; i < nazwaZmiennej.Count(); i++)
+                {
+                    if (nazwaZmiennej[i] == zmienna)
+                    {
+                        indeksZmiennej = i;
+                    }
+                }
+            }
+
+            for (int i = 0; i < wartoscZmiennej.Count; i++)
+            {
+                wartZmiennej = wartoscZmiennej[indeksZmiennej];
+            }
+
+            for (int i = 0; i < typZmiennej.Count; i++)
+            {
+                tyZmiennej = typZmiennej[indeksZmiennej];
+            }
+
+            if(tyZmiennej == "int")
+            {
+                return wartZmiennej;
+            }
+            return wartZmiennej;
+        }
     }
 }
