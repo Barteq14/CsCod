@@ -74,7 +74,7 @@ namespace ProjektSSIW
 
                         petle.InterpretujPetle(tempArray,i);
 
-                        zmienne.InterpretujZmienne(tempArray, i);
+                       // zmienne.InterpretujZmienne(tempArray, i);
 
 
 

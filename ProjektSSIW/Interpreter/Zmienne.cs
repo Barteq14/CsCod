@@ -41,11 +41,11 @@ namespace ProjektSSIW.Interpreter
         List<int> IndeksySTRING = new List<int>();
         List<int> IndeksyBOOLEAN = new List<int>();
 
-        public void InterpretujZmienne(string[] tempArray,int i)
+       /* public void InterpretujZmienne(string[] tempArray,int i)
         {
 
                 string[] tab = tempArray[i].Split(' ');
-                switch (tab[0])
+            /*    switch (tab[0])
                 {
                     case "knife":
                         if (InterpretujInt(tempArray, i) == false)
@@ -74,7 +74,7 @@ namespace ProjektSSIW.Interpreter
                         IndeksyBOOLEAN.Add(i);
                         break;
                 }
-*/
+
 
                 //zastępcze // nie zawsze knife musi byc na poczatku linii...
                 
@@ -113,7 +113,7 @@ namespace ProjektSSIW.Interpreter
                 
                
             }
-        }
+        }*/
         public bool InterpretujInt(string[] lines,int indeks)
         {
             int liczba;
