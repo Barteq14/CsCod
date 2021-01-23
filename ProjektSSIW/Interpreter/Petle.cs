@@ -14,9 +14,11 @@ namespace ProjektSSIW.Interpreter
         int size = 0;
         int wartoscWarunku = 0;
         bool przechowanieWartosc = false;
-        int zamkniecie = 0;
+        string[] podzialWarunku;
 
 
+        List<int> klamraOtwierajace = new List<int>();
+         List<int> klamraZamykajace = new List<int>();
         // List<int> nawiasyOtwierajace = new List<int>();
         // List<int> nawiasyZamykajace = new List<int>();
         //  Składnia skladnia = new Składnia();
@@ -50,13 +52,10 @@ namespace ProjektSSIW.Interpreter
             string pom = tempArray[size].TrimStart('a', 'w', 'p', ' ');
             char[] tab1 = pom.ToCharArray();
            
-
             //***********************
             //warunek pętli for
             if (tab1[0]=='(')   //sprawdzanie czy czy nawias jest po awp
             {
-              
-
                 string pom1 = tempArray[size+1].TrimStart(' ');
                 char[] tab = pom1.ToCharArray();
                 string pom3 = pom.TrimEnd(' ', '{');
@@ -71,36 +70,20 @@ namespace ProjektSSIW.Interpreter
                     if(d  == 3) //sprawdzenie czy warunek jest poprawny
                     {
                         
-                        sprawdzanieNawiasow(warunek1, d);
+                       // sprawdzanieNawiasow(warunek1, d);
                         for(int i=0;i<warunek1.Length;i++)
                         {
-                           
-
                             switch (i)
-
                             {
                                 case 0:
                                      string[] cos = warunek1[i].Split('=');
                                     if (warunek1[0].Contains("=")==true && cos.Length==2)
                                     {
-
-
-                                        /* if (Zmienne.nazwaZmiennej.Contains(cos[0]))
-                                         {
-                                          for(int j=0; j < Zmienne.nazwaZmiennej.Count; j++)
-                                             {
-                                                if( Zmienne.nazwaZmiennej[j]== cos[0] && cos.Length==2)
-                                                 {
-                                                     //dodac oblicznie i = 1+2 coś wtym stylu
-                                                     Zmienne.wartoscZmiennej[j] = cos[1];//zmiana wartosci zmiennej
-                                                     pozycjaZmiennejZWarunku= j; 
-                                                 }
-
-                                             }*/
+                                             //dodac oblicznie i = 1+2 coś wtym stylu
+                                                
                                         if(-1!=zmianaWartosciZmiennej(cos[0],cos[1])){
 
                                             pozycjaZmiennejZWarunku = zmianaWartosciZmiennej(cos[0], cos[1]);
-                                            wartoscWarunku = Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku];
                                         }
                                         else
                                         {
@@ -123,7 +106,6 @@ namespace ProjektSSIW.Interpreter
                                                     }
                                                     break;
                                                 }
-                                              
                                             }                             
                                         }
                                     }
@@ -136,40 +118,44 @@ namespace ProjektSSIW.Interpreter
                                 case 1:
                                     if (sprawdzenieOtwarcia(tempArray))
                                     {
-                                        if (true == wykonanieISprawdzenie(warunek1, tempArray))
+                                        if (sprawdzeneZamkniecia(tempArray))
                                         {
-                                            przechowanieWartosc = true;
-                                            bool wartoscBool;
-                                            do
-                                            {
-                                                wartoscBool = podnoszenieZmienej(warunek1, tempArray);
-                                            } while (wartoscBool);
+                                                
+                                                bool wartoscBool;
+                                                 int g=-1;
+                                                do
+                                                {
+                                                if (przechowanieWartosc == false)
+                                                {
+                                                 g  = zwracanieIndexuOperatora(warunek1);
+                                                }
+                                                    przechowanieWartosc = wykonanieISprawdzenie(warunek1, tempArray,g);
+                                                    wartoscBool = podnoszenieZmienej(warunek1, tempArray);
+                                                } while (wartoscBool);
+                                            return;
                                         }
-                                        else return;
-                                    }
-                                  
-                                    break;
-
-                              
+                                        else
+                                        {
+                                            //błąd
+                                            return;
+                                        }
+                                    }// błąd
+                                    return;
                             }
                             /*
                             
 rush
-awp( ss=s;ss<5;ss++){
+awp(knife ss=1;ss<5;ss++){
 }
 save
                           */
                         }
-
                         //**********************
-
-
-
-                        
                     }// błąd zle wprowadony warunek
                }//błąd brak )
           }// błąd brak (   
         }
+
         public bool sprawdzeneZamkniecia(string[] tempArray)
         {
             for (int i = size + 1; i < tempArray.Length; i++)
@@ -179,7 +165,8 @@ save
                 char[] klamra = pom3.ToCharArray();
                 if (klamra[klamra.Length - 1] == '}')
                 {
-                    zamkniecie = i;
+                    klamraOtwierajace.Add(i);
+                    
                     return true;
                 }   
             }
@@ -200,20 +187,19 @@ save
                     char[] otwarcie = pom3.ToCharArray();
                     if (otwarcie[0]== '{')
                     {
-
                         size = i++;
+                        klamraOtwierajace.Add(i);
                         return true;
                     }
-                       
-                    
                 }
                 //błąd
                 return false;
-
             }
+            klamraOtwierajace.Add(size);
             size = size++;
             return true;
         }
+
         public bool podnoszenieZmienej(string[] warunek1, string[] tempArray)
         {
             bool b = warunek1[2].Contains("++");
@@ -228,23 +214,19 @@ save
                     {
                         if (b)
                         {
-                            wartoscWarunku = wartoscWarunku + 1;
+                            zmianaWartosciFora(1);
                         }
                         else
                         {
-                            wartoscWarunku = wartoscWarunku - 1;
+                            zmianaWartosciFora(-1);
                         }
                         size = size + 1;
-                        przechowanieWartosc = wykonanieISprawdzenie(warunek1, tempArray);
                         return true;
                     }
                     else return false;
-
                 }
             }
-
              Zmienne.bledy.Add("błąd składni" + size);
-            
             return false;
         }
 
@@ -256,15 +238,10 @@ save
                 {
                     if (Zmienne.nazwaZmiennej[j] == nazwa && zmienne.czyInt(a))
                     {
-
-                        //dodac oblicznie i = 1+2 coś wtym stylu
                         Zmienne.wartoscZmiennej[j] = int.Parse(a);//zmiana wartosci zmiennej
                         return j;
                     }
-
                 }
-
-
             }
             else
             {
@@ -273,626 +250,53 @@ save
             return -1;
         }
 
-        public bool wykonanieISprawdzenie(string[] warunek1, string[] tempArray)
+        public int zwracanieIndexuOperatora(string[] warunek1)
         {
-            string[] bb = new string[] { "==", "<=", ">=", "<", ">" };
+            string[] operatory = new string[] { "==", "<=", ">=", "<", ">" };
 
-
-
-            
-
-            for (int g = 0; g < bb.Length; g++)
+            for (int g = 0; g < operatory.Length; g++)
             {
-               string[] cos = warunek1[1].Split(bb, StringSplitOptions.None);
+                 podzialWarunku = warunek1[1].Split(operatory, StringSplitOptions.None);
 
-                if (warunek1[1].Contains(bb[g]) && cos.Length == 2)
+                if (warunek1[1].Contains(operatory[g]) && podzialWarunku.Length == 2)
                 {
-                   // cos = warunek1[i].Split(new string[] { "==", "<=", ">=", "<", ">", " " }, StringSplitOptions.None);
-
-                    for (int j = 0; j < cos.Length-1; j++)
-                    {
-                        if (cos[j] != "" && Zmienne.nazwaZmiennej.Contains(cos[j]) == true)
-                        {
-                            
-                            
-                            switch (g)
-                            {
-                               
-
-                                case 0:
-
-                                    if (j == 0)
-                                    {
-                                        if (sprawdzaniePozycjiWLiscie(cos[j++]) != (-1))
-                                        {
-                                            if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] == Zmienne.wartoscZmiennej[sprawdzaniePozycjiWLiscie(cos[j++])])
-                                            {
-                                                if (sprawdzeneZamkniecia(tempArray))
-                                                {
-                                                    return false;
-                                                }else if(tempArray.Length == size - 1)
-                                                {
-                                                    //błąd
-                                                    return false;
-                                                }
-
-                                                // wwołanie funkcji
-                                              podnoszenieZmienej(warunek1, tempArray);
-                                            }
-                                            else
-                                            {
-                                                return false;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            if (zmienne.czyInt(cos[j++]))
-                                            {
-
-                                                if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] == int.Parse(cos[j++]))
-                                                {
-                                                    if (sprawdzeneZamkniecia(tempArray))
-                                                    {
-                                                        return false;
-                                                    }
-                                                    else if (tempArray.Length == size - 1)
-                                                    {
-                                                        //błąd
-                                                        return false;
-                                                    }
-                                                    // wwołanie funkcji
-                                                    podnoszenieZmienej(warunek1, tempArray);
-                                                }
-                                                else
-                                                {
-                                                    return false;
-                                                }
-                                            }
-                                            else
-                                            {
-                                                Zmienne.bledy.Add("Błedny typ " );
-                                                 return false;
-                                            }
-                                        }
-                                    }
-                                    else if (j == 1)
-                                    {
-                                        if (sprawdzaniePozycjiWLiscie(cos[j--]) != (-1))
-                                        {
-                                            if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] == Zmienne.wartoscZmiennej[sprawdzaniePozycjiWLiscie(cos[j--])])
-                                            {
-                                                if (sprawdzeneZamkniecia(tempArray))
-                                                {
-                                                    return false;
-                                                }
-                                                else if (tempArray.Length == size - 1)
-                                                {
-                                                    //błąd
-                                                    return false;
-                                                }
-                                                // wwołanie funkcji
-                                                podnoszenieZmienej(warunek1, tempArray);
-                                            }
-                                            else
-                                            {
-                                                return false;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            if (zmienne.czyInt(cos[j--]))
-                                            {
-                                                if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] == int.Parse(cos[j--]))
-                                                {
-                                                    if (sprawdzeneZamkniecia(tempArray))
-                                                    {
-                                                        return false;
-                                                    }
-                                                    else if (tempArray.Length == size - 1)
-                                                    {
-                                                        //błąd
-                                                        return false;
-                                                    }
-                                                    // wwołanie funkcji
-                                                    podnoszenieZmienej(warunek1, tempArray);
-                                                }
-                                                else
-                                                {
-                                                    return false;
-                                                }
-
-                                            }
-                                            else
-                                            {
-                                                Zmienne.bledy.Add("Błedny typ " );
-                                                 return false;
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        Zmienne.bledy.Add("Błedny warunek ");
-                                        return false;
-                                    }
-                                    break;
-                                case 1:
-                                    if (j == 0)
-                                    {
-                                        if (sprawdzaniePozycjiWLiscie(cos[j++]) != (-1))
-                                        {
-                                            if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] <= Zmienne.wartoscZmiennej[sprawdzaniePozycjiWLiscie(cos[j++])])
-                                            {
-                                                if (sprawdzeneZamkniecia(tempArray))
-                                                {
-                                                    return false;
-                                                }
-                                                else if (tempArray.Length == size - 1)
-                                                {
-                                                    //błąd
-                                                    return false;
-                                                }
-                                                // wwołanie funkcji
-                                                podnoszenieZmienej(warunek1, tempArray);
-                                            }
-                                            else
-                                            {
-                                                return false;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            if (zmienne.czyInt(cos[j++]))
-                                            {
-
-                                                if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] <= int.Parse(cos[j++]))
-                                                {
-                                                    if (sprawdzeneZamkniecia(tempArray))
-                                                    {
-                                                        return false;
-                                                    }
-                                                    else if (tempArray.Length == size - 1)
-                                                    {
-                                                        //błąd
-                                                        return false;
-                                                    }
-                                                    // wwołanie funkcji
-                                                    podnoszenieZmienej(warunek1, tempArray);
-                                                }
-                                                else
-                                                {
-                                                    return false;
-                                                }
-                                            }
-                                            else
-                                            {
-                                                Zmienne.bledy.Add("Błedny typ " );
-                                                 return false;
-                                            }
-                                        }
-                                    }
-                                    else if (j == 1)
-                                    {
-                                        if (sprawdzaniePozycjiWLiscie(cos[j--]) != (-1))
-                                        {
-                                            if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] <= Zmienne.wartoscZmiennej[sprawdzaniePozycjiWLiscie(cos[j--])])
-                                            {
-                                                if (sprawdzeneZamkniecia(tempArray))
-                                                {
-                                                    return false;
-                                                }
-                                                else if (tempArray.Length == size - 1)
-                                                {
-                                                    //błąd
-                                                    return false;
-                                                }
-                                                // wwołanie funkcji
-                                                podnoszenieZmienej(warunek1, tempArray);
-                                            }
-                                            else
-                                            {
-                                                return false;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            if (zmienne.czyInt(cos[j--]))
-                                            {
-                                                if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] <= int.Parse(cos[j--]))
-                                                {
-                                                    if (sprawdzeneZamkniecia(tempArray))
-                                                    {
-                                                        return false;
-                                                    }
-                                                    else if (tempArray.Length == size - 1)
-                                                    {
-                                                        //błąd
-                                                        return false;
-                                                    }
-                                                    // wwołanie funkcji
-                                                    podnoszenieZmienej(warunek1, tempArray);
-                                                }
-                                                else
-                                                {
-                                                    return false;
-                                                }
-
-                                            }
-                                            else
-                                            {
-                                                Zmienne.bledy.Add("Błedny typ " );
-                                               return false;
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        Zmienne.bledy.Add("Błedny warunek ");
-                                         return false;
-                                    }
-
-
-                                    break;
-                                case 2:
-                                    if (j == 0)
-                                    {
-                                        if (sprawdzaniePozycjiWLiscie(cos[j++]) != (-1))
-                                        {
-                                            if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] >= Zmienne.wartoscZmiennej[sprawdzaniePozycjiWLiscie(cos[j++])])
-                                            {
-                                                if (sprawdzeneZamkniecia(tempArray))
-                                                {
-                                                    return false;
-                                                }
-                                                else if (tempArray.Length == size - 1)
-                                                {
-                                                    //błąd
-                                                    return false;
-                                                }
-                                                // wwołanie funkcji
-                                                podnoszenieZmienej(warunek1, tempArray);
-                                            }
-                                            else
-                                            {
-                                                return false;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            if (zmienne.czyInt(cos[j++]))
-                                            {
-
-                                                if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] >= int.Parse(cos[j++]))
-                                                {
-                                                    if (sprawdzeneZamkniecia(tempArray))
-                                                    {
-                                                        return false;
-                                                    }
-                                                    else if (tempArray.Length == size - 1)
-                                                    {
-                                                        //błąd
-                                                        return false;
-                                                    }
-                                                    // wwołanie funkcji
-                                                    podnoszenieZmienej(warunek1, tempArray);
-                                                }
-                                                else
-                                                {
-                                                    return false;
-                                                }
-                                            }
-                                            else
-                                            {
-                                                Zmienne.bledy.Add("Błedny typ " );
-                                                 return false;
-                                            }
-                                        }
-                                    }
-                                    else if (j == 1)
-                                    {
-                                        if (sprawdzaniePozycjiWLiscie(cos[j--]) != (-1))
-                                        {
-                                            if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] >= Zmienne.wartoscZmiennej[sprawdzaniePozycjiWLiscie(cos[j--])])
-                                            {
-                                                if (sprawdzeneZamkniecia(tempArray))
-                                                {
-                                                    return false;
-                                                }
-                                                else if (tempArray.Length == size - 1)
-                                                {
-                                                    //błąd
-                                                    return false;
-                                                }
-                                                // wwołanie funkcji
-                                                podnoszenieZmienej(warunek1, tempArray);
-                                            }
-                                            else
-                                            {
-                                                return false;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            if (zmienne.czyInt(cos[j--]))
-                                            {
-                                                if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] >= int.Parse(cos[j--]))
-                                                {
-                                                    if (sprawdzeneZamkniecia(tempArray))
-                                                    {
-                                                        return false;
-                                                    }
-                                                    else if (tempArray.Length == size - 1)
-                                                    {
-                                                        //błąd
-                                                        return false;
-                                                    }
-                                                    // wwołanie funkcji
-                                                    podnoszenieZmienej(warunek1, tempArray);
-                                                }
-                                                else
-                                                {
-                                                    return false;
-                                                }
-
-                                            }
-                                            else
-                                            {
-                                                Zmienne.bledy.Add("Błedny typ " );
-                                               return false;
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        Zmienne.bledy.Add("Błedny warunek ");
-                                         return false;
-                                    }
-
-                                    break;
-                                case 3:
-                                    if (j == 0)
-                                    {
-                                        if (sprawdzaniePozycjiWLiscie(cos[(j++)]) != (-1))
-                                        {
-                                            if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] < Zmienne.wartoscZmiennej[sprawdzaniePozycjiWLiscie(cos[j++])])
-                                            {
-                                                if (sprawdzeneZamkniecia(tempArray))
-                                                {
-                                                    return false;
-                                                }
-                                                else if (tempArray.Length == size - 1)
-                                                {
-                                                    //błąd
-                                                    return false;
-                                                }
-                                                // wwołanie funkcji
-                                                podnoszenieZmienej(warunek1, tempArray);
-                                            }
-                                            else
-                                            {
-                                                return false;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            if (zmienne.czyInt(cos[j++]))
-                                            {
-
-                                                if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] < int.Parse(cos[j++]))
-                                                {
-                                                    if (sprawdzeneZamkniecia(tempArray))
-                                                    {
-                                                        return false;
-                                                    }
-                                                    else if (tempArray.Length == size - 1)
-                                                    {
-                                                        //błąd
-                                                        return false;
-                                                    }
-                                                    // wwołanie funkcji
-                                                    podnoszenieZmienej(warunek1, tempArray);
-                                                }
-                                                else
-                                                {
-                                                    return false;
-                                                }
-                                            }
-                                            else
-                                            {
-                                                Zmienne.bledy.Add("Błedny typ ");
-                                                 return false;
-                                            }
-                                        }
-                                    }
-                                    else if (j == 1)
-                                    {
-                                        if (sprawdzaniePozycjiWLiscie(cos[j--]) != (-1))
-                                        {
-                                            if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] < Zmienne.wartoscZmiennej[sprawdzaniePozycjiWLiscie(cos[j--])])
-                                            {
-                                                if (sprawdzeneZamkniecia(tempArray))
-                                                {
-                                                    return false;
-                                                }
-                                                else if (tempArray.Length == size - 1)
-                                                {
-                                                    //błąd
-                                                    return false;
-                                                }
-                                                // wwołanie funkcji
-                                                podnoszenieZmienej(warunek1, tempArray);
-                                            }
-                                            else
-                                            {
-                                                return false;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            if (zmienne.czyInt(cos[j--]))
-                                            {
-                                                if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] < int.Parse(cos[j--]))
-                                                {
-                                                    if (sprawdzeneZamkniecia(tempArray))
-                                                    {
-                                                        return false;
-                                                    }
-                                                    else if (tempArray.Length == size - 1)
-                                                    {
-                                                        //błąd
-                                                        return false;
-                                                    }
-                                                    // wwołanie funkcji
-                                                    podnoszenieZmienej(warunek1, tempArray);
-                                                }
-                                                else
-                                                {
-                                                    return false;
-                                                }
-
-                                            }
-                                            else
-                                            {
-                                                Zmienne.bledy.Add("Błedny typ " );
-                                                 return false;
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        Zmienne.bledy.Add("Błedny warunek ");
-                                       return false;
-                                    }
-
-                                    break;
-                                case 4:
-                                    if (j == 0)
-                                    {
-                                        if (sprawdzaniePozycjiWLiscie(cos[j++]) != (-1))
-                                        {
-                                            if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] > Zmienne.wartoscZmiennej[sprawdzaniePozycjiWLiscie(cos[j++])])
-                                            {
-                                                if (sprawdzeneZamkniecia(tempArray))
-                                                {
-                                                    return false;
-                                                }
-                                                else if (tempArray.Length == size - 1)
-                                                {
-                                                    //błąd
-                                                    return false;
-                                                }
-                                                // wwołanie funkcji
-                                                podnoszenieZmienej(warunek1, tempArray);
-                                            }
-                                            else
-                                            {
-                                                return false;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            if (zmienne.czyInt(cos[j++]))
-                                            {
-
-                                                if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] > int.Parse(cos[j++]))
-                                                {
-                                                    if (sprawdzeneZamkniecia(tempArray))
-                                                    {
-                                                        return false;
-                                                    }
-                                                    else if (tempArray.Length == size - 1)
-                                                    {
-                                                        //błąd
-                                                        return false;
-                                                    }
-                                                    // wwołanie funkcji
-                                                    podnoszenieZmienej(warunek1, tempArray);
-                                                }
-                                                else
-                                                {
-                                                    return false;
-                                                }
-                                            }
-                                            else
-                                            {
-                                                Zmienne.bledy.Add("Błedny typ " );
-                                                 return false;
-                                            }
-                                        }
-                                    }
-                                    else if (j == 1)
-                                    {
-                                        if (sprawdzaniePozycjiWLiscie(cos[j--]) != (-1))
-                                        {
-                                            if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] > Zmienne.wartoscZmiennej[sprawdzaniePozycjiWLiscie(cos[j--])])
-                                            {
-                                                if (sprawdzeneZamkniecia(tempArray))
-                                                {
-                                                    return false;
-                                                }
-                                                else if (tempArray.Length == size - 1)
-                                                {
-                                                    //błąd
-                                                    return false;
-                                                }
-                                                // wwołanie funkcji
-                                                podnoszenieZmienej(warunek1, tempArray);
-                                            }
-                                            else
-                                            {
-                                                return false;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            if (zmienne.czyInt(cos[j--]))
-                                            {
-                                                if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] > int.Parse(cos[j--]))
-                                                {
-                                                    if (sprawdzeneZamkniecia(tempArray))
-                                                    {
-                                                        return false;
-                                                    }
-                                                    else if (tempArray.Length == size - 1)
-                                                    {
-                                                        //błąd
-                                                        return false;
-                                                    }
-                                                    // wwołanie funkcji
-                                                    podnoszenieZmienej(warunek1, tempArray);
-                                                }
-                                                else
-                                                {
-                                                    return false;
-                                                }
-
-                                            }
-                                            else
-                                            {
-                                                Zmienne.bledy.Add("Błedny typ ");
-                                                  return false;
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        Zmienne.bledy.Add("Błedny warunek " );
-                                         return false;
-                                    }
-
-                                    break;
-
-                            }
-
-                            
-                        }
-                    }
-                    Zmienne.bledy.Add("Błąd składni " );
-                    return false;
+                    return g;
                 }
-              
+            }
+            return -1;
+        }
 
+        public bool wykonanieISprawdzenie(string[] warunek1, string[] tempArray, int g)
+        {
+            for (int j = 0; j < podzialWarunku.Length - 1; j++)
+            {
+                if (podzialWarunku[j] != "" && Zmienne.nazwaZmiennej.Contains(podzialWarunku[j]) == true)
+                {
+                    bool czyPrawda =false;
+                    if (j == 0)
+                    {
+                      czyPrawda=  wykonanie(1, g);
+                        if (czyPrawda) { return true; }
+                        else return false;
+                    }
+                    else if (j == 1)
+                    {
+                        czyPrawda=wykonanie(-1, g);
+                        if (czyPrawda) { return true; }
+                        else return false;
+                    }
+                }
+                Zmienne.bledy.Add("Błąd składni ");
+                return false;
             }
             return false;
+        }
+
+        public void zmianaWartosciFora(int d)
+        {
+            int wartosc = Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku];
+            int pomocnicza = wartosc + d;
+            Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] = pomocnicza;
         }
         
         public int sprawdzaniePozycjiWLiscie(string nazwa)
@@ -909,25 +313,195 @@ save
             return -1;
         }
 
-        private void sprawdzanieNawiasow(string[] warunek1, int d)
+        public bool wykonanie(int j,int g)
         {
-         /*  char[] g = warunek1[d].ToCharArray();
-            for(int i = 0; i < g.Length; i++)
+            switch (g)
             {
-                if (warunek1[i].Contains("("))
-                {
-                    nawiasyOtwierajace.Add(i);
-                    
-                }
-                else if (true==warunek1[i].Contains(")") && !nawiasyZamykajace.Any())
-                {
-                    
-                    
-                        nawiasyZamykajace.Add(i);
-                    
-                }
+                case 0:
+                    if (sprawdzaniePozycjiWLiscie(podzialWarunku[j]) != (-1))
+                    {
+                        if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] == Zmienne.wartoscZmiennej[sprawdzaniePozycjiWLiscie(podzialWarunku[j])])
+                        {
+                            // wwołanie funkcji
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        if (zmienne.czyInt(podzialWarunku[j]))
+                        {
+                            string ppo = podzialWarunku[j];
+                            int p = int.Parse(ppo);
+                            if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] == p)
+                            {
+                                // wwołanie funkcji
+                                return true;
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            Zmienne.bledy.Add("Błedny typ ");
+                            return false;
+                        }
+                    }
+                   
+                case 1:
+                    if (sprawdzaniePozycjiWLiscie(podzialWarunku[j]) != (-1))
+                    {
+                        if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] <= Zmienne.wartoscZmiennej[sprawdzaniePozycjiWLiscie(podzialWarunku[j])])
+                        {
+                            // wwołanie funkcji
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        if (zmienne.czyInt(podzialWarunku[j]))
+                        {
+                            string ppo = podzialWarunku[j];
+                            int p = int.Parse(ppo);
+                            if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] <= p)
+                            {
+                                // wwołanie funkcji
+                                return true;
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            Zmienne.bledy.Add("Błedny typ ");
+                            return false;
+                        }
+                    }
+                case 2:
+                    if (sprawdzaniePozycjiWLiscie(podzialWarunku[j]) != (-1))
+                    {
+                        if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] >= Zmienne.wartoscZmiennej[sprawdzaniePozycjiWLiscie(podzialWarunku[j])])
+                        {
+                            // wwołanie funkcji
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        if (zmienne.czyInt(podzialWarunku[j]))
+                        {
+                            string ppo = podzialWarunku[j];
+                            int p = int.Parse(ppo);
+                            if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] >= p)
+                            {
+                                // wwołanie funkcji
+                                return true;
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            Zmienne.bledy.Add("Błedny typ ");
+                            return false;
+                        }
 
-            }*/
+                    }
+                case 3:
+                    if (sprawdzaniePozycjiWLiscie(podzialWarunku[j]) != (-1))
+                    {
+                        if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] <Zmienne.wartoscZmiennej[sprawdzaniePozycjiWLiscie(podzialWarunku[j])])
+                        {
+                            // wwołanie funkcji
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        if (zmienne.czyInt(podzialWarunku[j]))
+                        {
+                            string ppo = podzialWarunku[j];
+                            int p = int.Parse(ppo);
+                            if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] < p)
+                            {
+                                // wwołanie funkcji
+                                return true;
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            Zmienne.bledy.Add("Błedny typ ");
+                            return false;
+                        }
+                    }
+                case 4:
+                    if (sprawdzaniePozycjiWLiscie(podzialWarunku[j]) != (-1))
+                    {
+                        if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] > Zmienne.wartoscZmiennej[sprawdzaniePozycjiWLiscie(podzialWarunku[j])])
+                        {
+                            // wwołanie funkcji
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        if (zmienne.czyInt(podzialWarunku[j]))
+                        {
+                            string ppo = podzialWarunku[j];
+                            int p = int.Parse(ppo);
+                            if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] > p)
+                            {
+                                // wwołanie funkcji
+                                return true;
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            Zmienne.bledy.Add("Błedny typ ");
+                            return false;
+                        }
+                    }
+                case -1:
+                    //błąd
+                    return false;
+                
+
+            }
+            return false;
+           
         }
 
         public void ife(string[] linijka , int size)

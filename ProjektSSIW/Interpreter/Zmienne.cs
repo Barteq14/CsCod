@@ -287,15 +287,16 @@ namespace ProjektSSIW.Interpreter
 
             int dlugoscPrawaStrona = linia.Length - indeksRownasie - 1;
             string prawaStrona = lines[indeks].Substring(indeksRownasie + 1, dlugoscPrawaStrona);//tablica prawa
-
+            lewaStrona=lewaStrona.TrimEnd('=', ' ');
             string[] lewa = lewaStrona.Split();
-
+            bool flagaWartosciZmiennej = false;
             for (int i = 0; i < lewa.Length; i++)
             {
                 if (lewa[i] == "knife" && czyString(lewa[i + 1]) == true)
                 {
-                    typZmiennej.Add("int");
+                    typZmiennej.Add("knife");
                     nazwaZmiennej.Add(lewa[i + 1]);
+                    flagaWartosciZmiennej = true;
                     break;
                 }
             }
@@ -366,9 +367,10 @@ namespace ProjektSSIW.Interpreter
 
                 }
 
-                typZmiennej.Add("int");
-                nazwaZmiennej.Add(lewa[1]);
-                wartoscZmiennej.Add(wynikBezNawiasow);
+                //typZmiennej.Add("int");
+           //     nazwaZmiennej.Add(lewa[1]);
+           if (flagaWartosciZmiennej) { wartoscZmiennej.Add(wynikBezNawiasow); }
+           
             }
             else if (znakiPrawaStrona.Contains('(') && znakiPrawaStrona.Contains(')'))
             {

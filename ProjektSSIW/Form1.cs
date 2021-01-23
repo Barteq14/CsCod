@@ -41,12 +41,12 @@ namespace ProjektSSIW
 
             //tymczasowe do sprawdzania
             //funkcje.przykladoweDane();
-            listView1.Clear();
+        /*    listView1.Clear();
             listView2.Clear();
             listView3.Clear();
             listView4.Clear();
             listView5.Clear();
-            listView6.Clear();
+            listView6.Clear();*/
 
 
 
