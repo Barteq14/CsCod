@@ -15,6 +15,7 @@ namespace ProjektSSIW.Interpreter
         int wartoscWarunku = 0;
         bool przechowanieWartosc = false;
         string[] podzialWarunku;
+        string[] tempArray;
 
 
         List<int> klamraOtwierajace = new List<int>();
@@ -23,27 +24,28 @@ namespace ProjektSSIW.Interpreter
         // List<int> nawiasyZamykajace = new List<int>();
         //  Składnia skladnia = new Składnia();
 
-        public void InterpretujPetle(string[] tempArray,int i)
+        public void InterpretujPetle(string[] tablica,int i)
         {
-                string[] subs2 = tempArray[i].Split(' ', '('); //tablica przechowujaca elementy oprocz ' '
+            tempArray = tablica;
+               string[] subs2 = tempArray[i].Split(' ', '('); //tablica przechowujaca elementy oprocz ' '
 
                 switch (subs2[0])
                 {
                     case awp:
-                         fore(tempArray, i);
+                         fore( i);
                         break;
 
                     case scar:
-                        ife(tempArray, i);
+                        ife( i);
                         break;
 
                     case negev:
-                        wailee(tempArray, i);
+                        wailee( i);
                         break;
                 }
         }
 
-       public void fore(string[] tempArray, int linijkaKodu)
+       public void fore(int linijkaKodu)
         {
             Zmienne zmienne = new Zmienne();
 
@@ -116,12 +118,12 @@ namespace ProjektSSIW.Interpreter
 
                                     break;
                                 case 1:
-                                    if (sprawdzenieOtwarcia(tempArray))
+                                    if (sprawdzenieOtwarcia())
                                     {
-                                        if (sprawdzeneZamkniecia(tempArray))
+                                        if (sprawdzeneZamkniecia())
                                         {
                                                 
-                                                bool wartoscBool;
+                                                bool wartoscBool =false;
                                                  int g=-1;
                                                 do
                                                 {
@@ -129,8 +131,8 @@ namespace ProjektSSIW.Interpreter
                                                 {
                                                  g  = zwracanieIndexuOperatora(warunek1);
                                                 }
-                                                    przechowanieWartosc = wykonanieISprawdzenie(warunek1, tempArray,g);
-                                                    wartoscBool = podnoszenieZmienej(warunek1, tempArray);
+                                                    przechowanieWartosc = wykonanieISprawdzenie(warunek1 ,g);
+                                                    wartoscBool = podnoszenieZmienej(warunek1);
                                                 } while (wartoscBool);
                                             return;
                                         }
@@ -156,23 +158,27 @@ save
           }// błąd brak (   
         }
 
-        public bool sprawdzeneZamkniecia(string[] tempArray)
+        public bool sprawdzeneZamkniecia()
         {
-            for (int i = size + 1; i < tempArray.Length; i++)
+           if (klamraOtwierajace.Count != klamraZamykajace.Count)
             {
-                string pom3 = tempArray[i].TrimStart(' ');
-                pom3 = pom3.TrimEnd(' ');
-                char[] klamra = pom3.ToCharArray();
-                if (klamra[klamra.Length - 1] == '}')
+                for (int i = size + 1; i < tempArray.Length; i++)
                 {
-                    klamraOtwierajace.Add(i);
-                    
-                    return true;
-                }   
+                    string pom3 = tempArray[i].TrimStart(' ');
+                    pom3 = pom3.TrimEnd(' ');
+                    char[] klamra = pom3.ToCharArray();
+                    if (klamra[klamra.Length - 1] == '}')
+                    {
+                        klamraZamykajace.Add(i);
+
+                        return true;
+                    }
+                }
+                return false;
             }
-            return false;
+            return true;
          }
-        public bool sprawdzenieOtwarcia(string[] tempArray)
+        public bool sprawdzenieOtwarcia()
         {
             string[] subs2 = tempArray[size].Split(' ');
 
@@ -200,7 +206,7 @@ save
             return true;
         }
 
-        public bool podnoszenieZmienej(string[] warunek1, string[] tempArray)
+        public bool podnoszenieZmienej(string[] warunek1)
         {
             bool b = warunek1[2].Contains("++");
             bool c = warunek1[2].Contains("--");
@@ -212,16 +218,17 @@ save
                 {
                     if (przechowanieWartosc == true)
                     {
-                        if (b)
+                        if (b && (sprawdzaniePozycjiWLiscie(cos[0])!=-1))
                         {
                             zmianaWartosciFora(1);
+                            return true;
                         }
-                        else
+                        else if(c && (sprawdzaniePozycjiWLiscie(cos[0]) != -1))
                         {
                             zmianaWartosciFora(-1);
+                            return true;
                         }
-                        size = size + 1;
-                        return true;
+                        
                     }
                     else return false;
                 }
@@ -266,7 +273,7 @@ save
             return -1;
         }
 
-        public bool wykonanieISprawdzenie(string[] warunek1, string[] tempArray, int g)
+        public bool wykonanieISprawdzenie(string[] warunek1 , int g)
         {
             for (int j = 0; j < podzialWarunku.Length - 1; j++)
             {
@@ -311,6 +318,29 @@ save
                 }
             }
             return -1;
+        }
+
+        public bool wywołanieKodu()
+        {
+            int i = 0;
+           string[] linijka =new string[tempArray.Length ];
+            for (int j = 1; j <= klamraOtwierajace.Count; j++)
+            {
+                if(klamraOtwierajace[j]==(size-1))
+                {
+                    while(size==klamraZamykajace[j]){
+
+                      linijka[i] = tempArray[size-1];
+                         i++;
+                        size++;
+                    }
+                    //wywołanie funkcji z linijka i indexem 0
+                   
+                }
+            }
+            
+
+            return false;
         }
 
         public bool wykonanie(int j,int g)
@@ -504,14 +534,14 @@ save
            
         }
 
-        public void ife(string[] linijka , int size)
+        public void ife( int size)
         {
             for (int j = 0; j < size; j++)
             {
                 
             }
         }
-        public void wailee(string[] linijka, int size)
+        public void wailee( int size)
         {
             for (int j = 0; j < size; j++)
             {
