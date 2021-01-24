@@ -92,7 +92,7 @@ namespace ProjektSSIW
                         {
                             funkcje.InterpretujReadLine2(i);
                         }
-
+                        //czy int 
                         if (tab[0] == "knife" && tab.Length == 4 && tab[3].EndsWith(";"))
                         {
                             string pomknife = "";
@@ -101,6 +101,27 @@ namespace ProjektSSIW
                                 pomknife = pomknife + tab[jk];
                             }
                             zmienne.TomaszowyInt(tab[1], pomknife, i);
+                        }
+
+                        //czy float
+                        if (tab[0] == "grenade" && tab.Length == 4 && tab[3].EndsWith(";"))
+                        {
+                            string prawaStrona = "";
+                            for (int tmp = 3; tmp < tab.Length; tmp++)
+                            {
+                                prawaStrona = prawaStrona + tab[tmp];
+                            }
+                            zmienne.BartkowyDouble(tab[1], prawaStrona, i);
+                        }
+
+                        if (tab[0] == "defuse" && tab.Length == 4 && tab[3].EndsWith(";"))
+                        {
+                            string prawaStrona = "";
+                            for (int tmp = 3; tmp < tab.Length; tmp++)
+                            {
+                                prawaStrona = prawaStrona + tab[tmp];
+                            }
+                            zmienne.BartkowyString(tab[1], prawaStrona, i);
                         }
 
 
@@ -116,33 +137,41 @@ namespace ProjektSSIW
 
 
 
+                    /*
+                     rush
+knife liczba = 21+3;
+grenade zmienna = (2.3+1)+liczba;
+defuse napis = "siemanko";
+save
+                     
+                     
+                     */
 
 
 
 
 
+                    /*
+                                        for(int i = 0; i < tempArray.Length; i++)
+                                        {
+                                            if (tempArray[i].Contains("knife") || tempArray[0] == "knife")//INT
+                                            {
+                                                zmienne.InterpretujInt2(tempArray, i);
+                                            }
+                                            if (tempArray[i].Contains("grenade"))//FLOAT
+                                            {
 
-
-                    for(int i = 0; i < tempArray.Length; i++)
-                    {
-                        if (tempArray[i].Contains("knife") || tempArray[0] == "knife")//INT
-                        {
-                            zmienne.InterpretujInt2(tempArray, i);
-                        }
-                        if (tempArray[i].Contains("grenade"))//FLOAT
-                        {
-                           
-                        }
-                        if (tempArray[i].Contains("defuse"))//STRING
-                        {
-                            zmienne.InterpretujString(tempArray, i);
-                        }
-                        if (tempArray[i].Contains("zeus") || tempArray[0] == "zeus")
-                        {
-                            zmienne.InterpretujBoolean(tempArray,i);
-                        }
-                    }
-                    
+                                            }
+                                            if (tempArray[i].Contains("defuse"))//STRING
+                                            {
+                                                zmienne.InterpretujString(tempArray, i);
+                                            }
+                                            if (tempArray[i].Contains("zeus") || tempArray[0] == "zeus")
+                                            {
+                                                zmienne.InterpretujBoolean(tempArray,i);
+                                            }
+                                        }
+                                        */
 
 
 
