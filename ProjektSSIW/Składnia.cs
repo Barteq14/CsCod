@@ -8,10 +8,10 @@ namespace ProjektSSIW
 {
     public class Składnia
     {
-        public const bool terrorist = false;
+        public  const bool terrorist = false;
         public const bool antiterrorist = true;
         //zmienne
-        public const string knife = "knife";//int
+        public  const string knife = "knife";//int
         public const string grenade = "grenade";//double
         public const string rifle = "rifle";//float
         public const string defuse = "defuse";//string
