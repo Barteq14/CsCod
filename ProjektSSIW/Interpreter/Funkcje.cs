@@ -55,30 +55,39 @@ namespace ProjektSSIW.Interpreter
                 }
             }
 
-            if (tab.Length == 4 && tab[3] == "ak47();")
-            {
-                InterpretujReadLine(tab, i);
-            }
+
             else if (tab.Length == 1 && tab[0] == "ak47();")
             {
                 InterpretujReadLine2(i);
             }
-            else if (tab[0] == "defuse" && tab.Length == 4 && tab[3] == "usp();")
+            if (tab.Length == 4)
             {
-                InterpretujToString(tab[1], i);
+
+                if (tab[3] == "ak47();")
+                {
+                    InterpretujReadLine(tab, i);
+                }
+                else if (tab[0] == "defuse" && tab[3].Substring(0, 4) == "usp(" && tab[3][tab[3].Length - 2] == ')' && tab[3].EndsWith(";"))
+                {
+                    //pom.Substring(0, 6) == "m4a1s("
+                    string pomocnicza = tab[3].Substring(4, tab[3].Length - 5 - 1);
+                    InterpretujToString(tab[1], pomocnicza, i);
+                }
+                else if (tab[0] == "knife" && tab[3] == "glock();")
+                {
+                    InterpretujToInt(tab[1], i);
+                }
+                else if (tab[0] == "grenade" && tab[3] == "deagle();")
+                {
+                    InterpretujToDouble(tab[1], i);
+                }
+                else if (tab[0] == "rifle" && tab[3] == "tec();")
+                {
+                    InterpretujToFloat(tab[1], i);
+                }
+
             }
-            else if (tab[0] == "knife" && tab.Length == 4 && tab[3] == "glock();")
-            {
-                InterpretujToInt(tab[1], i);
-            }
-            else if (tab[0] == "grenade" && tab.Length == 4 && tab[3] == "deagle();")
-            {
-                InterpretujToDouble(tab[1], i);
-            }
-            else if (tab[0] == "rifle" && tab.Length == 4 && tab[3] == "tec();")
-            {
-                InterpretujToFloat(tab[1], i);
-            }
+
 
 
 
@@ -433,17 +442,20 @@ namespace ProjektSSIW.Interpreter
 
 
 
-        public void InterpretujToString(String nazwaZmiennej, int linijka) //usp
+        public void InterpretujToString(String nazwaZmiennej, string wNawiasie, int linijka) //usp
         {
+            //Zmienne.konsola.Add(nazwaZmiennej + " " + wNawiasie + " " + linijka);
             bool flaga = false;
+
             int index = Zmienne.nazwaZmiennej.FindIndex(c => c == nazwaZmiennej);
-            if (index < 0)
+            if (index >= 0)
             {
-                tymczasowyBlad("Brak zmiennej o nazwie " + nazwaZmiennej, linijka);
+                //flaga = true;
+                tymczasowyBlad("Istnieje zmienna o nazwie " + nazwaZmiennej, linijka);
             }
             else
             {
-                if (zmienne.czyString2(nazwaZmiennej) == true) //jeżeli nazwaZmiennej to string
+                if (zmienne.czyString2(nazwaZmiennej) == true) //
                 {
                     //sprawdzanko czy nie jest np. knife knife
                     if (nazwaZmiennej == "ak47" || nazwaZmiennej == "knife" || nazwaZmiennej == "grenade" || nazwaZmiennej == "rifle" || nazwaZmiennej == "defuse" || nazwaZmiennej == "zeus" || nazwaZmiennej == "m4a1s" || nazwaZmiennej == "m4a4" || nazwaZmiennej == "usp" || nazwaZmiennej == "glock" || nazwaZmiennej == "tec" || nazwaZmiennej == "awp" || nazwaZmiennej == "scar" || nazwaZmiennej == "negev")
@@ -457,25 +469,40 @@ namespace ProjektSSIW.Interpreter
                 }
                 else
                 {
-                    try
+                    if (zmienne.czyString2(wNawiasie) && wNawiasie !="" && wNawiasie!=null)
                     {
-                        if (Zmienne.typZmiennej[index] != "defuse")
+                        int index2 = Zmienne.nazwaZmiennej.FindIndex(c => c == wNawiasie);
+                        if (index2 >= 0)
                         {
-                            Zmienne.wartoscZmiennej[index] = Convert.ToString(Zmienne.wartoscZmiennej[index]);
-                            Zmienne.typZmiennej[index] = "defuse";
+                            try
+                            {
+                                if (Zmienne.typZmiennej[index2] != "defuse")
+                                {
+                                    Zmienne.nazwaZmiennej.Add(nazwaZmiennej);
+                                    Zmienne.wartoscZmiennej.Add(Convert.ToString(Zmienne.wartoscZmiennej[index2]));
+                                    Zmienne.typZmiennej.Add("defuse");
+                                }
+                                else if (Zmienne.typZmiennej[index2] == "defuse")
+                                {
+                                    tymczasowyBlad("Nie można zamienić stringa w stringa ", linijka);
+                                }
+                            }
+                            catch
+                            {
+                                tymczasowyBlad("Nie można zamienić na stringa ", linijka);
+                            }
                         }
-                        else if (Zmienne.typZmiennej[index] == "defuse")
+                        else
                         {
-                            tymczasowyBlad("Nie można zamienić stringa w stringa ", linijka);
+                            tymczasowyBlad("Nie istnieje juź zmienna o nazwie " + nazwaZmiennej, linijka);
                         }
-                    }
-                    catch
-                    {
-                        tymczasowyBlad("Nie można zamienić na stringa ", linijka);
                     }
                 }
             }
         }
+
+
+
 
 
         public void InterpretujToInt(String nazwaZmiennej, int linijka) //
