@@ -23,6 +23,7 @@ namespace ProjektSSIW
         public const string usp = "usp";//toString()
         public const string glock = "glock";//toInt()
         public const string tec = "tec";//toFloat()
+        public const string deagle = "deagle";//toDouble()
         //pętle
         public const string awp = "awp";//for
         public const string scar = "scar";//while

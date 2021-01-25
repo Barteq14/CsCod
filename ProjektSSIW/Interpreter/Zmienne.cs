@@ -57,6 +57,12 @@ namespace ProjektSSIW.Interpreter
 
             if (czyString2(nazwaZmiennej2) == true) //jeżeli nazwaZmiennej to string
             {
+                //sprawdzanko czy nie jest np. knife knife
+                if (nazwaZmiennej2 == "ak47" || nazwaZmiennej2 == "knife" || nazwaZmiennej2 == "grenade" || nazwaZmiennej2 == "rifle" || nazwaZmiennej2 == "defuse" || nazwaZmiennej2 == "zeus" || nazwaZmiennej2 == "m4a1s" || nazwaZmiennej2 == "m4a4" || nazwaZmiennej2 == "usp" || nazwaZmiennej2 == "glock" || nazwaZmiennej2 == "tec" || nazwaZmiennej2 == "awp" || nazwaZmiennej2 == "scar" || nazwaZmiennej2 == "negev")
+                {
+                    bledy.Add(linijka + ": Nazwa zmiennej nie może być " + nazwaZmiennej2);
+                }
+
                 int index2 = Zmienne.nazwaZmiennej.FindIndex(c => c == nazwaZmiennej2);
                 if (index2 >= 0) //jeżeli nie ma takiej zmiennej
                 {
@@ -146,12 +152,38 @@ namespace ProjektSSIW.Interpreter
                                         }
                                     }
                                     catch //jeżeli
-                                    {
-                                        //bledy.Add(linijka + ": blad??? " + match);
+                                    {                                        //bledy.Add(linijka + ": blad??? " + match);
                                     }
-                                    if (flaga == false)
+                                    if (flaga == false) 
                                     {
-                                        bledy.Add(linijka +": nie istnieje zmienna o nazwie " +match);
+                                        if(match == "ak47();")// tutaj dodałem żeby nikt nie wpisywał funkcji gdy nie jest na poczatku
+                                        {
+                                            bledy.Add(linijka + ": ak47(); nie może tutaj być");
+                                        }
+                                        else if(match == "glock();")
+                                        {
+                                            bledy.Add(linijka + ": glock(); nie może tutaj być");
+                                        }
+                                        else if(match == "tec();")
+                                        {
+                                            bledy.Add(linijka + ": tec(); nie może tutaj być");
+                                        }
+                                        else if (match == "m4a1();")
+                                        {
+                                            bledy.Add(linijka + ": m4a1(); nie może tutaj być");
+                                        }
+                                        else if (match == "m4a1s();")
+                                        {
+                                            bledy.Add(linijka + ": m4a1s(); nie może tutaj być");
+                                        }
+                                        else if (match == "usp();")
+                                        {
+                                            bledy.Add(linijka + ": usp(); nie może tutaj być");
+                                        }
+                                        else
+                                        {
+                                            bledy.Add(linijka + ": nie istnieje zmienna o nazwie " + match);
+                                        }
                                     }
                                 }
                                 else // jeżeli jest zmienna to 

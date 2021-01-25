@@ -40,13 +40,10 @@ namespace ProjektSSIW
 
 
             //tymczasowe do sprawdzania
-            //funkcje.przykladoweDane();
-            listView1.Clear();
-            listView2.Clear();
-            listView3.Clear();
-            listView4.Clear();
-            listView5.Clear();
-            listView6.Clear();
+            funkcje.przykladoweDane();
+
+            //czyszczenie
+            button2_Click(sender, e);
 
 
 
@@ -67,33 +64,7 @@ namespace ProjektSSIW
                         string pom = tempArray[i];
                         string[] tab = tempArray[i].Split(' ');
 
-                        //WRITE WRITELN
-                        //Funkcje sprawdzanie czy jest tylko 1 ciąg w linijce, przydatne do write i writeln tylko
-                        //if (subs.Length == 1) //
-                        //{
-                        if (pom.Length >= 5)
-                        {
-                            if (pom.Substring(0, 6) == "m4a1s(" && pom.EndsWith(")"))
-                            {
-                                String pomWnawiasach = pom.Substring(6, pom.Length - 7);
-                                funkcje.InterpretujWriteLine(pomWnawiasach, i);
-                            }
-                            else if (pom.Substring(0, 5) == "m4a1(" && pom.EndsWith(")"))
-                            {
-                                String pomWnawiasach = pom.Substring(5, pom.Length - 6);
-                                funkcje.InterpretujWrite(pomWnawiasach, i);
-                            }
-                        }
-                        if (tab.Length == 4 && tab[3] == "ak47()")
-                        {
-                            funkcje.InterpretujReadLine(tab, i);
-                        }
-                        else if (tab.Length == 1 && tab[0] == "ak47()")
-                        {
-                            funkcje.InterpretujReadLine2(i);
-                        }
-
-                        if (tab[0] == "knife" && tab.Length == 4 && tab[3].EndsWith(";"))
+                        if (tab[0] == "knife" && tab[tab.Length - 1].EndsWith(";") && tab[3] != "ak47();" && tab[3]!= "glock();")
                         {
                             string pomknife = "";
                             for (int jk = 3; jk < tab.Length; jk++)
@@ -102,9 +73,20 @@ namespace ProjektSSIW
                             }
                             zmienne.TomaszowyInt(tab[1], pomknife, i);
                         }
+                        if (tab[0] == "defuse" && tab[tab.Length-1].EndsWith(";") && tab[3] != "ak47();" || tab[3] != "usp();")
+                        {
+                            string pomknife = "";
+                            for (int jk = 3; jk < tab.Length; jk++)
+                            {
+                                pomknife = pomknife + tab[jk];
+                            }
+                            //zmienne.TomaszowyString(tab[1], pomknife, i);
+                        }
 
 
-                        petle.InterpretujPetle(tempArray, i);
+                        funkcje.InterpretujFunkcje(pom,i);
+
+                        //petle.InterpretujPetle(tempArray, i);
 
                         //zmienne.InterpretujZmienne(tempArray, i);
 
