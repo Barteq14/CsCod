@@ -446,12 +446,49 @@ namespace ProjektSSIW.Interpreter
         {
             //Zmienne.konsola.Add(nazwaZmiennej + " " + wNawiasie + " " + linijka);
             bool flaga = false;
+            bool flaga2 = false;
+
+            przykladoweDane();
 
             int index = Zmienne.nazwaZmiennej.FindIndex(c => c == nazwaZmiennej);
             if (index >= 0)
             {
                 //flaga = true;
-                tymczasowyBlad("Istnieje zmienna o nazwie " + nazwaZmiennej, linijka);
+                if(Zmienne.typZmiennej[index] == "defuse")
+                {
+                    if (zmienne.czyString2(wNawiasie) && wNawiasie != "" && wNawiasie != null)
+                    {
+                        int index2 = Zmienne.nazwaZmiennej.FindIndex(c => c == wNawiasie);
+                        if (index2 >= 0)
+                        {
+                            try
+                            {
+                                if (Zmienne.typZmiennej[index2] != "defuse")
+                                {
+                                    //Zmienne.nazwaZmiennej[index]
+                                    Zmienne.wartoscZmiennej[index] = Convert.ToString(Zmienne.wartoscZmiennej[index2]);
+                                    //Zmienne.typZmiennej[index] = "defuse";
+                                }
+                                else if (Zmienne.typZmiennej[index2] == "defuse")
+                                {
+                                    tymczasowyBlad("Nie można zamienić stringa w stringa ", linijka);
+                                }
+                            }
+                            catch
+                            {
+                                tymczasowyBlad("Nie można zamienić na stringa ", linijka);
+                            }
+                        }
+                        else
+                        {
+                            tymczasowyBlad("Nie istnieje zmienna o nazwie " + wNawiasie, linijka);
+                        }
+                    }
+                }
+                else
+                {
+                    tymczasowyBlad("Istnieje zmienna o nazwie " + nazwaZmiennej, linijka);
+                }
             }
             else
             {
@@ -494,7 +531,7 @@ namespace ProjektSSIW.Interpreter
                         }
                         else
                         {
-                            tymczasowyBlad("Nie istnieje juź zmienna o nazwie " + nazwaZmiennej, linijka);
+                            tymczasowyBlad("Nie istnieje  zmienna o nazwie " + wNawiasie, linijka);
                         }
                     }
                 }

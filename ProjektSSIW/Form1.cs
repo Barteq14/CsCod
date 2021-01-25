@@ -64,7 +64,7 @@ namespace ProjektSSIW
                         string pom = tempArray[i];
                         string[] tab = tempArray[i].Split(' ');
 
-                        if (tab[0] == "knife" && tab[tab.Length - 1].EndsWith(";") && tab[3] != "ak47();" && tab[3]!= "glock();")
+                        if (tab[0] == "knife" && tab[tab.Length - 1].EndsWith(";"))
                         {
                             string pomknife = "";
                             for (int jk = 3; jk < tab.Length; jk++)
