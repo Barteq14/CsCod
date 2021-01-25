@@ -441,7 +441,6 @@ namespace ProjektSSIW.Interpreter
 
 
 
-
         public void InterpretujToString(String nazwaZmiennej, string wNawiasie, int linijka) //usp
         {
             //Zmienne.konsola.Add(nazwaZmiennej + " " + wNawiasie + " " + linijka);
