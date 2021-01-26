@@ -60,7 +60,7 @@ namespace ProjektSSIW
 
                 if (tempArray[0] == "rush" && tempArray[size - 1] == "save") // sprawdzam czy na poczatku jest 'rush' a na końcu 'save'
                 {
-
+                    petle.sprawdzenieOtwarcia(tempArray);
 
                     for (int i = 1; i < tempArray.Length - 1; i++)
                     {

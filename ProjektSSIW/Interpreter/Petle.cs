@@ -24,15 +24,15 @@ namespace ProjektSSIW.Interpreter
         // List<int> nawiasyZamykajace = new List<int>();
         //  Składnia skladnia = new Składnia();
 
-        public void InterpretujPetle(string[] tablica,int i)
+        public void InterpretujPetle(string[] tempArray, int i)
         {
-            tempArray = tablica;
+          
                string[] subs2 = tempArray[i].Split(' ', '('); //tablica przechowujaca elementy oprocz ' '
 
                 switch (subs2[0])
                 {
                     case awp:
-                         fore( i);
+                         fore( i,tempArray);
                         break;
 
                     case scar:
@@ -45,8 +45,9 @@ namespace ProjektSSIW.Interpreter
                 }
         }
 
-       public void fore(int linijkaKodu)
+       public void fore(int linijkaKodu,string[] tablica)
         {
+            tempArray = tablica;
             Zmienne zmienne = new Zmienne();
 
             //tablica przechowujaca elementy oprocz ' '
@@ -98,6 +99,7 @@ namespace ProjektSSIW.Interpreter
                                                     {
 
                                                         zmienne.InterpretujInt(warunek1, 0);
+                                                      pozycjaZmiennejZWarunku = sprawdzaniePozycjiWLiscie( cos[1]);
                                                     }
                                                     else
                                                     {
@@ -118,10 +120,8 @@ namespace ProjektSSIW.Interpreter
 
                                     break;
                                 case 1:
-                                    if (sprawdzenieOtwarcia())
-                                    {
-                                        if (sprawdzeneZamkniecia())
-                                        {
+                                   
+                                        
                                                 
                                                 bool wartoscBool =false;
                                                  int g=-1;
@@ -135,14 +135,7 @@ namespace ProjektSSIW.Interpreter
                                                     wartoscBool = podnoszenieZmienej(warunek1);
                                                 } while (wartoscBool);
                                             return;
-                                        }
-                                        else
-                                        {
-                                            //błąd
-                                            return;
-                                        }
-                                    }// błąd
-                                    return;
+                                      
                             }
                             /*
                             
@@ -158,7 +151,7 @@ save
           }// błąd brak (   
         }
 
-        public bool sprawdzeneZamkniecia()
+     /*   public bool sprawdzeneZamkniecia()
         {
            if (klamraOtwierajace.Count != klamraZamykajace.Count)
             {
@@ -177,33 +170,26 @@ save
                 return false;
             }
             return true;
-         }
-        public bool sprawdzenieOtwarcia()
+         }*/
+        public void sprawdzenieOtwarcia(string[] tablica) 
         {
-            string[] subs2 = tempArray[size].Split(' ');
-
-            int size1 = subs2.Length;
-
-            if (subs2[size1 - 1] != "{" && (subs2[size1 - 2] != "{" && subs2[size1 - 1] == ""))// sprawdzanie czy jest otwarcie metody
-            {
-                for (int i = size + 1; i < tempArray.Length; i++)
+                for (int i = size ; i < tablica.Length; i++)
                 {
-                    string pom3 = tempArray[i].TrimStart(' ');
+                    string pom3 = tablica[i].Trim(' ');
                    
                     char[] otwarcie = pom3.ToCharArray();
-                    if (otwarcie[0]== '{')
+                    if (otwarcie[0]== '{'|| otwarcie[otwarcie.Length-1]=='{')
                     {
-                        size = i++;
+                        
                         klamraOtwierajace.Add(i);
-                        return true;
+                      
+                    }else  if (otwarcie[otwarcie.Length - 1] == '}')
+                    {
+                        klamraZamykajace.Add(i);
+
+                       
                     }
-                }
-                //błąd
-                return false;
             }
-            klamraOtwierajace.Add(size);
-            size = size++;
-            return true;
         }
 
         public bool podnoszenieZmienej(string[] warunek1)
@@ -311,7 +297,7 @@ save
             int i;
             for (i = 0; i < Zmienne.nazwaZmiennej.Count; i++)
             {
-                if (Zmienne.nazwaZmiennej.Contains(nazwa) == true)
+                if (Zmienne.nazwaZmiennej[i] == nazwa)
                 {
 
                     return i;
@@ -320,27 +306,37 @@ save
             return -1;
         }
 
-        public bool wywołanieKodu()
+        public void wywołanieKodu()
         {
-            int i = 0;
-           string[] linijka =new string[tempArray.Length ];
-            for (int j = 1; j <= klamraOtwierajace.Count; j++)
+            int x = size+1;
+         
+            List<string> linijka = new List<string>();
+          //  string[] linijka =new string[tempArray.Length ];
+            for (int j = 0; j <= klamraOtwierajace.Count-1; j++)
             {
-                if(klamraOtwierajace[j]==(size-1))
+                if(klamraOtwierajace[j]==(size))
                 {
-                    while(size==klamraZamykajace[j]){
-
-                      linijka[i] = tempArray[size-1];
-                         i++;
-                        size++;
+                    while((x)!=klamraZamykajace[j]){
+                        if (x>tempArray.Length)
+                        {
+                            //blad 
+                            return;
+                        }
+                        linijka.Add( tempArray[x]);
+                        
+                        x++;
                     }
+                    string[] d =new string[linijka.Count] ;
+                    for(int i = 0; i< linijka.Count; i++)
+                    {
+                        d[i] = linijka[i];
+                    }
+
                     //wywołanie funkcji z linijka i indexem 0
                    
                 }
             }
-            
-
-            return false;
+            //blad
         }
 
         public bool wykonanie(int j,int g)
@@ -353,6 +349,7 @@ save
                         if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] == Zmienne.wartoscZmiennej[sprawdzaniePozycjiWLiscie(podzialWarunku[j])])
                         {
                             // wwołanie funkcji
+                            wywołanieKodu();
                             return true;
                         }
                         else
@@ -369,6 +366,7 @@ save
                             if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] == p)
                             {
                                 // wwołanie funkcji
+                                wywołanieKodu();
                                 return true;
                             }
                             else
@@ -389,6 +387,7 @@ save
                         if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] <= Zmienne.wartoscZmiennej[sprawdzaniePozycjiWLiscie(podzialWarunku[j])])
                         {
                             // wwołanie funkcji
+                            wywołanieKodu();
                             return true;
                         }
                         else
@@ -404,6 +403,7 @@ save
                             int p = int.Parse(ppo);
                             if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] <= p)
                             {
+                                wywołanieKodu();
                                 // wwołanie funkcji
                                 return true;
                             }
@@ -423,6 +423,7 @@ save
                     {
                         if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] >= Zmienne.wartoscZmiennej[sprawdzaniePozycjiWLiscie(podzialWarunku[j])])
                         {
+                            wywołanieKodu();
                             // wwołanie funkcji
                             return true;
                         }
@@ -439,6 +440,7 @@ save
                             int p = int.Parse(ppo);
                             if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] >= p)
                             {
+                                wywołanieKodu();
                                 // wwołanie funkcji
                                 return true;
                             }
@@ -459,6 +461,7 @@ save
                     {
                         if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] <Zmienne.wartoscZmiennej[sprawdzaniePozycjiWLiscie(podzialWarunku[j])])
                         {
+                            wywołanieKodu();
                             // wwołanie funkcji
                             return true;
                         }
@@ -475,6 +478,7 @@ save
                             int p = int.Parse(ppo);
                             if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] < p)
                             {
+                                wywołanieKodu();
                                 // wwołanie funkcji
                                 return true;
                             }
@@ -494,6 +498,7 @@ save
                     {
                         if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] > Zmienne.wartoscZmiennej[sprawdzaniePozycjiWLiscie(podzialWarunku[j])])
                         {
+                            wywołanieKodu();
                             // wwołanie funkcji
                             return true;
                         }
@@ -510,6 +515,7 @@ save
                             int p = int.Parse(ppo);
                             if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] > p)
                             {
+                                wywołanieKodu();
                                 // wwołanie funkcji
                                 return true;
                             }
