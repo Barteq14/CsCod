@@ -64,23 +64,38 @@ namespace ProjektSSIW
                         string pom = tempArray[i];
                         string[] tab = tempArray[i].Split(' ');
 
-                        if (tab[0] == "knife" && tab[tab.Length - 1].EndsWith(";"))
+                        if(tab[3].Length > 3)
                         {
-                            string pomknife = "";
-                            for (int jk = 3; jk < tab.Length; jk++)
+                            if (tab[0] == "knife" && tab[tab.Length - 1].EndsWith(";") && !(tab[3] == "ak47();" && !(tab[3].Substring(0, 6) == "glock(" && tab[3][tab[3].Length - 2] == ')' && tab[3].EndsWith(";"))))
                             {
-                                pomknife = pomknife + tab[jk];
+                                string pomknife = "";
+                                for (int jk = 3; jk < tab.Length; jk++)
+                                {
+                                    pomknife = pomknife + tab[jk];
+                                }
+                                zmienne.TomaszowyInt(tab[1], pomknife, i);
                             }
-                            zmienne.TomaszowyInt(tab[1], pomknife, i);
+                            if (tab[0] == "defuse" && tab[tab.Length - 1].EndsWith(";") && !(tab[3] == "ak47();" || (tab[3].Substring(0, 4) == "usp(" && tab[3][tab[3].Length - 2] == ')' && tab[3].EndsWith(";"))))
+                            {
+                                string pomknife = "";
+                                for (int jk = 3; jk < tab.Length; jk++)
+                                {
+                                    pomknife = pomknife + tab[jk];
+                                }
+                                //zmienne.TomaszowyString(tab[1], pomknife, i);
+                            }
                         }
-                        if (tab[0] == "defuse" && tab[tab.Length-1].EndsWith(";") && tab[3] != "ak47();" || tab[3] != "usp();")
+                        else
                         {
-                            string pomknife = "";
-                            for (int jk = 3; jk < tab.Length; jk++)
+                            if (tab[0] == "knife" && tab[tab.Length - 1].EndsWith(";"))
                             {
-                                pomknife = pomknife + tab[jk];
+                                string pomknife = "";
+                                for (int jk = 3; jk < tab.Length; jk++)
+                                {
+                                    pomknife = pomknife + tab[jk];
+                                }
+                                zmienne.TomaszowyInt(tab[1], pomknife, i);
                             }
-                            //zmienne.TomaszowyString(tab[1], pomknife, i);
                         }
 
 
