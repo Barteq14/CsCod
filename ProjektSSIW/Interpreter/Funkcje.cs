@@ -60,6 +60,8 @@ namespace ProjektSSIW.Interpreter
             {
                 InterpretujReadLine2(i);
             }
+
+
             if (tab.Length == 4)
             {
                 if (tab[3].Length > 4)
@@ -70,33 +72,23 @@ namespace ProjektSSIW.Interpreter
                         string pomocnicza = tab[3].Substring(4, tab[3].Length - 5 - 1);
                         InterpretujToString(tab[1], pomocnicza, i);
                     }
-                    if (tab[0] == "knife" && tab[3].Substring(0, 6) == "glock(" && tab[3][tab[3].Length - 2] == ')' && tab[3].EndsWith(";") && pom.Length > 5)
+                    else if (tab[0] == "knife" && tab[3].Substring(0, 6) == "glock(" && tab[3][tab[3].Length - 2] == ')' && tab[3].EndsWith(";") && pom.Length > 5)
                     {
                         string pomocnicza = tab[3].Substring(6, tab[3].Length - 7 - 1);
                         InterpretujToInt(tab[1], pomocnicza, i);
                     }
+                    else if (tab[0] == "grenade" && tab[3].Substring(0, 7) == "deagle(" && tab[3][tab[3].Length - 2] == ')' && tab[3].EndsWith(";") && pom.Length > 6)
+                    {
+                        string pomocnicza = tab[3].Substring(7, tab[3].Length - 8 - 1);
+                        InterpretujToDouble(tab[1], pomocnicza, i);
+                    }
                 }
-                if (tab[3] == "ak47();")
-                {
-                    InterpretujReadLine(tab, i);
-                }          
-                
-                else if (tab[0] == "grenade" && tab[3] == "deagle();")
-                {
-                    InterpretujToDouble(tab[1], i);
-                }
-                else if (tab[0] == "rifle" && tab[3] == "tec();")
-                {
-                    InterpretujToFloat(tab[1], i);
-                }
-
             }
 
-
-
-
-
-
+            if (tab[3] == "ak47();")
+            {
+                InterpretujReadLine(tab, i);
+            }
 
 
 
@@ -541,9 +533,6 @@ namespace ProjektSSIW.Interpreter
         }
 
 
-
-
-
         public void InterpretujToInt(String nazwaZmiennej, string wNawiasie, int linijka) //usp
         {
             //Zmienne.konsola.Add(nazwaZmiennej + " " + wNawiasie + " " + linijka);
@@ -646,18 +635,60 @@ namespace ProjektSSIW.Interpreter
                 }
             }
         }
-        /*
-        public void InterpretujToInt(String nazwaZmiennej, int linijka) //
+
+        public void InterpretujToDouble(String nazwaZmiennej, string wNawiasie, int linijka) //deagle
         {
+            //Zmienne.konsola.Add(nazwaZmiennej + " " + wNawiasie + " " + linijka);
             bool flaga = false;
+
+            //przykladoweDane();
+
             int index = Zmienne.nazwaZmiennej.FindIndex(c => c == nazwaZmiennej);
-            if (index < 0)
+            if (index >= 0)
             {
-                tymczasowyBlad("Brak zmiennej o nazwie " + nazwaZmiennej, linijka);
+                if (Zmienne.typZmiennej[index] == "grenade")
+                {
+                    if (zmienne.czyString2(wNawiasie) && wNawiasie != "" && wNawiasie != null)
+                    {
+                        int index2 = Zmienne.nazwaZmiennej.FindIndex(c => c == wNawiasie);
+                        if (index2 >= 0)
+                        {
+                            try
+                            {
+                                if (Zmienne.typZmiennej[index2] != "grenade" && Zmienne.typZmiennej[index2] != "zeus")
+                                {
+                                    //Zmienne.nazwaZmiennej[index]
+                                    Zmienne.wartoscZmiennej[index] = Convert.ToDouble(Zmienne.wartoscZmiennej[index2], System.Globalization.CultureInfo.InvariantCulture);
+                                    //Zmienne.typZmiennej[index] = "defuse";
+                                }
+                                else if (Zmienne.typZmiennej[index2] == "grenade")
+                                {
+                                    tymczasowyBlad("Nie można zamienić double w double ", linijka);
+                                }
+                                else if (Zmienne.typZmiennej[index2] == "zeus")
+                                {
+                                    tymczasowyBlad("Nie można zamienić bool w int ", linijka);
+                                }
+                            }
+                            catch
+                            {
+                                tymczasowyBlad("Nie można zamienić na double ", linijka);
+                            }
+                        }
+                        else
+                        {
+                            tymczasowyBlad("Nie istnieje zmienna o nazwie " + wNawiasie, linijka);
+                        }
+                    }
+                }
+                else
+                {
+                    tymczasowyBlad("Istnieje zmienna o nazwie " + nazwaZmiennej, linijka);
+                }
             }
             else
             {
-                if (zmienne.czyString2(nazwaZmiennej) == true) //jeżeli nazwaZmiennej to string
+                if (zmienne.czyString2(nazwaZmiennej) == true) //
                 {
                     //sprawdzanko czy nie jest np. knife knife
                     if (nazwaZmiennej == "ak47" || nazwaZmiennej == "knife" || nazwaZmiennej == "grenade" || nazwaZmiennej == "rifle" || nazwaZmiennej == "defuse" || nazwaZmiennej == "zeus" || nazwaZmiennej == "m4a1s" || nazwaZmiennej == "m4a4" || nazwaZmiennej == "usp" || nazwaZmiennej == "glock" || nazwaZmiennej == "tec" || nazwaZmiennej == "awp" || nazwaZmiennej == "scar" || nazwaZmiennej == "negev")
@@ -671,123 +702,37 @@ namespace ProjektSSIW.Interpreter
                 }
                 else
                 {
-                    try
+                    if (zmienne.czyString2(wNawiasie) && wNawiasie != "" && wNawiasie != null)
                     {
-                        if (Zmienne.typZmiennej[index] != "knife" && Zmienne.typZmiennej[index] != "zeus")
+                        int index2 = Zmienne.nazwaZmiennej.FindIndex(c => c == wNawiasie);
+                        if (index2 >= 0)
                         {
-                            Zmienne.wartoscZmiennej[index] = Convert.ToInt32(Zmienne.wartoscZmiennej[index]);
-                            Zmienne.typZmiennej[index] = "knife";
+                            try
+                            {
+                                if (Zmienne.typZmiennej[index2] != "grenade" && Zmienne.typZmiennej[index2] != "zeus")
+                                {
+                                    Zmienne.wartoscZmiennej.Add(Convert.ToDouble(Zmienne.wartoscZmiennej[index2], System.Globalization.CultureInfo.InvariantCulture));
+                                    Zmienne.typZmiennej.Add("grenade");
+                                    Zmienne.nazwaZmiennej.Add(nazwaZmiennej);
+                                }
+                                else if (Zmienne.typZmiennej[index2] == "grenade")
+                                {
+                                    tymczasowyBlad("Nie można zamienić double w double ", linijka);
+                                }
+                                else if (Zmienne.typZmiennej[index2] == "zeus")
+                                {
+                                    tymczasowyBlad("Nie można zamienić bool w double ", linijka);
+                                }
+                            }
+                            catch
+                            {
+                                tymczasowyBlad("Nie można zamienić na int ", linijka);
+                            }
                         }
-                        else if (Zmienne.typZmiennej[index] == "knife")
+                        else
                         {
-                            tymczasowyBlad("Nie można zamienić int w int ", linijka);
+                            tymczasowyBlad("Nie istnieje  zmienna o nazwie " + wNawiasie, linijka);
                         }
-                        else if (Zmienne.typZmiennej[index] == "zeus")
-                        {
-                            tymczasowyBlad("Nie można zamienić booleana w int ", linijka);
-                        }
-                    }
-                    catch
-                    {
-                        tymczasowyBlad("Nie można zamienić na int ", linijka);
-                    }
-                }
-            }
-        }
-        */
-
-
-        public void InterpretujToDouble(String nazwaZmiennej, int linijka) //
-        {
-            bool flaga = false;
-            int index = Zmienne.nazwaZmiennej.FindIndex(c => c == nazwaZmiennej);
-            if (index < 0)
-            {
-                tymczasowyBlad("Brak zmiennej o nazwie " + nazwaZmiennej, linijka);
-            }
-            else
-            {
-                if (zmienne.czyString2(nazwaZmiennej) == true) //jeżeli nazwaZmiennej to string
-                {
-                    //sprawdzanko czy nie jest np. knife knife
-                    if (nazwaZmiennej == "ak47" || nazwaZmiennej == "knife" || nazwaZmiennej == "grenade" || nazwaZmiennej == "rifle" || nazwaZmiennej == "defuse" || nazwaZmiennej == "zeus" || nazwaZmiennej == "m4a1s" || nazwaZmiennej == "m4a4" || nazwaZmiennej == "usp" || nazwaZmiennej == "glock" || nazwaZmiennej == "tec" || nazwaZmiennej == "awp" || nazwaZmiennej == "scar" || nazwaZmiennej == "negev")
-                    {
-                        flaga = true;
-                    }
-                }
-                if (flaga == true)
-                {
-                    Zmienne.bledy.Add(linijka + ": Nazwa zmiennej nie może być " + nazwaZmiennej);
-                }
-                else
-                {
-                    try
-                    {
-                        if (Zmienne.typZmiennej[index] != "grenade" && Zmienne.typZmiennej[index] != "zeus")
-                        {
-                            Zmienne.wartoscZmiennej[index] = double.Parse(Zmienne.wartoscZmiennej[index], System.Globalization.CultureInfo.InvariantCulture);
-                            Zmienne.typZmiennej[index] = "grenade";
-                        }
-                        else if (Zmienne.typZmiennej[index] == "grenade")
-                        {
-                            tymczasowyBlad("Nie można zamienić double w double ", linijka);
-                        }
-                        else if (Zmienne.typZmiennej[index] == "zeus")
-                        {
-                            tymczasowyBlad("Nie można zamienić booleana w double ", linijka);
-                        }
-                    }
-                    catch
-                    {
-                        tymczasowyBlad("Nie można zamienić na double ", linijka);
-                    }
-                }
-            }
-        }
-
-        public void InterpretujToFloat(String nazwaZmiennej, int linijka) //
-        {
-            bool flaga = false;
-            int index = Zmienne.nazwaZmiennej.FindIndex(c => c == nazwaZmiennej);
-            if (index < 0)
-            {
-                tymczasowyBlad("Brak zmiennej o nazwie " + nazwaZmiennej, linijka);
-            }
-            else
-            {
-                if (zmienne.czyString2(nazwaZmiennej) == true) //jeżeli nazwaZmiennej to string
-                {
-                    //sprawdzanko czy nie jest np. knife knife
-                    if (nazwaZmiennej == "ak47" || nazwaZmiennej == "knife" || nazwaZmiennej == "grenade" || nazwaZmiennej == "rifle" || nazwaZmiennej == "defuse" || nazwaZmiennej == "zeus" || nazwaZmiennej == "m4a1s" || nazwaZmiennej == "m4a4" || nazwaZmiennej == "usp" || nazwaZmiennej == "glock" || nazwaZmiennej == "tec" || nazwaZmiennej == "awp" || nazwaZmiennej == "scar" || nazwaZmiennej == "negev")
-                    {
-                        flaga = true;
-                    }
-                }
-                if (flaga == true)
-                {
-                    Zmienne.bledy.Add(linijka + ": Nazwa zmiennej nie może być " + nazwaZmiennej);
-                }
-                else
-                {
-                    try
-                    {
-                        if (Zmienne.typZmiennej[index] != "rifle" && Zmienne.typZmiennej[index] != "zeus")
-                        {
-                            Zmienne.wartoscZmiennej[index] = Convert.ToSingle(Zmienne.wartoscZmiennej[index]);
-                            Zmienne.typZmiennej[index] = "rifle";
-                        }
-                        else if (Zmienne.typZmiennej[index] == "rifle")
-                        {
-                            tymczasowyBlad("Nie można zamienić float w float ", linijka);
-                        }
-                        else if (Zmienne.typZmiennej[index] == "zeus")
-                        {
-                            tymczasowyBlad("Nie można zamienić booleana w float ", linijka);
-                        }
-                    }
-                    catch
-                    {
-                        tymczasowyBlad("Nie można zamienić na float ", linijka);
                     }
                 }
             }
