@@ -38,6 +38,7 @@ namespace ProjektSSIW.Interpreter
         static extern bool AllocConsole();
 
 
+        /*
         public void InterpretujFunkcje(string pom, int i)
         {
             string[] tab = pom.Split(' ');
@@ -93,7 +94,7 @@ namespace ProjektSSIW.Interpreter
 
 
         }
-
+        */
 
 
         public void InterpretujWrite(string tempArray, int linijka)//m4a1
@@ -270,23 +271,33 @@ namespace ProjektSSIW.Interpreter
                 }
                 pomocnicza1++;
             }
+
+            bool flaga1 = false;
+            foreach(var item in Zmienne.bledy)
+            {
+                if (item.Contains(linijka+":"))
+                {
+                    flaga1 = true;
+                    break;
+                }
+            }
+            if(flaga1 == true)
+            {
+                Zmienne.konsola.RemoveAt(Zmienne.konsola.Count - 1);
+            }
+
+
         }
 
 
 
 
-        public void InterpretujWriteLine(string tempArray, int linijka)//m4a1s
+        public void InterpretujWriteLine(string tempArray, int linijka)//m4a1
         {
-            // tempArray = tempArray.Remove(tempArray.Length);
-
-            //string[] subs = tempArray.Split('+','\t'); //tablica przechowujaca elementy oprocz +
+            //tempArray = tempArray.Remove(tempArray.Length - 1);
             string[] subs = tempArray.Split('+'); //tablica przechowujaca elementy oprocz +
             int pomocnicza1 = 0;
 
-            foreach (var item in subs)
-            {
-                Zmienne.bledy.Add(item);
-            }
 
             foreach (var item in subs)
             {
@@ -298,14 +309,14 @@ namespace ProjektSSIW.Interpreter
                     {
                         if (pom[0] == '\'' && pom[pom.Length - 1] == '\'') // sprawdź czy na początku i końcu apostrofy ' '
                         {
-                            Zmienne.konsola.Add(pom.Substring(1, pom.Length - 2)); // dodaj do konsoli
+                                Zmienne.konsola.Add(pom.Substring(1, pom.Length - 2)); // dodaj do konsoli
                         }
                         else if (pom[0] != '\'' && pom[pom.Length - 1] != '\'') //jeżeli nie ma apostrofów to sprawdza czy jest taka zmienna
                         {
                             bool isNumeric = int.TryParse(pom, out int n);// sprawdź czy item jest numerem
                             if (isNumeric) // sprawdź czy item jest numerem
                             {
-                                Zmienne.konsola.Add(pom + ""); //dodaj numer do konsoli
+                                    Zmienne.konsola.Add(pom + ""); //dodaj numer do konsoli
                             }
                             else
                             {
@@ -316,7 +327,7 @@ namespace ProjektSSIW.Interpreter
                                     bool isNumeric2 = int.TryParse(subsPom[1], out int nnn);// sprawdź czy item jest numerem
                                     if (isNumeric1 == true && isNumeric2 == true)
                                     {
-                                        Zmienne.konsola.Add(pom + "");
+                                            Zmienne.konsola.Add(pom + ""); //dodaj numer do konsoli
                                     }
                                     else
                                     {
@@ -333,8 +344,7 @@ namespace ProjektSSIW.Interpreter
                                     }
                                     else
                                     {
-                                        Zmienne.konsola.Add(Zmienne.wartoscZmiennej[index] + "");
-                                        Zmienne.bledy.Add(Zmienne.wartoscZmiennej[index] + " o to");
+                                            Zmienne.konsola.Add(Zmienne.wartoscZmiennej[index] + ""); //dodaj numer do konsoli
                                     }
                                 }
                             }
@@ -349,18 +359,7 @@ namespace ProjektSSIW.Interpreter
                         bool isNumeric = int.TryParse(pom, out int n);// sprawdź czy item jest numerem
                         if (isNumeric) // sprawdź czy item jest numerem
                         {
-                            if (Zmienne.konsola.Count == 0)
-                            {
                                 Zmienne.konsola.Add(pom);
-                            }
-                            else
-                            {
-                                Zmienne.konsola[Zmienne.konsola.Count - 1] = Zmienne.konsola[Zmienne.konsola.Count - 1] + pom;
-                            }
-                        }
-                        else
-                        {
-                            tymczasowyBlad("Źle wpisana wartość/zmienna", linijka); break;
                         }
                     }
                 }
@@ -401,7 +400,7 @@ namespace ProjektSSIW.Interpreter
                                     int index = Zmienne.nazwaZmiennej.FindIndex(c => c == item);
                                     if (index < 0)
                                     {
-                                        tymczasowyBlad("Brak zmiennej o nazwiea " + pom, linijka); break;
+                                        tymczasowyBlad("Brak zmiennej o nazwie " + pom, linijka); break;
                                     }
                                     else
                                     {
@@ -430,6 +429,22 @@ namespace ProjektSSIW.Interpreter
                 }
                 pomocnicza1++;
             }
+
+            bool flaga1 = false;
+            foreach (var item in Zmienne.bledy)
+            {
+                if (item.Contains(linijka + ":"))
+                {
+                    flaga1 = true;
+                    break;
+                }
+            }
+            if (flaga1 == true)
+            {
+                Zmienne.konsola.RemoveAt(Zmienne.konsola.Count - 1);
+            }
+
+
         }
 
 
@@ -927,14 +942,14 @@ namespace ProjektSSIW.Interpreter
                                 {
                                     Zmienne.typZmiennej.Add(tempArray[0]);
                                     Zmienne.nazwaZmiennej.Add(tempArray[1]);
-                                    Zmienne.wartoscZmiennej.Add(false);
+                                    Zmienne.wartoscZmiennej.Add("terrorist");
                                     Zmienne.konsola.Add("false");
                                 }
                                 else if (temporary == "antiterrorist")
                                 {
                                     Zmienne.typZmiennej.Add(tempArray[0]);
                                     Zmienne.nazwaZmiennej.Add(tempArray[1]);
-                                    Zmienne.wartoscZmiennej.Add(true);
+                                    Zmienne.wartoscZmiennej.Add("antiterrorist");
                                     Zmienne.konsola.Add("true");
                                 }
                             }
