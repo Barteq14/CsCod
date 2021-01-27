@@ -97,7 +97,7 @@ namespace ProjektSSIW.Interpreter
                                                 if(cos[j] != "")
                                                 {
                                                     if (cos[j] == knife)
-                                                    {
+                                                    {//
                                                         // zmienne.TomaszowyInt(warunek1, 0);
                                                         zmienne.InterpretujInt(warunek1, 0);
                                                       pozycjaZmiennejZWarunku = sprawdzaniePozycjiWLiscie( cos[1]);
