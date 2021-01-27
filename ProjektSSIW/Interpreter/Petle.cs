@@ -266,7 +266,7 @@ save
 
         public bool wykonanieISprawdzenie( int g)
         {
-            if (podzialWarunku.Length == 0)
+            if (podzialWarunku.Length != 0)
             {
                 for (int j = 0; j < podzialWarunku.Length - 1; j++)
                 {
@@ -309,7 +309,7 @@ save
 
 
                 int i;
-                for (i = 0; i < Zmienne.nazwaZmiennej.Count - 1; i++)
+                for (i = 0; i <= Zmienne.nazwaZmiennej.Count - 1; i++)
                 {
                     if (Zmienne.nazwaZmiennej[i] == nazwa)
                     {
@@ -332,7 +332,7 @@ save
             {
                 if(klamraOtwierajace[j]==(size))
                 {
-                    while((x)!=klamraZamykajace[(klamraZamykajace.Count-j)]){
+                    while((x)!=klamraZamykajace[(klamraZamykajace.Count-j-1)]){
                         if (x>tempArray.Length)
                         {
                             Zmienne.bledy.Add("Brak } " + size);
