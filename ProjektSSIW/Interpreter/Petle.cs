@@ -98,9 +98,11 @@ namespace ProjektSSIW.Interpreter
                                                 {
                                                     if (cos[j] == knife)
                                                     {//
-                                                        // zmienne.TomaszowyInt(warunek1, 0);
-                                                        zmienne.InterpretujInt(warunek1, 0);
-                                                      pozycjaZmiennejZWarunku = sprawdzaniePozycjiWLiscie( cos[1]);
+                                                        string nazwa1 = warunek1[0].TrimStart('k', 'n', 'i', 'f', 'e', ' ');
+                                                        string[] nazwa2 = nazwa1.Split('=');
+                                                     zmienne.TomaszowyInt(nazwa2[0].TrimEnd(' '),nazwa2[1].TrimStart(' ')+";", size);
+                                                        //zmienne.InterpretujInt(warunek1, 0);
+                                                      pozycjaZmiennejZWarunku = sprawdzaniePozycjiWLiscie(nazwa2[0].TrimEnd(' '));
                                                     }
                                                     else
                                                     {
@@ -130,7 +132,7 @@ namespace ProjektSSIW.Interpreter
                                                 {
                                                 if (przechowanieWartosc == false)
                                                 {
-                                            string pomocnicza = warunek1[1];
+                                            string pomocnicza = warunek1[1].TrimStart(' ');
                                                  g  = zwracanieIndexuOperatora(pomocnicza);
                                                 }
                                                     przechowanieWartosc = wykonanieISprawdzenie( g);
@@ -142,7 +144,7 @@ namespace ProjektSSIW.Interpreter
                             /*
                             
 rush
-awp(knife ss=1;ss<5;ss++){
+awp( knife ss = 1; ss < 5; ss++){
 }
 save
                           */
@@ -268,6 +270,8 @@ save
         {
             if (podzialWarunku.Length != 0)
             {
+              podzialWarunku[0] = podzialWarunku[0].Trim();
+              podzialWarunku[1] = podzialWarunku[1].TrimStart(' ');
                 for (int j = 0; j < podzialWarunku.Length - 1; j++)
                 {
                     if (podzialWarunku[j] != "" && Zmienne.nazwaZmiennej.Contains(podzialWarunku[j]) == true)

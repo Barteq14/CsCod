@@ -85,7 +85,7 @@ namespace ProjektSSIW
                                 czyBylo = true;
                                 czyBylo2 = true;
                             }
-                            if (tab[0] == "}")
+                            if (pom == "}"|| tab.Length==2)
                             {
                                 czyBylo = true;
                                 czyBylo2 = true;
