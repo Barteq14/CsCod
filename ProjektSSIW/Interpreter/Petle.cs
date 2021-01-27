@@ -604,7 +604,7 @@ save
             char[] tab1 = pom.ToCharArray();
 
             
-            if (tab1[0] == '(')   //sprawdzanie czy czy nawias jest po negev
+            if (tab1[0] == '(')   //sprawdzanie czy  nawias jest po negev
             {
                 
                 string pom3 = pom.TrimEnd(' ', '{');
