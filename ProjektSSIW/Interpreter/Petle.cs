@@ -26,8 +26,9 @@ namespace ProjektSSIW.Interpreter
 
         public void InterpretujPetle(string[] tempArray, int i)
         {
-          
-               string[] subs2 = tempArray[i].Split(' ', '('); //tablica przechowujaca elementy oprocz ' '
+
+            string f = tempArray[i].Trim(' ');
+            string[] subs2 =f.Split('('); //tablica przechowujaca elementy oprocz ' '
 
                 switch (subs2[0])
                 {
@@ -35,11 +36,11 @@ namespace ProjektSSIW.Interpreter
                          fore( i,tempArray);
                         break;
 
-                    case scar:
-                        ife( i);
+                    case negev:
+                        ife( i,tempArray);
                         break;
 
-                    case negev:
+                    case scar:
                         wailee( i);
                         break;
                 }
@@ -129,9 +130,10 @@ namespace ProjektSSIW.Interpreter
                                                 {
                                                 if (przechowanieWartosc == false)
                                                 {
-                                                 g  = zwracanieIndexuOperatora(warunek1);
+                                            string pomocnicza = warunek1[1];
+                                                 g  = zwracanieIndexuOperatora(pomocnicza);
                                                 }
-                                                    przechowanieWartosc = wykonanieISprawdzenie(warunek1 ,g);
+                                                    przechowanieWartosc = wykonanieISprawdzenie( g);
                                                     wartoscBool = podnoszenieZmienej(warunek1);
                                                 } while (wartoscBool);
                                             return;
@@ -243,15 +245,15 @@ save
             return -1;
         }
 
-        public int zwracanieIndexuOperatora(string[] warunek1)
+        public int zwracanieIndexuOperatora(string warunek1)
         {
-            string[] operatory = new string[] { "==", "<=", ">=", "<", ">" };
+            string[] operatory = new string[] { "==", "<=", ">=", "<", ">" ,"!="};
 
             for (int g = 0; g < operatory.Length; g++)
             {
-                 podzialWarunku = warunek1[1].Split(operatory, StringSplitOptions.None);
+                 podzialWarunku = warunek1.Split(operatory, StringSplitOptions.None);
 
-                if (warunek1[1].Contains(operatory[g]) && podzialWarunku.Length == 2)
+                if (warunek1.Contains(operatory[g]) && podzialWarunku.Length == 2)
                 {
                     return g;
                 }
@@ -259,7 +261,7 @@ save
             return -1;
         }
 
-        public bool wykonanieISprawdzenie(string[] warunek1 , int g)
+        public bool wykonanieISprawdzenie( int g)
         {
             for (int j = 0; j < podzialWarunku.Length - 1; j++)
             {
@@ -293,14 +295,20 @@ save
         }
         
         public int sprawdzaniePozycjiWLiscie(string nazwa)
-        { 
-            int i;
-            for (i = 0; i < Zmienne.nazwaZmiennej.Count; i++)
+        {
+            if (Zmienne.nazwaZmiennej.Count != 0)
             {
-                if (Zmienne.nazwaZmiennej[i] == nazwa)
-                {
 
-                    return i;
+
+                int i;
+                for (i = 0; i < Zmienne.nazwaZmiennej.Count - 1; i++)
+                {
+                    if (Zmienne.nazwaZmiennej[i] == nazwa)
+                    {
+
+                        return i;
+                    }
+
                 }
             }
             return -1;
@@ -316,7 +324,7 @@ save
             {
                 if(klamraOtwierajace[j]==(size))
                 {
-                    while((x)!=klamraZamykajace[j]){
+                    while((x)!=klamraZamykajace[(klamraZamykajace.Count-j)]){
                         if (x>tempArray.Length)
                         {
                             //blad 
@@ -530,6 +538,43 @@ save
                             return false;
                         }
                     }
+                case 5:
+                    if (sprawdzaniePozycjiWLiscie(podzialWarunku[j]) != (-1))
+                    {
+                        if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] != Zmienne.wartoscZmiennej[sprawdzaniePozycjiWLiscie(podzialWarunku[j])])
+                        {
+                            // wwołanie funkcji
+                            wywołanieKodu();
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        if (zmienne.czyInt(podzialWarunku[j]))
+                        {
+                            string ppo = podzialWarunku[j];
+                            int p = int.Parse(ppo);
+                            if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] != p)
+                            {
+                                // wwołanie funkcji
+                                wywołanieKodu();
+                                return true;
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            Zmienne.bledy.Add("Błedny typ ");
+                            return false;
+                        }
+                    }
                 case -1:
                     //błąd
                     return false;
@@ -540,12 +585,57 @@ save
            
         }
 
-        public void ife( int size)
+        public void ife(int linijkaKodu, string[] tablica)
         {
-            for (int j = 0; j < size; j++)
+            size = linijkaKodu;
+            string pom = tablica[size].TrimStart('n', 'e', 'g', 'v',' ');//negev
+            char[] tab1 = pom.ToCharArray();
+
+            //***********************
+            //warunek pętli for
+            if (tab1[0] == '(')   //sprawdzanie czy czy nawias jest po negev
             {
                 
+                string pom3 = pom.TrimEnd(' ', '{');
+                char[] warunek = pom3.ToCharArray();
+
+                if (warunek[warunek.Length - 1] == ')')// sprawdzenie zamknięcia wrunku     
+                {
+                    pom3 = pom3.TrimEnd(')');
+                    pom3 = pom3.TrimStart('(');
+                    string[] nazwa = pom3.Split(new string[] { "==", "!=" ,"<",">","<=",">="}, StringSplitOptions.None);
+                    if (sprawdzaniePozycjiWLiscie(nazwa[0]) != (-1) || sprawdzaniePozycjiWLiscie(nazwa[1]) != (-1))
+                    {
+
+                        bool wartoscBool = false;
+                        bool czyPrawda = false;
+                        int g = -1;
+                        do
+                        {
+                            if (czyPrawda == false)
+                            {
+                                g = zwracanieIndexuOperatora(pom3);
+                            }
+                            czyPrawda = wykonanieISprawdzenie( g);
+                            
+                        } while (wartoscBool);
+                        return;
+                    }
+
+                }
             }
+
+            /*         for (int j = 0; j < size; j++)
+             {
+            rush
+ knife ss=1;
+ negev(ss==1){
+ kljl
+ gjl
+ }
+ save
+
+             }*/
         }
         public void wailee( int size)
         {
