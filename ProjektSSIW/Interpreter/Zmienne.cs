@@ -1093,6 +1093,25 @@ namespace ProjektSSIW.Interpreter
                             {
                                 ciag3 = ciag3 + test[temp].ToString();
                             }
+                            else // jeżeli double
+                            {
+                                try// tutaj będziemy sprawdzać czy liczba jest doublem
+                                {
+                                    string[] subsPom = match.Split('.', '\t'); //tablica przechowujaca elementy oprocz .
+                                    if (subsPom.Count() == 2)
+                                    {
+                                        bool isNumeric1 = int.TryParse(subsPom[0], out int nn);// sprawdź czy item jest numerem
+                                        bool isNumeric2 = int.TryParse(subsPom[1], out int nnn);// sprawdź czy item jest numerem
+                                        if (isNumeric1 == true && isNumeric2 == true)
+                                        {
+                                                ciag3 = ciag3 + test[temp];
+                                        }
+                                    }
+                                }
+                                catch //jeżeli
+                                {                                        //bledy.Add(linijka + ": blad??? " + match);
+                                }
+                            }
 
                             temp++; //pomocnicza
                         }
