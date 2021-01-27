@@ -82,6 +82,13 @@ namespace ProjektSSIW
                             if (tab[0] == "ak47();")
                             {
                                 funkcje.InterpretujReadLine2(i);
+                                czyBylo = true;
+                                czyBylo2 = true;
+                            }
+                            if (tab[0] == "}")
+                            {
+                                czyBylo = true;
+                                czyBylo2 = true;
                             }
                         }
                         if (pom.Length >= 5)
