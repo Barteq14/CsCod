@@ -63,7 +63,7 @@ namespace ProjektSSIW.Interpreter
                 {
                     bledy.Add(linijka + ": Nazwa zmiennej nie może być " + nazwaZmiennej2);
                 }
-                if (ciag.Contains("ak47") || ciag.Contains("knife") || ciag.Contains("grenade") || ciag.Contains("rifle") || ciag.Contains("defuse") || ciag.Contains("zeus") || ciag.Contains("m4a1s") || ciag.Contains("usp") || ciag.Contains("glock") || ciag.Contains("tec") || ciag.Contains("awp") || ciag.Contains("scar") || ciag.Contains("negev") || ciag.Contains("deagle"))
+                if (ciag.Contains("ak47") || ciag.Contains("knife") || ciag.Contains("grenade") || ciag.Contains("rifle") || ciag.Contains("defuse") || ciag.Contains("zeus") || ciag.Contains("m4a1s") || ciag.Contains("usp") || ciag.Contains("glock") || ciag.Contains("tec") || ciag.Contains("awp") || ciag.Contains("scar") || ciag.Contains("negev") || ciag.Contains("deagle") || ciag.Contains("terrorist") || ciag.Contains("antiterrorist"))
                 {
                     //bledy.Add(indeks + ": Nazwa zmiennej nie może być ");
                 }
@@ -309,7 +309,7 @@ namespace ProjektSSIW.Interpreter
                 {
                     bledy.Add(indeks + ": Nazwa zmiennej nie może być " + nazwaZmiennej2);
                 }
-                if (ciag.Contains("ak47") || ciag.Contains("knife") || ciag.Contains("grenade") || ciag.Contains("rifle") || ciag.Contains("defuse") || ciag.Contains("zeus") || ciag.Contains("m4a1s") || ciag.Contains("usp") || ciag.Contains("glock") || ciag.Contains("tec") || ciag.Contains("awp") || ciag.Contains("scar") || ciag.Contains("negev") || ciag.Contains("deagle"))
+                if (ciag.Contains("ak47") || ciag.Contains("knife") || ciag.Contains("grenade") || ciag.Contains("rifle") || ciag.Contains("defuse") || ciag.Contains("zeus") || ciag.Contains("m4a1s") || ciag.Contains("usp") || ciag.Contains("glock") || ciag.Contains("tec") || ciag.Contains("awp") || ciag.Contains("scar") || ciag.Contains("negev") || ciag.Contains("deagle") || ciag.Contains("terrorist") || ciag.Contains("antiterrorist"))
                 {
                     //bledy.Add(indeks + ": Nazwa zmiennej nie może być ");
                 }
@@ -954,8 +954,8 @@ namespace ProjektSSIW.Interpreter
                 {
                     bledy.Add(indeks + ": Nazwa zmiennej nie może być " + nazwaZmiennej2);
                 }
-                if (ciag.Contains("ak47") || ciag.Contains("knife") || ciag.Contains("grenade") || ciag.Contains("rifle") || ciag.Contains("defuse") || ciag.Contains("zeus") || ciag.Contains("m4a1s") || ciag.Contains("usp") || ciag.Contains("glock") || ciag.Contains("tec") || ciag.Contains("awp") || ciag.Contains("scar") || ciag.Contains("negev") || ciag.Contains("deagle"))
-                {
+                if (ciag.Contains("ak47") || ciag.Contains("knife") || ciag.Contains("grenade") || ciag.Contains("rifle") || ciag.Contains("defuse") || ciag.Contains("zeus") || ciag.Contains("m4a1s") || ciag.Contains("usp") || ciag.Contains("glock") || ciag.Contains("tec") || ciag.Contains("awp") || ciag.Contains("scar") || ciag.Contains("negev") || ciag.Contains("deagle") || ciag.Contains("terrorist") || ciag.Contains("antiterrorist"))
+                                {
                     //bledy.Add(indeks + ": Nazwa zmiennej nie może być ");
                 }
                 else
@@ -968,7 +968,6 @@ namespace ProjektSSIW.Interpreter
                     else //jeżeli nie ma takiej zmiennej to robi dalej
                     {
                         string[] test = Regex.Split(ciag.Remove(ciag.Length - 1), "(?<=[()\\-+*/'])|(?=[()\\-+*/'])"); // rozdziela na tablicę stringów cały ciąg
-
 
                         if ((test[0] == "" || test[0] == null || test[0] == " ")) //jak rozdziela tablicę i na samym początku jest nawias otwierający to test[0] = " " więc usuwamy ten pierwszy element
                         {
@@ -1009,6 +1008,7 @@ namespace ProjektSSIW.Interpreter
                                     }
                                     zajaczek++;
                                 }
+
                             }
 
                             if (czyString2(match) == true) // czemu mi daje tutaj false jak mam stringa ...
@@ -1018,37 +1018,73 @@ namespace ProjektSSIW.Interpreter
                                     break;
                                 }
 
+                                //niewiem czy potrzebne
                                 if (temp != 0 && temp + 1 == test.Length && test[temp] == "") //tutaj dodałem temp != 0  żeby błędu nie było
                                 {
                                     break;
                                 }
                                 //string cos = 'mam lat: ' +pom+2+ 'yolo'; nie dziala 
                                 //string cos = 'mam lat: ' +pom+2; dziala teraz 
-                                if (temp != 0 && test[temp - 1] == "'" && test[temp + 1] == "'") //bo wykracza mi poza tablice, sprawdzi ze ' było przed ale juz po nie ma 
+                                if (temp != 0)
                                 {
-                                    ciag3 = ciag3 + test[temp];
-                                }
-                                else if (temp != 0 && test[temp - 1] == "+" && test[temp] != " " || test[temp + 1] == "+" && test[temp] != " ")
-                                {
-                                    int index = Zmienne.nazwaZmiennej.FindIndex(c => c == match);
-                                    if (index < 0) //jeżeli nie ma takiej zmiennej
+                                    if (test[temp - 1] == "'" && test[temp + 1] == "'") //bo wykracza mi poza tablice, sprawdzi ze ' było przed ale juz po nie ma 
                                     {
-                                        if (flaga == false)
+                                        ciag3 = ciag3 + test[temp];
+                                    }
+                                    if (test[temp - 1] == "+" && test[temp] != " " || test[temp + 1] == "+" && test[temp] != " ")
+                                    {
+                                        int index = Zmienne.nazwaZmiennej.FindIndex(c => c == match);
+                                        if (index < 0) //jeżeli nie ma takiej zmiennej
                                         {
-                                            bledy.Add(indeks + ": nie istnieje zmienna o nazwie " + match);
+                                            if (flaga == false)
+                                            {
+                                                bledy.Add(indeks + ": nie istnieje zmienna o nazwie " + match);
+                                            }
+                                        }
+                                        else // jeżeli jest zmienna to 
+                                        {
+                                            if (Zmienne.typZmiennej[index] == "grenade" || Zmienne.typZmiennej[index] == "knife" || Zmienne.typZmiennej[index] == "defuse") // jezeli jest taka zmienna to sprawdza czy to jest float
+                                            {
+                                                test[temp] = (Zmienne.wartoscZmiennej[index]) + "";
+                                                ciag3 = ciag3 + " " + test[temp];
+                                                //bledy.Add("debug");
+                                            }
+                                            else //jezeli to nie zadna z powyzszych typow
+                                            {
+                                                bledy.Add(indeks + ": zmienna o nazwie " + match + " posaida zly typ, nie mozna dodać do string.");
+                                            }
                                         }
                                     }
-                                    else // jeżeli jest zmienna to 
+                                }
+                                else//dodałem bo na poczatku nie chcialo
+                                {
+                                    if (test[temp].StartsWith("'") && test[temp + 1].EndsWith("'")) //zajaczki
                                     {
-                                        if (Zmienne.typZmiennej[index] == "grenade" || Zmienne.typZmiennej[index] == "knife" || Zmienne.typZmiennej[index] == "defuse") // jezeli jest taka zmienna to sprawdza czy to jest float
+                                        ciag3 = ciag3 + test[temp];
+                                    }
+                                    if (test[temp] != " " || test[temp + 1] == "+" && test[temp] != " ")
+                                    {
+                                        int index = Zmienne.nazwaZmiennej.FindIndex(c => c == match);
+                                        if (index < 0) //jeżeli nie ma takiej zmiennej
                                         {
-                                            test[temp] = (Zmienne.wartoscZmiennej[index]) + "";
-                                            ciag3 = ciag3 + " " + test[temp];
-                                            //bledy.Add("debug");
+                                            if (flaga == false)
+                                            {
+                                                konsola.Add(match);
+                                                bledy.Add(indeks + ": nie istnieje zmienna o nazwiess " + match);
+                                            }
                                         }
-                                        else //jezeli to nie zadna z powyzszych typow
+                                        else // jeżeli jest zmienna to 
                                         {
-                                            bledy.Add(indeks + ": zmienna o nazwie " + match + " posaida zly typ, nie mozna dodać do string.");
+                                            if (Zmienne.typZmiennej[index] == "grenade" || Zmienne.typZmiennej[index] == "knife" || Zmienne.typZmiennej[index] == "defuse" || Zmienne.typZmiennej[index] == "zeus") // jezeli jest taka zmienna to sprawdza czy to jest float
+                                            {
+                                                test[temp] = (Zmienne.wartoscZmiennej[index]) + "";
+                                                ciag3 = test[temp];
+                                                //bledy.Add("debug");
+                                            }
+                                            else //jezeli to nie zadna z powyzszych typow
+                                            {
+                                                bledy.Add(indeks + ": zmienna o nazwie " + match + " posaida zly typ, nie mozna dodać do string.");
+                                            }
                                         }
                                     }
                                 }
@@ -1098,7 +1134,7 @@ namespace ProjektSSIW.Interpreter
             {
                 bledy.Add(indeks + ": Nazwa zmiennej nie może być " + nazwaZmiennej2);
             }
-            if (ciag.Contains("ak47") || ciag.Contains("knife") || ciag.Contains("grenade") || ciag.Contains("rifle") || ciag.Contains("defuse") || ciag.Contains("zeus") || ciag.Contains("m4a1s") || ciag.Contains("usp") || ciag.Contains("glock") || ciag.Contains("tec") || ciag.Contains("awp") || ciag.Contains("scar") || ciag.Contains("negev") || ciag.Contains("deagle"))
+            if (ciag.Contains("ak47") || ciag.Contains("knife") || ciag.Contains("grenade") || ciag.Contains("rifle") || ciag.Contains("defuse") || ciag.Contains("zeus") || ciag.Contains("m4a1s") || ciag.Contains("usp") || ciag.Contains("glock") || ciag.Contains("tec") || ciag.Contains("awp") || ciag.Contains("scar") || ciag.Contains("negev") || ciag.Contains("deagle") || ciag.Contains("terrorist") || ciag.Contains("antiterrorist"))
             {
                 //bledy.Add(indeks + ": Nazwa zmiennej nie może być ");
             }

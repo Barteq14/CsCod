@@ -163,7 +163,14 @@ namespace ProjektSSIW
                                     string prawaStrona = "";
                                     for (int tmp = 3; tmp < tab.Length; tmp++)
                                     {
-                                        prawaStrona = prawaStrona + tab[tmp];
+                                        if (prawaStrona != "")
+                                        {
+                                            prawaStrona = prawaStrona + " " + tab[tmp];
+                                        }
+                                        else
+                                        {
+                                            prawaStrona = tab[tmp];
+                                        }
                                     }
                                     zmienne.BartkowyString(tab[1], prawaStrona, i);
                                     //czyBylo = true;
