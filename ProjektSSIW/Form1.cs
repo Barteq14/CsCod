@@ -15,10 +15,11 @@ namespace ProjektSSIW
     public partial class Form1 : Form
     {
         public delegate void Delegat(string phrase);
+        Petle petle = new Petle();
         Składnia składnia = new Składnia();
         Zmienne zmienne = new Zmienne();
         Funkcje funkcje = new Funkcje();
-        
+
 
         public Form1()
         {
@@ -36,40 +37,35 @@ namespace ProjektSSIW
             string[] tempArray = richTextBox1.Lines;
             string[] array = richTextBox1.Lines;
             List<string> pomLista = new List<string>();
-           
 
-            
-            
+
+            //tymczasowe do sprawdzania
+            //funkcje.przykladoweDane();
+            listView1.Clear();
+            listView2.Clear();
+            listView3.Clear();
+            listView4.Clear();
+            listView5.Clear();
+            listView6.Clear();
+
 
 
             if (tempArray.Count() <= 0) // sprawdzenie czy tablica jest pusta
             {
                 Zmienne.bledy.Add("Nie wpisałeś żadnego kodu.");
             }
-            else 
+            else
             {
                 int size = tempArray.Length; // pobieram długość tablicy 
 
-                if (tempArray[0] == "rush" && tempArray[size-1] == "save") // sprawdzam czy na poczatku jest 'rush' a na końcu 'save'
+                if (tempArray[0] == "rush" && tempArray[size - 1] == "save") // sprawdzam czy na poczatku jest 'rush' a na końcu 'save'
                 {
 
 
-                    for (int i = 1; i < tempArray.Length-1; i++)
+                    for (int i = 1; i < tempArray.Length - 1; i++)
                     {
                         string pom = tempArray[i];
-
-
-
-
-
-
-
-
-
-
-
-
-
+                        string[] tab = tempArray[i].Split(' ');
 
                         //WRITE WRITELN
                         //Funkcje sprawdzanie czy jest tylko 1 ciąg w linijce, przydatne do write i writeln tylko
@@ -88,8 +84,50 @@ namespace ProjektSSIW
                                 funkcje.InterpretujWrite(pomWnawiasach, i);
                             }
                         }
+                        if (tab.Length == 4 && tab[3] == "ak47()")
+                        {
+                            funkcje.InterpretujReadLine(tab, i);
+                        }
+                        else if (tab.Length == 1 && tab[0] == "ak47()")
+                        {
+                            funkcje.InterpretujReadLine2(i);
+                        }
+                        //czy int 
+                        if (tab[0] == "knife" && tab.Length == 4 && tab[3].EndsWith(";"))
+                        {
+                            string pomknife = "";
+                            for (int jk = 3; jk < tab.Length; jk++)
+                            {
+                                pomknife = pomknife + tab[jk];
+                            }
+                            zmienne.TomaszowyInt(tab[1], pomknife, i);
+                        }
+
+                        //czy float
+                        if (tab[0] == "grenade" && tab.Length == 4 && tab[3].EndsWith(";"))
+                        {
+                            string prawaStrona = "";
+                            for (int tmp = 3; tmp < tab.Length; tmp++)
+                            {
+                                prawaStrona = prawaStrona + tab[tmp];
+                            }
+                            zmienne.BartkowyDouble(tab[1], prawaStrona, i);
+                        }
+
+                        if (tab[0] == "defuse" && tab.Length == 4 && tab[3].EndsWith(";"))
+                        {
+                            string prawaStrona = "";
+                            for (int tmp = 3; tmp < tab.Length; tmp++)
+                            {
+                                prawaStrona = prawaStrona + tab[tmp];
+                            }
+                            zmienne.BartkowyString(tab[1], prawaStrona, i);
+                        }
 
 
+                        petle.InterpretujPetle(tempArray, i);
+
+                        //zmienne.InterpretujZmienne(tempArray, i);
 
 
 
@@ -98,45 +136,42 @@ namespace ProjektSSIW
 
 
 
-                    //tymczasowe do sprawdzania
-                    funkcje.przykladoweDane();
-                    funkcje.InterpretujToDouble("test6",100);
 
-                    
-                    
+                    /*
+                     rush
+knife liczba = 21+3;
+grenade zmienna = (2.3+1)+liczba;
+defuse napis = "siemanko";
+save
+                     
+                     
+                     */
 
 
-                    //dodawanie do konsoli
-                    foreach (var sub in Zmienne.konsola)
-                    {
-                        listView1.Items.Add(sub);
-                    }
-                    //dodawanie do bledów
-                    foreach (var p in Zmienne.bledy)
-                    {
-                        listView3.Items.Add(p);
-                    }
 
-                    for(int i = 0; i < tempArray.Length; i++)
-                    {
-                        if (tempArray[i].Contains("knife") || tempArray[0] == "knife")//INT
-                        {
-                            zmienne.InterpretujInt2(tempArray, i);
-                        }
-                        if (tempArray[i].Contains("grenade"))//FLOAT
-                        {
-                           
-                        }
-                        if (tempArray[i].Contains("defuse"))//STRING
-                        {
-                            zmienne.InterpretujString(tempArray, i);
-                        }
-                        if (tempArray[i].Contains("zeus") || tempArray[0] == "zeus")
-                        {
-                            zmienne.InterpretujBoolean(tempArray,i);
-                        }
-                    }
-                    
+
+
+                    /*
+                                        for(int i = 0; i < tempArray.Length; i++)
+                                        {
+                                            if (tempArray[i].Contains("knife") || tempArray[0] == "knife")//INT
+                                            {
+                                                zmienne.InterpretujInt2(tempArray, i);
+                                            }
+                                            if (tempArray[i].Contains("grenade"))//FLOAT
+                                            {
+
+                                            }
+                                            if (tempArray[i].Contains("defuse"))//STRING
+                                            {
+                                                zmienne.InterpretujString(tempArray, i);
+                                            }
+                                            if (tempArray[i].Contains("zeus") || tempArray[0] == "zeus")
+                                            {
+                                                zmienne.InterpretujBoolean(tempArray,i);
+                                            }
+                                        }
+                                        */
 
 
 
@@ -155,15 +190,29 @@ namespace ProjektSSIW
                     foreach (var sub in Zmienne.wartoscZmiennej)
                     {
                         listView5.Items.Add(sub + "");
-                        listView6.Items.Add(sub.GetType()+"");
+                        listView6.Items.Add(sub.GetType() + "");
+                    }
+                    //dodawanie do konsoli
+                    foreach (var sub in Zmienne.konsola)
+                    {
+                        listView2.Items.Add(sub);
+                    }
+                    //dodawanie do bledów
+                    foreach (var p in Zmienne.bledy)
+                    {
+                        listView3.Items.Add(p);
                     }
 
 
 
+
+
+
                 }
-                
+
             }
-            zmienne.InterpretujZmienne(tempArray);
+
+
         }
 
         private void button2_Click(object sender, EventArgs e) //czyszczenie 
@@ -177,7 +226,13 @@ namespace ProjektSSIW
             Zmienne.konsola.Clear();
             Zmienne.typZmiennej.Clear();
             Zmienne.nazwaZmiennej.Clear();
+            Zmienne.wartoscZmiennej.Clear();
             Zmienne.bledy.Clear();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
