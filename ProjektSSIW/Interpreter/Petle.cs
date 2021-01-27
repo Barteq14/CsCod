@@ -106,7 +106,7 @@ namespace ProjektSSIW.Interpreter
                                                     {
                                                         Zmienne.bledy.Add("błąd składni" + size);
 
-                                                        //   return;
+                                                          return;
 
                                                     }
                                                     break;
@@ -148,9 +148,12 @@ save
                           */
                         }
                         //**********************
-                    }// błąd zle wprowadony warunek
-               }//błąd brak )
-          }// błąd brak (   
+                    }
+                    Zmienne.bledy.Add(" błąd zle wprowadony warunek " + size);// błąd zle wprowadony warunek
+                }
+                Zmienne.bledy.Add("błąd brak ) " + size);//błąd brak )
+            }
+            Zmienne.bledy.Add("błąd brak ( " + size);// błąd brak (   
         }
 
      /*   public bool sprawdzeneZamkniecia()
@@ -263,25 +266,30 @@ save
 
         public bool wykonanieISprawdzenie( int g)
         {
-            for (int j = 0; j < podzialWarunku.Length - 1; j++)
+            if (podzialWarunku.Length == 0)
             {
-                if (podzialWarunku[j] != "" && Zmienne.nazwaZmiennej.Contains(podzialWarunku[j]) == true)
+                for (int j = 0; j < podzialWarunku.Length - 1; j++)
                 {
-                    bool czyPrawda =false;
-                    if (j == 0)
+                    if (podzialWarunku[j] != "" && Zmienne.nazwaZmiennej.Contains(podzialWarunku[j]) == true)
                     {
-                      czyPrawda=  wykonanie(1, g);
-                        if (czyPrawda) { return true; }
-                        else return false;
+                        bool czyPrawda = false;
+                        if (j == 0)
+                        {
+                            czyPrawda = wykonanie(1, g);
+                            if (czyPrawda) { return true; }
+                            else return false;
+                        }
+                        else if (j == 1)
+                        {
+                            czyPrawda = wykonanie(-1, g);
+                            if (czyPrawda) { return true; }
+                            else return false;
+                        }
                     }
-                    else if (j == 1)
-                    {
-                        czyPrawda=wykonanie(-1, g);
-                        if (czyPrawda) { return true; }
-                        else return false;
-                    }
+                    Zmienne.bledy.Add("Błąd składni " + size);
+                    return false;
                 }
-                Zmienne.bledy.Add("Błąd składni ");
+                Zmienne.bledy.Add("Błąd składni " + size);
                 return false;
             }
             return false;
@@ -327,7 +335,8 @@ save
                     while((x)!=klamraZamykajace[(klamraZamykajace.Count-j)]){
                         if (x>tempArray.Length)
                         {
-                            //blad 
+                            Zmienne.bledy.Add("Brak } " + size);
+                          
                             return;
                         }
                         linijka.Add( tempArray[x]);
@@ -341,9 +350,11 @@ save
                     }
 
                     //wywołanie funkcji z linijka i indexem 0
-                   
+                    return;
                 }
             }
+            Zmienne.bledy.Add("Brak { " + size);
+           
             //blad
         }
 
@@ -362,6 +373,7 @@ save
                         }
                         else
                         {
+
                             return false;
                         }
                     }
@@ -576,7 +588,7 @@ save
                         }
                     }
                 case -1:
-                    //błąd
+                    Zmienne.bledy.Add("Błedy w warunku " + size);
                     return false;
                 
 
@@ -591,8 +603,7 @@ save
             string pom = tablica[size].TrimStart('n', 'e', 'g', 'v',' ');//negev
             char[] tab1 = pom.ToCharArray();
 
-            //***********************
-            //warunek pętli for
+            
             if (tab1[0] == '(')   //sprawdzanie czy czy nawias jest po negev
             {
                 
@@ -621,9 +632,12 @@ save
                         } while (wartoscBool);
                         return;
                     }
+                 
 
                 }
+                Zmienne.bledy.Add("Brak ) " + size);
             }
+            Zmienne.bledy.Add("Brak ( " + size);
 
             /*         for (int j = 0; j < size; j++)
              {
