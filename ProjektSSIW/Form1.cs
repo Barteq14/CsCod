@@ -66,7 +66,7 @@ namespace ProjektSSIW
                     {
                         string pom = tempArray[i];
                         string[] tab = tempArray[i].Split(' ');
-
+                        int dlugosc = tab.Length;
                         //WRITE WRITELN
                         //Funkcje sprawdzanie czy jest tylko 1 ciąg w linijce, przydatne do write i writeln tylko
                         //if (subs.Length == 1) //
@@ -103,7 +103,7 @@ namespace ProjektSSIW
                             zmienne.TomaszowyInt(tab[1], pomknife, i);
                         }
 
-                        //czy float
+                        //czy double
                         if (tab[0] == "grenade" && tab.Length == 4 && tab[3].EndsWith(";"))
                         {
                             string prawaStrona = "";
@@ -113,15 +113,28 @@ namespace ProjektSSIW
                             }
                             zmienne.BartkowyDouble(tab[1], prawaStrona, i);
                         }
-
-                        if (tab[0] == "defuse" && tab.Length == 4 && tab[3].EndsWith(";"))
+                        
+                        // czy string
+                        if (tab[0] == "defuse" && tab.Length > 3 && tab[dlugosc-1].EndsWith(";"))
                         {
+                            string prawaStrona = "";
+                            for (int tmp = 3; tmp < tab.Length; tmp++)
+                            {
+                                prawaStrona = prawaStrona + " " + tab[tmp];
+                            }
+                            zmienne.BartkowyString(tab[1], prawaStrona, i);
+                        }//dorobic kiedy zadeklaruje sie zmienna bez wartosci
+
+                        //czy bool
+                        if (tab[0] == "zeus" && tab.Length > 3 && tab[dlugosc - 1].EndsWith(";"))
+                        {
+                            
                             string prawaStrona = "";
                             for (int tmp = 3; tmp < tab.Length; tmp++)
                             {
                                 prawaStrona = prawaStrona + tab[tmp];
                             }
-                            zmienne.BartkowyString(tab[1], prawaStrona, i);
+                            zmienne.BartkowyBoolean(tab[1], prawaStrona,  i);
                         }
 
 
