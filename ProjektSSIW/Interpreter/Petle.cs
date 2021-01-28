@@ -210,13 +210,14 @@ save
                         Form1.klamraZamykajace.Insert(d, i);
 
                     }
-                    else if (d ==1)
+                    else if (d == Form1.klamraZamykajace.Count)
                     {
                         Form1.klamraZamykajace.Add(i);
                     }
                     else
                     {
-                        Form1.klamraZamykajace[d] = i;
+                            Form1.klamraZamykajace[d] = i;
+                        
                     }
                     }
             }
@@ -433,7 +434,7 @@ save
                         // for (int i = 0; i < linijka.Count; i++)
                         //  {
                         //    d[i] = linijka[i];
-                        if (Form1.liniaKoncaWarunku > x && Form1.liniaKoncaWarunku !=0)
+                        if (Form1.liniaKoncaWarunku < x && Form1.liniaKoncaWarunku !=0)
                         {
                             //  if (liniaKoncaWarunku < tempArray.Length - 2)
                             //  {
@@ -463,241 +464,296 @@ save
 
         public bool wykonanie(int j,int g)
         {
-            switch (g)
+            if (Zmienne.typZmiennej[pozycjaZmiennejZWarunku] == knife)
             {
-                case 0:
-                    if (sprawdzaniePozycjiWLiscie(podzialWarunku[j]) != (-1))
-                    {
-                        if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] == Zmienne.wartoscZmiennej[sprawdzaniePozycjiWLiscie(podzialWarunku[j])])
-                        {
-                            // wwołanie funkcji
-                            wywołanieKodu();
-                            return true;
-                        }
-                        else
-                        {
 
-                            return false;
-                        }
-                    }
-                    else
-                    {
-                        if (zmienne.czyInt(podzialWarunku[j]))
+
+                switch (g)
+                {
+                    case 0:
+                        if (sprawdzaniePozycjiWLiscie(podzialWarunku[j]) != (-1))
                         {
-                            string ppo = podzialWarunku[j];
-                            int p = int.Parse(ppo);
-                            if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] == p)
+                            if (Zmienne.typZmiennej[sprawdzaniePozycjiWLiscie(podzialWarunku[j])] == knife)
                             {
-                                // wwołanie funkcji
-                                wywołanieKodu();
-                                return true;
+
+
+                                if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] == Zmienne.wartoscZmiennej[sprawdzaniePozycjiWLiscie(podzialWarunku[j])])
+                                {
+                                    // wwołanie funkcji
+                                    wywołanieKodu();
+                                    return true;
+                                }
+                                else
+                                {
+
+                                    return false;
+                                }
                             }
-                            else
-                            {
-                                return false;
-                            }
-                        }
-                        else
-                        {
                             Zmienne.bledy.Add("Błedny typ ");
                             return false;
                         }
-                    }
-                   
-                case 1:
-                    if (sprawdzaniePozycjiWLiscie(podzialWarunku[j]) != (-1))
-                    {
-                        if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] <= Zmienne.wartoscZmiennej[sprawdzaniePozycjiWLiscie(podzialWarunku[j])])
-                        {
-                            // wwołanie funkcji
-                            wywołanieKodu();
-                            return true;
-                        }
                         else
                         {
-                            return false;
-                        }
-                    }
-                    else
-                    {
-                        if (zmienne.czyInt(podzialWarunku[j]))
-                        {
-                            string ppo = podzialWarunku[j];
-                            int p = int.Parse(ppo);
-                            if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] <= p)
+                            if (zmienne.czyInt(podzialWarunku[j]))
                             {
-                                wywołanieKodu();
-                                // wwołanie funkcji
-                                return true;
+                                string ppo = podzialWarunku[j];
+                                int p = int.Parse(ppo);
+                                if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] == p)
+                                {
+                                    // wwołanie funkcji
+                                    wywołanieKodu();
+                                    return true;
+                                }
+                                else
+                                {
+                                    return false;
+                                }
                             }
                             else
                             {
+                                Zmienne.bledy.Add("Błedny typ ");
                                 return false;
                             }
-                        }
-                        else
-                        {
-                            Zmienne.bledy.Add("Błedny typ ");
-                            return false;
-                        }
-                    }
-                case 2:
-                    if (sprawdzaniePozycjiWLiscie(podzialWarunku[j]) != (-1))
-                    {
-                        if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] >= Zmienne.wartoscZmiennej[sprawdzaniePozycjiWLiscie(podzialWarunku[j])])
-                        {
-                            wywołanieKodu();
-                            // wwołanie funkcji
-                            return true;
-                        }
-                        else
-                        {
-                            return false;
-                        }
-                    }
-                    else
-                    {
-                        if (zmienne.czyInt(podzialWarunku[j]))
-                        {
-                            string ppo = podzialWarunku[j];
-                            int p = int.Parse(ppo);
-                            if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] >= p)
-                            {
-                                wywołanieKodu();
-                                // wwołanie funkcji
-                                return true;
-                            }
-                            else
-                            {
-                                return false;
-                            }
-                        }
-                        else
-                        {
-                            Zmienne.bledy.Add("Błedny typ ");
-                            return false;
                         }
 
-                    }
-                case 3:
-                    if (sprawdzaniePozycjiWLiscie(podzialWarunku[j]) != (-1))
-                    {
-                        if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] <Zmienne.wartoscZmiennej[sprawdzaniePozycjiWLiscie(podzialWarunku[j])])
+                    case 1:
+                        if (sprawdzaniePozycjiWLiscie(podzialWarunku[j]) != (-1))
                         {
-                            wywołanieKodu();
-                            // wwołanie funkcji
-                            return true;
-                        }
-                        else
-                        {
-                            return false;
-                        }
-                    }
-                    else
-                    {
-                        if (zmienne.czyInt(podzialWarunku[j]))
-                        {
-                            string ppo = podzialWarunku[j];
-                            int p = int.Parse(ppo);
-                            if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] < p)
+                            if (Zmienne.typZmiennej[sprawdzaniePozycjiWLiscie(podzialWarunku[j])] == knife)
                             {
-                                wywołanieKodu();
-                                // wwołanie funkcji
-                                return true;
+
+
+                                if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] <= Zmienne.wartoscZmiennej[sprawdzaniePozycjiWLiscie(podzialWarunku[j])])
+                                {
+                                    // wwołanie funkcji
+                                    wywołanieKodu();
+                                    return true;
+                                }
+                                else
+                                {
+
+                                    return false;
+                                }
                             }
-                            else
-                            {
-                                return false;
-                            }
-                        }
-                        else
-                        {
                             Zmienne.bledy.Add("Błedny typ ");
                             return false;
                         }
-                    }
-                case 4:
-                    if (sprawdzaniePozycjiWLiscie(podzialWarunku[j]) != (-1))
-                    {
-                        if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] > Zmienne.wartoscZmiennej[sprawdzaniePozycjiWLiscie(podzialWarunku[j])])
-                        {
-                            wywołanieKodu();
-                            // wwołanie funkcji
-                            return true;
-                        }
                         else
                         {
-                            return false;
-                        }
-                    }
-                    else
-                    {
-                        if (zmienne.czyInt(podzialWarunku[j]))
-                        {
-                            string ppo = podzialWarunku[j];
-                            int p = int.Parse(ppo);
-                            if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] > p)
+                            if (zmienne.czyInt(podzialWarunku[j]))
                             {
-                                wywołanieKodu();
-                                // wwołanie funkcji
-                                return true;
+                                string ppo = podzialWarunku[j];
+                                int p = int.Parse(ppo);
+                                if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] <= p)
+                                {
+                                    wywołanieKodu();
+                                    // wwołanie funkcji
+                                    return true;
+                                }
+                                else
+                                {
+                                    return false;
+                                }
                             }
                             else
                             {
+                                Zmienne.bledy.Add("Błedny typ ");
                                 return false;
                             }
                         }
-                        else
+                    case 2:
+                        if (sprawdzaniePozycjiWLiscie(podzialWarunku[j]) != (-1))
                         {
+                            if (Zmienne.typZmiennej[sprawdzaniePozycjiWLiscie(podzialWarunku[j])] == knife)
+                            {
+
+
+                                if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] >= Zmienne.wartoscZmiennej[sprawdzaniePozycjiWLiscie(podzialWarunku[j])])
+                                {
+                                    // wwołanie funkcji
+                                    wywołanieKodu();
+                                    return true;
+                                }
+                                else
+                                {
+
+                                    return false;
+                                }
+                            }
                             Zmienne.bledy.Add("Błedny typ ");
                             return false;
                         }
-                    }
-                case 5:
-                    if (sprawdzaniePozycjiWLiscie(podzialWarunku[j]) != (-1))
-                    {
-                        if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] != Zmienne.wartoscZmiennej[sprawdzaniePozycjiWLiscie(podzialWarunku[j])])
-                        {
-                            // wwołanie funkcji
-                            wywołanieKodu();
-                            return true;
-                        }
                         else
                         {
-                            return false;
-                        }
-                    }
-                    else
-                    {
-                        if (zmienne.czyInt(podzialWarunku[j]))
-                        {
-                            string ppo = podzialWarunku[j];
-                            int p = int.Parse(ppo);
-                            if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] != p)
+                            if (zmienne.czyInt(podzialWarunku[j]))
                             {
-                                // wwołanie funkcji
-                                wywołanieKodu();
-                                return true;
+                                string ppo = podzialWarunku[j];
+                                int p = int.Parse(ppo);
+                                if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] >= p)
+                                {
+                                    wywołanieKodu();
+                                    // wwołanie funkcji
+                                    return true;
+                                }
+                                else
+                                {
+                                    return false;
+                                }
                             }
                             else
                             {
+                                Zmienne.bledy.Add("Błedny typ ");
                                 return false;
                             }
+
                         }
-                        else
+                    case 3:
+                        if (sprawdzaniePozycjiWLiscie(podzialWarunku[j]) != (-1))
                         {
+                            if (Zmienne.typZmiennej[sprawdzaniePozycjiWLiscie(podzialWarunku[j])] == knife)
+                            {
+
+
+                                if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] < Zmienne.wartoscZmiennej[sprawdzaniePozycjiWLiscie(podzialWarunku[j])])
+                                {
+                                    // wwołanie funkcji
+                                    wywołanieKodu();
+                                    return true;
+                                }
+                                else
+                                {
+
+                                    return false;
+                                }
+                            }
                             Zmienne.bledy.Add("Błedny typ ");
                             return false;
                         }
-                    }
-                case -1:
-                    Zmienne.bledy.Add("Błedy w warunku w lini " + size);
-                    return false;
-                
+                        else
+                        {
+                            if (zmienne.czyInt(podzialWarunku[j]))
+                            {
+                                string ppo = podzialWarunku[j];
+                                int p = int.Parse(ppo);
+                                if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] < p)
+                                {
+                                    wywołanieKodu();
+                                    // wwołanie funkcji
+                                    return true;
+                                }
+                                else
+                                {
+                                    return false;
+                                }
+                            }
+                            else
+                            {
+                                Zmienne.bledy.Add("Błedny typ ");
+                                return false;
+                            }
+                        }
+                    case 4:
+                        if (sprawdzaniePozycjiWLiscie(podzialWarunku[j]) != (-1))
+                        {
+                            if (Zmienne.typZmiennej[sprawdzaniePozycjiWLiscie(podzialWarunku[j])] == knife)
+                            {
+
+
+                                if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] > Zmienne.wartoscZmiennej[sprawdzaniePozycjiWLiscie(podzialWarunku[j])])
+                                {
+                                    // wwołanie funkcji
+                                    wywołanieKodu();
+                                    return true;
+                                }
+                                else
+                                {
+
+                                    return false;
+                                }
+                            }
+                            Zmienne.bledy.Add("Błedny typ ");
+                            return false;
+                        }
+                        else
+                        {
+                            if (zmienne.czyInt(podzialWarunku[j]))
+                            {
+                                string ppo = podzialWarunku[j];
+                                int p = int.Parse(ppo);
+                                if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] > p)
+                                {
+                                    wywołanieKodu();
+                                    // wwołanie funkcji
+                                    return true;
+                                }
+                                else
+                                {
+                                    return false;
+                                }
+                            }
+                            else
+                            {
+                                Zmienne.bledy.Add("Błedny typ ");
+                                return false;
+                            }
+                        }
+                    case 5:
+                        if (sprawdzaniePozycjiWLiscie(podzialWarunku[j]) != (-1))
+                        {
+                            if (Zmienne.typZmiennej[sprawdzaniePozycjiWLiscie(podzialWarunku[j])] == knife)
+                            {
+
+
+                                if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] != Zmienne.wartoscZmiennej[sprawdzaniePozycjiWLiscie(podzialWarunku[j])])
+                                {
+                                    // wwołanie funkcji
+                                    wywołanieKodu();
+                                    return true;
+                                }
+                                else
+                                {
+
+                                    return false;
+                                }
+                            }
+                            Zmienne.bledy.Add("Błedny typ ");
+                            return false;
+                        }
+                        else
+                        {
+                            if (zmienne.czyInt(podzialWarunku[j]))
+                            {
+                                string ppo = podzialWarunku[j];
+                                int p = int.Parse(ppo);
+                                if (Zmienne.wartoscZmiennej[pozycjaZmiennejZWarunku] != p)
+                                {
+                                    // wwołanie funkcji
+                                    wywołanieKodu();
+                                    return true;
+                                }
+                                else
+                                {
+                                    return false;
+                                }
+                            }
+                            else
+                            {
+                                Zmienne.bledy.Add("Błedny typ ");
+                                return false;
+                            }
+                        }
+                    case -1:
+                        Zmienne.bledy.Add("Błedy w warunku w lini " + size);
+                        return false;
+
+
+                }
+
+                return false;
 
             }
+            Zmienne.bledy.Add("Błędny warunek parametr ne jest intem linia " + size);
             return false;
-           
         }
 
         public void ife(int linijkaKodu, string[] tablica)
@@ -722,21 +778,20 @@ save
                     pom3 = pom3.TrimEnd(')');
                     pom3 = pom3.TrimStart('(');
                     string[] nazwa = pom3.Split(new string[] { "==", "!=" ,"<",">","<=",">="}, StringSplitOptions.None);
-                    if (sprawdzaniePozycjiWLiscie(nazwa[0]) != (-1) || sprawdzaniePozycjiWLiscie(nazwa[1]) != (-1))
+                   
+                    if (sprawdzaniePozycjiWLiscie(nazwa[0]) != (-1))
                     {
+
                         pozycjaZmiennejZWarunku = sprawdzaniePozycjiWLiscie(nazwa[0]);
-                        bool wartoscBool = false;
-                        bool czyPrawda = false;
-                        int g = -1;
-                        do
-                        {
-                            if (czyPrawda == false)
-                            {
-                                g = zwracanieIndexuOperatora(pom3);
-                            }
-                            czyPrawda = wykonanieISprawdzenie( g);
-                            
-                        } while (wartoscBool);
+                        dlaInta(pom3);
+                        
+                    }
+                    else if ( sprawdzaniePozycjiWLiscie(nazwa[1]) != (-1))
+                    {
+                        pozycjaZmiennejZWarunku = sprawdzaniePozycjiWLiscie(nazwa[1]);
+                        dlaInta(pom3);
+                    }
+                       
                          
                         for (int j = 0; j <= Form1.klamraOtwierajace.Count - 1; j++)
                         {
@@ -751,7 +806,7 @@ save
                                
                      
                         return;
-                    }
+                    
                  
 
                 }
@@ -770,6 +825,21 @@ save
  save
 
              }*/
+        }
+         public void dlaInta( string pom3)
+        {
+            bool wartoscBool = false;
+            bool czyPrawda = false;
+            int g = -1;
+            do
+            {
+                if (czyPrawda == false)
+                {
+                    g = zwracanieIndexuOperatora(pom3);
+                }
+                czyPrawda = wykonanieISprawdzenie(g);
+
+            } while (wartoscBool);
         }
         public void wailee( int size)
         {
