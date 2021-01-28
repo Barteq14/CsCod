@@ -41,12 +41,12 @@ namespace ProjektSSIW
 
             //tymczasowe do sprawdzania
             //funkcje.przykladoweDane();
-            listView1.Clear();
+        /*    listView1.Clear();
             listView2.Clear();
             listView3.Clear();
             listView4.Clear();
             listView5.Clear();
-            listView6.Clear();
+            listView6.Clear();*/
 
 
 
@@ -60,7 +60,7 @@ namespace ProjektSSIW
 
                 if (tempArray[0] == "rush" && tempArray[size - 1] == "save") // sprawdzam czy na poczatku jest 'rush' a na końcu 'save'
                 {
-
+                    petle.sprawdzenieOtwarcia(tempArray);
 
                     for (int i = 1; i < tempArray.Length - 1; i++)
                     {
@@ -71,74 +71,138 @@ namespace ProjektSSIW
                         //Funkcje sprawdzanie czy jest tylko 1 ciąg w linijce, przydatne do write i writeln tylko
                         //if (subs.Length == 1) //
                         //{
-                        if (pom.Length >= 5)
+                        //Zmienne.konsola.Add(tab[3].Length.ToString());
+
+
+
+                        bool czyBylo = false;
+                        bool czyBylo2 = false;
+                        if (tab.Length == 1)
                         {
-                            if (pom.Substring(0, 6) == "m4a1s(" && pom.EndsWith(")"))
+                            if (tab[0] == "ak47();")
                             {
-                                String pomWnawiasach = pom.Substring(6, pom.Length - 7);
-                                funkcje.InterpretujWriteLine(pomWnawiasach, i);
+                                funkcje.InterpretujReadLine2(i);
+                                czyBylo = true;
+                                czyBylo2 = true;
                             }
-                            else if (pom.Substring(0, 5) == "m4a1(" && pom.EndsWith(")"))
+                            if (pom == "}"|| tab.Length==2)
                             {
-                                String pomWnawiasach = pom.Substring(5, pom.Length - 6);
-                                funkcje.InterpretujWrite(pomWnawiasach, i);
+                                czyBylo = true;
+                                czyBylo2 = true;
                             }
                         }
-                        if (tab.Length == 4 && tab[3] == "ak47()")
+                        if (pom.Length >= 5)
+                        {
+                            if (pom.Substring(0, 6) == "m4a1s(" && pom[pom.Length - 2] == ')' && pom.EndsWith(";"))
+                            {
+                                String pomWnawiasach = pom.Substring(6, pom.Length - 7 - 1);
+                                funkcje.InterpretujWriteLine(pomWnawiasach, i);
+                                czyBylo2 = true;
+                            }
+                            else if (pom.Substring(0, 5) == "m4a1(" && pom[pom.Length - 2] == ')' && pom.EndsWith(";"))
+                            {
+                                String pomWnawiasach = pom.Substring(5, pom.Length - 6 - 1);
+                                funkcje.InterpretujWrite(pomWnawiasach, i);
+                                czyBylo2 = true;
+                            }
+                        }
+                        if (tab.Length == 4 && tab[3] == "ak47();")
                         {
                             funkcje.InterpretujReadLine(tab, i);
                         }
-                        else if (tab.Length == 1 && tab[0] == "ak47()")
+                        if(czyBylo2 == false)
                         {
-                            funkcje.InterpretujReadLine2(i);
-                        }
-                        //czy int 
-                        if (tab[0] == "knife" && tab.Length == 4 && tab[3].EndsWith(";"))
-                        {
-                            string pomknife = "";
-                            for (int jk = 3; jk < tab.Length; jk++)
+                            if (tab[3].Length >= 6)
                             {
-                                pomknife = pomknife + tab[jk];
+                                if (tab[0] == "knife" && tab[tab.Length - 1].EndsWith(";") && !(tab[3] == "ak47();") && (tab[3].Substring(0, 6) == "glock(" && tab[3][tab[3].Length - 2] == ')' && tab[3].EndsWith(";")))
+                                {
+                                    string pomocnicza = tab[3].Substring(6, tab[3].Length - 7 - 1);
+                                    funkcje.InterpretujToInt(tab[1], pomocnicza, i);
+                                    czyBylo = true;
+                                }
                             }
-                            zmienne.TomaszowyInt(tab[1], pomknife, i);
-                        }
-
-                        //czy double
-                        if (tab[0] == "grenade" && tab.Length == 4 && tab[3].EndsWith(";"))
-                        {
-                            string prawaStrona = "";
-                            for (int tmp = 3; tmp < tab.Length; tmp++)
+                            if (tab[3].Length >= 4)
                             {
-                                prawaStrona = prawaStrona + tab[tmp];
+                                if (tab[0] == "defuse" && tab[tab.Length - 1].EndsWith(";") && !(tab[3] == "ak47();") && (tab[3].Substring(0, 4) == "usp(" && tab[3][tab[3].Length - 2] == ')' && tab[3].EndsWith(";")))
+                                {
+                                    string pomocnicza = tab[3].Substring(4, tab[3].Length - 5 - 1);
+                                    funkcje.InterpretujToString(tab[1], pomocnicza, i);
+                                    czyBylo = true;
+                                }
                             }
-                            zmienne.BartkowyDouble(tab[1], prawaStrona, i);
-                        }
-                        
-                        // czy string
-                        if (tab[0] == "defuse" && tab.Length > 3 && tab[dlugosc-1].EndsWith(";"))
-                        {
-                            string prawaStrona = "";
-                            for (int tmp = 3; tmp < tab.Length; tmp++)
+                            if (tab[3].Length >= 7)
                             {
-                                prawaStrona = prawaStrona + " " + tab[tmp];
+                                //czy double
+                                if (tab[3].Length >= 7 && tab[0] == "grenade" && tab[tab.Length - 1].EndsWith(";") && !(tab[3] == "ak47();") && (tab[3].Substring(0, 7) == "deagle(" && tab[3][tab[3].Length - 2] == ')' && tab[3].EndsWith(";")))
+                                {
+                                    string pomocnicza = tab[3].Substring(7, tab[3].Length - 8 - 1);
+                                    funkcje.InterpretujToString(tab[1], pomocnicza, i);
+                                    czyBylo = true;
+                                }
                             }
-                            zmienne.BartkowyString(tab[1], prawaStrona, i);
-                        }//dorobic kiedy zadeklaruje sie zmienna bez wartosci
-
-                        //czy bool
-                        if (tab[0] == "zeus" && tab.Length > 3 && tab[dlugosc - 1].EndsWith(";"))
-                        {
-                            
-                            string prawaStrona = "";
-                            for (int tmp = 3; tmp < tab.Length; tmp++)
-                            {
-                                prawaStrona = prawaStrona + tab[tmp];
-                            }
-                            zmienne.BartkowyBoolean(tab[1], prawaStrona,  i);
-                        }
 
 
-                        petle.InterpretujPetle(tempArray, i);
+                            if (czyBylo == false)
+                            {
+                                if (tab[0] == "knife" && tab[tab.Length - 1].EndsWith(";"))
+                                {
+                                    string pomknife = "";
+                                    for (int jk = 3; jk < tab.Length; jk++)
+                                    {
+                                        pomknife = pomknife + tab[jk];
+                                    }
+                                    zmienne.TomaszowyInt(tab[1], pomknife, i);
+                                    //czyBylo = true;
+                                }
+                                //czy double
+                                if (tab[0] == "grenade" && tab[tab.Length - 1].EndsWith(";"))
+                                {
+                                    string prawaStrona = "";
+                                    for (int tmp = 3; tmp < tab.Length; tmp++)
+                                    {
+                                        prawaStrona = prawaStrona + tab[tmp];
+                                    }
+                                    zmienne.BartkowyDouble(tab[1], prawaStrona, i);
+                                    //czyBylo = true;
+                                }
+                                if (tab[0] == "defuse" && tab[tab.Length - 1].EndsWith(";"))
+                                {
+                                    string prawaStrona = "";
+                                    for (int tmp = 3; tmp < tab.Length; tmp++)
+                                    {
+                                        if (prawaStrona != "")
+                                        {
+                                            prawaStrona = prawaStrona + " " + tab[tmp];
+                                        }
+                                        else
+                                        {
+                                            prawaStrona = tab[tmp];
+                                        }
+                                    }
+                                    zmienne.BartkowyString(tab[1], prawaStrona, i);
+                                    //czyBylo = true;
+                                }
+                                //czy bool
+                                if (tab[0] == "zeus" && tab.Length > 3 && tab[dlugosc - 1].EndsWith(";"))
+                                {
+
+                                    string prawaStrona = "";
+                                    for (int tmp = 3; tmp < tab.Length; tmp++)
+                                    {
+                                        prawaStrona = prawaStrona + tab[tmp];
+                                    }
+                                    zmienne.BartkowyBoolean(tab[1], prawaStrona, i);
+                                    //czyBylo = true;
+                                }
+                            }
+
+
+                        }
+
+
+
+
+                        petle.InterpretujPetle(tempArray, i); // Emil
 
                         //zmienne.InterpretujZmienne(tempArray, i);
 
@@ -148,43 +212,6 @@ namespace ProjektSSIW
 
 
 
-
-
-                    /*
-                     rush
-knife liczba = 21+3;
-grenade zmienna = (2.3+1)+liczba;
-defuse napis = "siemanko";
-save
-                     
-                     
-                     */
-
-
-
-
-
-                    /*
-                                        for(int i = 0; i < tempArray.Length; i++)
-                                        {
-                                            if (tempArray[i].Contains("knife") || tempArray[0] == "knife")//INT
-                                            {
-                                                zmienne.InterpretujInt2(tempArray, i);
-                                            }
-                                            if (tempArray[i].Contains("grenade"))//FLOAT
-                                            {
-
-                                            }
-                                            if (tempArray[i].Contains("defuse"))//STRING
-                                            {
-                                                zmienne.InterpretujString(tempArray, i);
-                                            }
-                                            if (tempArray[i].Contains("zeus") || tempArray[0] == "zeus")
-                                            {
-                                                zmienne.InterpretujBoolean(tempArray,i);
-                                            }
-                                        }
-                                        */
 
 
 
