@@ -206,7 +206,7 @@ save
                     else return false;
                 }
             }
-             Zmienne.bledy.Add("błąd składni" + size);
+             Zmienne.bledy.Add("Błąd składni linnia" + size);
             return false;
         }
 
@@ -270,10 +270,10 @@ save
                             else return false;
                         }
                     }
-                    Zmienne.bledy.Add("Błąd składni " + size);
+                    Zmienne.bledy.Add("Błąd składni linnia" + size);
                     return false;
                 }
-                Zmienne.bledy.Add("Błąd składni " + size);
+                Zmienne.bledy.Add("Błąd składni linnia " + size);
                 return false;
             }
             return false;
@@ -319,7 +319,7 @@ save
                     while((x)!=Form1.klamraZamykajace[(Form1.klamraZamykajace.Count-j-1)]){
                         if (x>tempArray.Length)
                         {
-                            Zmienne.bledy.Add("Brak } " + size);
+                            Zmienne.bledy.Add("Brak } linia " + size);
                           
                             return;
                         }
@@ -339,7 +339,7 @@ save
                     return;
                 }
             }
-            Zmienne.bledy.Add("Brak { " + size);
+            Zmienne.bledy.Add("Brak {  linia " + size);
            
             //blad
         }
@@ -574,7 +574,7 @@ save
                         }
                     }
                 case -1:
-                    Zmienne.bledy.Add("Błedy w warunku " + size);
+                    Zmienne.bledy.Add("Błedy w warunku w lini " + size);
                     return false;
                 
 
@@ -621,9 +621,9 @@ save
                  
 
                 }
-                Zmienne.bledy.Add("Brak ) " + size);
+                Zmienne.bledy.Add("Brak ) w lini " + size);
             }
-            Zmienne.bledy.Add("Brak ( " + size);
+            Zmienne.bledy.Add("Brak ( w lini " + size);
 
             /*         for (int j = 0; j < size; j++)
              {
