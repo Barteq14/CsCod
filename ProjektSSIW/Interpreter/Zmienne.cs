@@ -448,7 +448,7 @@ namespace ProjektSSIW.Interpreter
             }
         }
 
-
+        //stare
         public bool InterpretujInt(string[] lines, int indeks)
         {
             string msg = "";
