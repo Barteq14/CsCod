@@ -90,6 +90,13 @@ namespace ProjektSSIW
                                 czyBylo = true;
                                 czyBylo2 = true;
                             }
+                            if (tab.Length > 2)
+                            {
+                                if (tab[3].Length < 4)
+                                {
+                                    czyBylo2 = true;
+                                }
+                            }
                         }
                         if (pom.Length >= 5)
                         {
