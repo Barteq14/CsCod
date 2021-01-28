@@ -49,7 +49,7 @@ namespace ProjektSSIW.Interpreter
        public void fore(int linijkaKodu,string[] tablica)
         {
             tempArray = tablica;
-            Zmienne zmienne = new Zmienne();
+            
 
             //tablica przechowujaca elementy oprocz ' '
             size = linijkaKodu;
