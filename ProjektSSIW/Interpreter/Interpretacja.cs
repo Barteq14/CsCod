@@ -50,7 +50,7 @@ namespace ProjektSSIW
                     }
                 }
             }
-            if (pom.Contains("awp")|| pom.Contains("negev"))
+            if (pom.Contains("awp")|| pom.Contains("negev") || tab.Length<3)
             {
                 czyBylo = true;
                 czyBylo2 = true;

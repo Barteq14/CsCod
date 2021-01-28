@@ -178,7 +178,7 @@ namespace ProjektSSIW.Interpreter
                                         else if (Zmienne.konsola.Count > 0)
                                         {
                                             Zmienne.konsola[Zmienne.konsola.Count - 1] = Zmienne.konsola[Zmienne.konsola.Count - 1] + Zmienne.wartoscZmiennej[index];
-                                            Zmienne.bledy.Add(linijka + " " + Zmienne.wartoscZmiennej[index]);
+                                            //Zmienne.bledy.Add(linijka + " " + Zmienne.wartoscZmiennej[index]);
                                         }
                                     }
                                 }

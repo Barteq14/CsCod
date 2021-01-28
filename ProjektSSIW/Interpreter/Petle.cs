@@ -233,10 +233,60 @@ save
                     }
                     else
                     {
-                            Form1.klamraZamykajace[d] = i;
-                        
+                            Form1.klamraZamykajace[d] = i; //DO POPRAWY
+
+
+/*
+                        rush
+knife ss = 0;
+awp( ss = 1 ; ss < 3; ss++){
+m4a1s(ss);
+}
+knife gg = 1 + 5;
+awp( ss=5; ss>3;ss--){
+negev(ss == 2){
+knife ss = 2;
+}
+knife tt = ss;
+}
+save
+                         
+                         * */
+
+/*
+rush
+knife ss = 0;
+awp( ss = 1 ; ss < 3; ss++){
+negev(ss == 2){
+knife ss = 2;
+}
+m4a1s(ss);
+}
+knife gg = 1 + 5;
+awp( ss=5; ss>3;ss--){
+knife tt = ss;
+}
+save
+                         
+                         */
+
+                        /*
+                         
+                        rush
+knife ss = 0;
+awp( ss = 1 ; ss < 3; ss++){
+m4a1s(ss);
+}
+knife gg = 1 + 5;
+negev(ss == 2){
+knife ss = 2;
+}
+save
+
+                         * */
+
                     }
-                    }
+                }
             }
                 for(int y=0; y < Form1.klamraZamykajace.Count; y++)
             {
