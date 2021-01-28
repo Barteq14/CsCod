@@ -30,6 +30,7 @@ namespace ProjektSSIW
             bool czyBylo2 = false;
             if (tab.Length == 1)
             {
+
                 if (tab[0] == "ak47();")
                 {
                     funkcje.InterpretujReadLine2(i);
@@ -48,6 +49,11 @@ namespace ProjektSSIW
                         czyBylo2 = true;
                     }
                 }
+            }
+            if (pom.Contains("awp")|| pom.Contains("negev"))
+            {
+                czyBylo = true;
+                czyBylo2 = true;
             }
             if (pom.Length >= 5)
             {

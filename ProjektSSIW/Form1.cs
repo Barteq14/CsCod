@@ -14,6 +14,7 @@ namespace ProjektSSIW
 {
     public partial class Form1 : Form
     {
+        public static int liniaKoncaWarunku = 0;
         public delegate void Delegat(string phrase);
         Petle petle = new Petle();
         //  Składnia składnia = new Składnia();
@@ -68,7 +69,16 @@ namespace ProjektSSIW
                     for (int i = 1; i < tempArray.Length - 1; i++)
                     {
 
-                        inter.interpretuj(tempArray, i);
+                        if( liniaKoncaWarunku < i)
+                        {
+                            //  if (liniaKoncaWarunku < tempArray.Length - 2)
+                            //  {
+
+                            inter.interpretuj(tempArray, i);
+                          //  i = liniaKoncaWarunku;
+                         //   }else
+                        }
+                       
 
                     }
 
@@ -130,6 +140,9 @@ namespace ProjektSSIW
             Zmienne.nazwaZmiennej.Clear();
             Zmienne.wartoscZmiennej.Clear();
             Zmienne.bledy.Clear();
+            liniaKoncaWarunku = 0;
+            klamraOtwierajace.Clear();
+            klamraZamykajace.Clear();
         }
 
         private void button3_Click(object sender, EventArgs e)

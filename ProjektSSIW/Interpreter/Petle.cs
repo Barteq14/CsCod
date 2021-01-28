@@ -17,7 +17,7 @@ namespace ProjektSSIW.Interpreter
         bool przechowanieWartosc = false;
         string[] podzialWarunku;
         string[] tempArray;
-        public int  liniaKoncaWarunku = 0;
+       
 
        
         // List<int> nawiasyOtwierajace = new List<int>();
@@ -124,7 +124,17 @@ namespace ProjektSSIW.Interpreter
                             /*
                             
 rush
-awp( knife ss = 1; ss < 5; ss++){
+knife aa = 3;
+knife ss = 0;
+awp( ss = 1 ; ss < aa; ss++){
+negev(ss == 1){
+knife ff = ss + 1;
+}
+knife ds = 5;
+}
+knife gg = ds + 5;
+awp( ss=3; ss>1;ss--){
+knife asdf = 5 - ss;
 }
 save
                           */
@@ -169,13 +179,54 @@ save
                     {
                         
                       Form1.klamraOtwierajace.Add(i);
+
                       
                     }else  if (otwarcie[otwarcie.Length - 1] == '}')
                     {
-                       Form1.klamraZamykajace.Add(i);
-
-                       
+                    int d=0;
+                   if (Form1.klamraZamykajace.Count != 0)
+                    {
+                        d = (Form1.klamraOtwierajace.Count - 1) - (Form1.klamraZamykajace.Count - 1);
                     }
+                    else
+                    {
+                        d = (Form1.klamraOtwierajace.Count - 1);
+                    }
+                       
+                    
+                    if (d > (Form1.klamraZamykajace.Count ))
+                    {
+                        for(int y =(Form1.klamraZamykajace.Count) ;y<d; y++)
+                        {
+                            if (y == 0)
+                            {
+                                Form1.klamraZamykajace.Add(0);
+                            }
+                            else
+                            {
+                                Form1.klamraZamykajace.Add(0);
+                            }
+                        }
+                        Form1.klamraZamykajace.Insert(d, i);
+
+                    }
+                    else if (d ==1)
+                    {
+                        Form1.klamraZamykajace.Add(i);
+                    }
+                    else
+                    {
+                        Form1.klamraZamykajace[d] = i;
+                    }
+                    }
+            }
+                for(int y=0; y < Form1.klamraZamykajace.Count; y++)
+            {
+                if (Form1.klamraZamykajace[y] == 0)
+                {
+                    Zmienne.bledy.Add("błąd brak } " );//błąd brak )
+                    return;
+                }
             }
         }
 
@@ -191,27 +242,62 @@ save
                 {
                     if (przechowanieWartosc == true)
                     {
-                        if (b && (sprawdzaniePozycjiWLiscie(cos[0])!=-1))
+                        if (b && (sprawdzaniePozycjiWLiscie(cos[0]) != -1))
                         {
                             zmianaWartosciFora(1);
                             return true;
                         }
-                        else if(c && (sprawdzaniePozycjiWLiscie(cos[0]) != -1))
+                        else if (c && (sprawdzaniePozycjiWLiscie(cos[0]) != -1))
                         {
                             zmianaWartosciFora(-1);
                             return true;
                         }
-                        
+
+
                     }
-                    else return false;
+
+                    else
+                    {
+                        if (b && (sprawdzaniePozycjiWLiscie(cos[0]) != -1))
+                        {
+                            if (warunek1[0].Contains("knife"))
+                            {
+                                Zmienne.wartoscZmiennej.RemoveAt(pozycjaZmiennejZWarunku);
+                                Zmienne.typZmiennej.RemoveAt(pozycjaZmiennejZWarunku);
+                                Zmienne.nazwaZmiennej.RemoveAt(pozycjaZmiennejZWarunku);
+                            }
+                            else
+                            {
+                                zmianaWartosciFora(-1);
+                            }
+
+                        }
+                        else if (c && (sprawdzaniePozycjiWLiscie(cos[0]) != -1))
+                        {
+                           if(warunek1[0].Contains("knife"))
+                            {
+                                Zmienne.wartoscZmiennej.RemoveAt(pozycjaZmiennejZWarunku);
+                                Zmienne.typZmiennej.RemoveAt(pozycjaZmiennejZWarunku);
+                                Zmienne.nazwaZmiennej.RemoveAt(pozycjaZmiennejZWarunku);
+                            }
+                            else { 
+                                zmianaWartosciFora(1); 
+                            }
+                            
+                        }
+
+                        return false;
+                    }
                 }
             }
-             Zmienne.bledy.Add("Błąd składni linnia" + size);
+            
             return false;
         }
 
         public int zmianaWartosciZmiennej(string nazwa,string a)
         {
+            nazwa=nazwa.Trim(' ');
+            a=a.Trim(' ');
             if (Zmienne.nazwaZmiennej.Contains(nazwa))
             {
                 for (int j = 0; j < Zmienne.nazwaZmiennej.Count; j++)
@@ -290,7 +376,7 @@ save
         {
             if (Zmienne.nazwaZmiennej.Count != 0)
             {
-
+                nazwa = nazwa.Trim(' ');
 
                 int i;
                 for (i = 0; i <= Zmienne.nazwaZmiennej.Count - 1; i++)
@@ -308,34 +394,65 @@ save
 
         public void wywołanieKodu()
         {
+          
             int x = size+1;
-         
+            int i =0;
             List<string> linijka = new List<string>();
-          //  string[] linijka =new string[tempArray.Length ];
+            //  string[] linijka =new string[tempArray.Length ];
+            int y = 0;
             for (int j = 0; j <= Form1.klamraOtwierajace.Count-1; j++)
             {
-                if(Form1.klamraOtwierajace[j]==(size))
+
+                if (Form1.klamraOtwierajace[j] == (size))
                 {
-                    while((x)!=Form1.klamraZamykajace[(Form1.klamraZamykajace.Count-j-1)]){
-                        if (x>tempArray.Length)
+                    
+                    while (true != tempArray[x].Contains('}'))
+                    {
+
+                        //  Form1.klamraZamykajace.RemoveAt(j);
+                        //  return;
+                        // }
+                        //    if (j != 0)
+                        //    {
+                        //       y = (Form1.klamraZamykajace.Count - (j );
+                        //     y = y;
+                        //   }
+                        //  while((x)!=Form1.klamraZamykajace[y]){
+                        if (x > tempArray.Length)
                         {
                             Zmienne.bledy.Add("Brak } linia " + size);
-                          
+
                             return;
                         }
-                        linijka.Add( tempArray[x]);
-                        
-                        x++;
-                    }
-                    liniaKoncaWarunku = x++;
-                    string[] d =new string[linijka.Count] ;
-                    for(int i = 0; i< linijka.Count; i++)
-                    {
-                        d[i] = linijka[i];
-                        inter.interpretuj(d, i);
-                    }
+                        //linijka.Add(tempArray[x]);
 
-                    //wywołanie funkcji z linijka i indexem 0
+                        
+                        // }
+                        
+                        string[] d = new string[linijka.Count];
+                        // for (int i = 0; i < linijka.Count; i++)
+                        //  {
+                        //    d[i] = linijka[i];
+                        if (Form1.liniaKoncaWarunku > x && Form1.liniaKoncaWarunku !=0)
+                        {
+                            //  if (liniaKoncaWarunku < tempArray.Length - 2)
+                            //  {
+
+                            x = Form1.liniaKoncaWarunku;
+
+                        }
+                        else {
+                           
+                            inter.interpretuj(tempArray, x);
+                        }
+                        // }
+                        x++;
+
+
+                        //wywołanie funkcji z linijka i indexem 0
+
+                    }
+                    Form1.liniaKoncaWarunku = x-1;
                     return;
                 }
             }
@@ -585,6 +702,10 @@ save
 
         public void ife(int linijkaKodu, string[] tablica)
         {
+            tempArray = tablica;
+
+
+       
             size = linijkaKodu;
             string pom = tablica[size].TrimStart('n', 'e', 'g', 'v',' ');//negev
             char[] tab1 = pom.ToCharArray();
@@ -603,7 +724,7 @@ save
                     string[] nazwa = pom3.Split(new string[] { "==", "!=" ,"<",">","<=",">="}, StringSplitOptions.None);
                     if (sprawdzaniePozycjiWLiscie(nazwa[0]) != (-1) || sprawdzaniePozycjiWLiscie(nazwa[1]) != (-1))
                     {
-
+                        pozycjaZmiennejZWarunku = sprawdzaniePozycjiWLiscie(nazwa[0]);
                         bool wartoscBool = false;
                         bool czyPrawda = false;
                         int g = -1;
@@ -616,6 +737,19 @@ save
                             czyPrawda = wykonanieISprawdzenie( g);
                             
                         } while (wartoscBool);
+                         
+                        for (int j = 0; j <= Form1.klamraOtwierajace.Count - 1; j++)
+                        {
+
+                            if (Form1.klamraOtwierajace[j] == (size))
+                            {
+                                Form1.liniaKoncaWarunku = Form1.klamraZamykajace[j];
+                                return;
+                            }
+
+                        }
+                               
+                     
                         return;
                     }
                  
