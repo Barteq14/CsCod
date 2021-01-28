@@ -9,6 +9,7 @@ namespace ProjektSSIW.Interpreter
 {
     public class Petle : Składnia
     {
+        Interpretacja inter = new Interpretacja();
         Zmienne zmienne = new Zmienne();
         int pozycjaZmiennejZWarunku = 0;
         int size = 0;
@@ -16,35 +17,14 @@ namespace ProjektSSIW.Interpreter
         bool przechowanieWartosc = false;
         string[] podzialWarunku;
         string[] tempArray;
+        public int  liniaKoncaWarunku = 0;
 
-
-        List<int> klamraOtwierajace = new List<int>();
-         List<int> klamraZamykajace = new List<int>();
+       
         // List<int> nawiasyOtwierajace = new List<int>();
         // List<int> nawiasyZamykajace = new List<int>();
         //  Składnia skladnia = new Składnia();
 
-        public void InterpretujPetle(string[] tempArray, int i)
-        {
-
-            string f = tempArray[i].Trim(' ');
-            string[] subs2 =f.Split('('); //tablica przechowujaca elementy oprocz ' '
-
-                switch (subs2[0])
-                {
-                    case awp:
-                         fore( i,tempArray);
-                        break;
-
-                    case negev:
-                        ife( i,tempArray);
-                        break;
-
-                    case scar:
-                        wailee( i);
-                        break;
-                }
-        }
+       
 
        public void fore(int linijkaKodu,string[] tablica)
         {
@@ -188,11 +168,11 @@ save
                     if (otwarcie[0]== '{'|| otwarcie[otwarcie.Length-1]=='{')
                     {
                         
-                        klamraOtwierajace.Add(i);
+                      Form1.klamraOtwierajace.Add(i);
                       
                     }else  if (otwarcie[otwarcie.Length - 1] == '}')
                     {
-                        klamraZamykajace.Add(i);
+                       Form1.klamraZamykajace.Add(i);
 
                        
                     }
@@ -332,11 +312,11 @@ save
          
             List<string> linijka = new List<string>();
           //  string[] linijka =new string[tempArray.Length ];
-            for (int j = 0; j <= klamraOtwierajace.Count-1; j++)
+            for (int j = 0; j <= Form1.klamraOtwierajace.Count-1; j++)
             {
-                if(klamraOtwierajace[j]==(size))
+                if(Form1.klamraOtwierajace[j]==(size))
                 {
-                    while((x)!=klamraZamykajace[(klamraZamykajace.Count-j-1)]){
+                    while((x)!=Form1.klamraZamykajace[(Form1.klamraZamykajace.Count-j-1)]){
                         if (x>tempArray.Length)
                         {
                             Zmienne.bledy.Add("Brak } " + size);
@@ -347,10 +327,12 @@ save
                         
                         x++;
                     }
+                    liniaKoncaWarunku = x++;
                     string[] d =new string[linijka.Count] ;
                     for(int i = 0; i< linijka.Count; i++)
                     {
                         d[i] = linijka[i];
+                        inter.interpretuj(d, i);
                     }
 
                     //wywołanie funkcji z linijka i indexem 0
