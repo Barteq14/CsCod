@@ -115,7 +115,24 @@ namespace ProjektSSIW.Interpreter
                                             string pomocnicza = warunek1[1].TrimStart(' ');
                                                  g  = zwracanieIndexuOperatora(pomocnicza);
                                                 }
+                                        
                                                     przechowanieWartosc = wykonanieISprawdzenie( g);
+                                        if (przechowanieWartosc != false)
+                                        {
+                                            Form1.liniaKoncaWarunku = 0;
+                                        }
+                                        else
+                                        {
+                                            for (int j = 0; j <= Form1.klamraOtwierajace.Count - 1; j++)
+                                            {
+
+                                                if (Form1.klamraOtwierajace[j] == (size))
+                                                {
+                                                    Form1.liniaKoncaWarunku = Form1.klamraZamykajace[j];
+                                                    break;
+                                                }
+                                            }
+                                        }
                                                     wartoscBool = podnoszenieZmienej(warunek1);
                                                 } while (wartoscBool);
                                             return;
@@ -210,7 +227,7 @@ save
                         Form1.klamraZamykajace.Insert(d, i);
 
                     }
-                    else if (d == Form1.klamraZamykajace.Count)
+                    else if (d == (Form1.klamraZamykajace.Count-1)|| Form1.klamraZamykajace.Count == 0)
                     {
                         Form1.klamraZamykajace.Add(i);
                     }
@@ -409,51 +426,27 @@ save
                     
                     while (true != tempArray[x].Contains('}'))
                     {
-
-                        //  Form1.klamraZamykajace.RemoveAt(j);
-                        //  return;
-                        // }
-                        //    if (j != 0)
-                        //    {
-                        //       y = (Form1.klamraZamykajace.Count - (j );
-                        //     y = y;
-                        //   }
-                        //  while((x)!=Form1.klamraZamykajace[y]){
                         if (x > tempArray.Length)
                         {
                             Zmienne.bledy.Add("Brak } linia " + size);
 
                             return;
                         }
-                        //linijka.Add(tempArray[x]);
-
-                        
-                        // }
-                        
                         string[] d = new string[linijka.Count];
-                        // for (int i = 0; i < linijka.Count; i++)
-                        //  {
-                        //    d[i] = linijka[i];
-                        if (Form1.liniaKoncaWarunku < x && Form1.liniaKoncaWarunku !=0)
+                        if (Form1.liniaKoncaWarunku > x && Form1.liniaKoncaWarunku !=0)
                         {
-                            //  if (liniaKoncaWarunku < tempArray.Length - 2)
-                            //  {
-
                             x = Form1.liniaKoncaWarunku;
-
                         }
                         else {
-                           
                             inter.interpretuj(tempArray, x);
                         }
-                        // }
                         x++;
 
 
-                        //wywołanie funkcji z linijka i indexem 0
+                        //wywołanie funkcji 
 
                     }
-                    Form1.liniaKoncaWarunku = x-1;
+                    Form1.liniaKoncaWarunku = x;
                     return;
                 }
             }
@@ -791,6 +784,7 @@ save
                         pozycjaZmiennejZWarunku = sprawdzaniePozycjiWLiscie(nazwa[1]);
                         dlaInta(pom3);
                     }
+                    
                        
                          
                         for (int j = 0; j <= Form1.klamraOtwierajace.Count - 1; j++)
@@ -801,8 +795,10 @@ save
                                 Form1.liniaKoncaWarunku = Form1.klamraZamykajace[j];
                                 return;
                             }
-
-                        }
+                    
+                        
+                       
+                    }
                                
                      
                         return;
