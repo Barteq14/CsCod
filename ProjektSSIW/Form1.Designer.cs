@@ -72,14 +72,14 @@ namespace ProjektSSIW
             // 
             this.richTextBox1.Location = new System.Drawing.Point(12, 82);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(678, 417);
+            this.richTextBox1.Size = new System.Drawing.Size(514, 417);
             this.richTextBox1.TabIndex = 5;
             this.richTextBox1.Text = "";
             // 
             // listView1
             // 
             this.listView1.HideSelection = false;
-            this.listView1.Location = new System.Drawing.Point(696, 343);
+            this.listView1.Location = new System.Drawing.Point(545, 411);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(156, 156);
             this.listView1.TabIndex = 6;
@@ -98,9 +98,9 @@ namespace ProjektSSIW
             // listView2
             // 
             this.listView2.HideSelection = false;
-            this.listView2.Location = new System.Drawing.Point(696, 21);
+            this.listView2.Location = new System.Drawing.Point(545, 53);
             this.listView2.Name = "listView2";
-            this.listView2.Size = new System.Drawing.Size(340, 284);
+            this.listView2.Size = new System.Drawing.Size(318, 284);
             this.listView2.TabIndex = 10;
             this.listView2.UseCompatibleStateImageBehavior = false;
             this.listView2.View = System.Windows.Forms.View.List;
@@ -108,9 +108,9 @@ namespace ProjektSSIW
             // listView3
             // 
             this.listView3.HideSelection = false;
-            this.listView3.Location = new System.Drawing.Point(1042, 21);
+            this.listView3.Location = new System.Drawing.Point(879, 53);
             this.listView3.Name = "listView3";
-            this.listView3.Size = new System.Drawing.Size(340, 284);
+            this.listView3.Size = new System.Drawing.Size(318, 284);
             this.listView3.TabIndex = 11;
             this.listView3.UseCompatibleStateImageBehavior = false;
             this.listView3.View = System.Windows.Forms.View.List;
@@ -128,7 +128,7 @@ namespace ProjektSSIW
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(849, 5);
+            this.label5.Location = new System.Drawing.Point(704, 21);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(45, 13);
             this.label5.TabIndex = 13;
@@ -137,7 +137,7 @@ namespace ProjektSSIW
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(1205, 5);
+            this.label6.Location = new System.Drawing.Point(1028, 21);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(35, 13);
             this.label6.TabIndex = 14;
@@ -146,7 +146,7 @@ namespace ProjektSSIW
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(743, 327);
+            this.label3.Location = new System.Drawing.Point(589, 386);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(64, 13);
             this.label3.TabIndex = 16;
@@ -155,7 +155,7 @@ namespace ProjektSSIW
             // listView4
             // 
             this.listView4.HideSelection = false;
-            this.listView4.Location = new System.Drawing.Point(858, 343);
+            this.listView4.Location = new System.Drawing.Point(707, 411);
             this.listView4.Name = "listView4";
             this.listView4.Size = new System.Drawing.Size(156, 156);
             this.listView4.TabIndex = 18;
@@ -165,7 +165,7 @@ namespace ProjektSSIW
             // listView5
             // 
             this.listView5.HideSelection = false;
-            this.listView5.Location = new System.Drawing.Point(1020, 343);
+            this.listView5.Location = new System.Drawing.Point(869, 411);
             this.listView5.Name = "listView5";
             this.listView5.Size = new System.Drawing.Size(156, 156);
             this.listView5.TabIndex = 19;
@@ -175,7 +175,7 @@ namespace ProjektSSIW
             // listView6
             // 
             this.listView6.HideSelection = false;
-            this.listView6.Location = new System.Drawing.Point(1182, 343);
+            this.listView6.Location = new System.Drawing.Point(1031, 411);
             this.listView6.Name = "listView6";
             this.listView6.Size = new System.Drawing.Size(156, 156);
             this.listView6.TabIndex = 20;
@@ -185,7 +185,7 @@ namespace ProjektSSIW
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(902, 327);
+            this.label4.Location = new System.Drawing.Point(755, 386);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(81, 13);
             this.label4.TabIndex = 21;
@@ -194,7 +194,7 @@ namespace ProjektSSIW
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(1057, 327);
+            this.label7.Location = new System.Drawing.Point(902, 386);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(87, 13);
             this.label7.TabIndex = 22;
@@ -203,7 +203,7 @@ namespace ProjektSSIW
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(1205, 327);
+            this.label8.Location = new System.Drawing.Point(1047, 386);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(119, 13);
             this.label8.TabIndex = 23;
@@ -213,7 +213,7 @@ namespace ProjektSSIW
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1391, 641);
+            this.ClientSize = new System.Drawing.Size(1249, 641);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label4);

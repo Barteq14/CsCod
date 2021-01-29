@@ -69,7 +69,6 @@ namespace ProjektSSIW.Interpreter
                 }
                 else
                 {
-
                     int index2 = Zmienne.nazwaZmiennej.FindIndex(c => c == nazwaZmiennej2);
                     if (index2 >= 0) //jeżeli  ma takiej zmiennej
                     {
@@ -1308,9 +1307,7 @@ namespace ProjektSSIW.Interpreter
             int temp = 0;
             string ciag3 = "";
             int zajaczek = 0; // kiedy zaczyna się zajaczek
-            //int pom = 23;
-            //string cos = "ja mam: " + pom + 2 + " lata";
-            //string cos = 2 + "asdasd";
+     
 
             if (czyString2(nazwaZmiennej2) == true) //jeżeli nazwaZmiennej to string
             {
@@ -1331,7 +1328,7 @@ namespace ProjektSSIW.Interpreter
                         {
                             string[] test = Regex.Split(ciag.Remove(ciag.Length - 1), "(?<=[()\\-+*/'])|(?=[()\\-+*/'])"); // rozdziela na tablicę stringów cały ciąg
 
-                            if ((test[0] == "" || test[0] == null || test[0] == " ")) //jak rozdziela tablicę i na samym początku jest nawias otwierający to test[0] = " " więc usuwamy ten pierwszy element
+                            if ((test[0] == "" || test[0] == null || test[0] == " ")) 
                             {
                                 test = test.Where((v, i) => i != 0).ToArray();
                             }
@@ -1347,7 +1344,7 @@ namespace ProjektSSIW.Interpreter
                                             bledy.Add(indeks + ": Na końcu znak " + test[temp]);
                                         }
                                     }
-                                    if (test[temp] == "'")//sprawdzam te zajaczki
+                                    if (test[temp] == "'")
                                     {
                                         if (test[temp - 1] == "*" || test[temp - 1] == "/" || test[temp - 1] == ";")
                                         {
@@ -1670,7 +1667,7 @@ namespace ProjektSSIW.Interpreter
         {
 
             char[] prawaChar = ciag.ToCharArray();
-            string[] prawa = ciag.Split('<', '>', ';');// zle dzieli po spacji :/
+            string[] prawa = ciag.Split('<', '>', ';');
             string[] prawa2 = ciag.Split(';');
             List<int> liczby = new List<int>();
             List<int> indeksy = new List<int>();
@@ -1681,7 +1678,7 @@ namespace ProjektSSIW.Interpreter
             {
                 bledy.Add(indeks + ": Nazwa zmiennej nie może być " + nazwaZmiennej2);
             }
-            if (ciag.Contains("ak47") || ciag.Contains("knife") || ciag.Contains("grenade") || ciag.Contains("rifle") || ciag.Contains("defuse") || ciag.Contains("zeus") || ciag.Contains("m4a1s") || ciag.Contains("usp") || ciag.Contains("glock") || ciag.Contains("tec") || ciag.Contains("awp") || ciag.Contains("scar") || ciag.Contains("negev") || ciag.Contains("deagle") || ciag.Contains("terrorist") || ciag.Contains("antiterrorist"))
+            if (ciag.Contains("ak47") || ciag.Contains("knife") || ciag.Contains("grenade") || ciag.Contains("rifle") || ciag.Contains("defuse") || ciag.Contains("zeus") || ciag.Contains("m4a1s") || ciag.Contains("usp") || ciag.Contains("glock") || ciag.Contains("tec") || ciag.Contains("awp") || ciag.Contains("scar") || ciag.Contains("negev") || ciag.Contains("deagle"))
             {
                 //bledy.Add(indeks + ": Nazwa zmiennej nie może być ");
             }
@@ -1693,12 +1690,12 @@ namespace ProjektSSIW.Interpreter
                 {
                     if (Zmienne.typZmiennej[index] == "zeus")
                     {
-                        if (prawa.Contains("true") && prawa.Count() <= 3) //czy zawiera true
+                        if (prawa.Contains("antiterrorist") && prawa.Count() <= 3) //czy zawiera true
                         {
                             wartoscZmiennej[index] = ("antiterrorist");
                             return true;
                         }
-                        else if (prawa.Contains("false") && prawa.Count() <= 3) //czy zawiera false
+                        else if (prawa.Contains("terrorist") && prawa.Count() <= 3) //czy zawiera false
                         {
                             wartoscZmiennej[index] = ("terrorist");
                             return true;
@@ -1881,14 +1878,14 @@ namespace ProjektSSIW.Interpreter
                 }
                 else
                 {
-                    if (prawa.Contains("true") && prawa.Count() <= 3) //czy zawiera true
+                    if (prawa.Contains("antiterrorist") && prawa.Count() <= 3) //czy zawiera true
                     {
                         typZmiennej.Add("zeus");
                         nazwaZmiennej.Add(nazwaZmiennej2);
                         wartoscZmiennej.Add("antiterrorist");
                         return true;
                     }
-                    else if (prawa.Contains("false") && prawa.Count() <= 3) //czy zawiera false
+                    else if (prawa.Contains("terrorist") && prawa.Count() <= 3) //czy zawiera false
                     {
                         typZmiennej.Add("zeus");
                         nazwaZmiennej.Add(nazwaZmiennej2);

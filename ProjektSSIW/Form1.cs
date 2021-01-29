@@ -144,56 +144,81 @@ namespace ProjektSSIW
 
                             if (czyBylo == false)
                             {
-                                if (tab[0] == "knife" && tab[tab.Length - 1].EndsWith(";"))
+                                if (tab[0] == "knife" ) 
                                 {
-                                    string pomknife = "";
-                                    for (int jk = 3; jk < tab.Length; jk++)
+                                    if (tab[dlugosc - 1].EndsWith(";"))//zabezpieczenie w przypadku braku srednika
                                     {
-                                        pomknife = pomknife + tab[jk];
+                                        string pomknife = "";
+                                        for (int jk = 3; jk < tab.Length; jk++)
+                                        {
+                                            pomknife = pomknife + tab[jk];
+                                        }
+                                        zmienne.TomaszowyInt(tab[1], pomknife, i);
                                     }
-                                    zmienne.TomaszowyInt(tab[1], pomknife, i);
-                                    //czyBylo = true;
+                                    else
+                                    {
+                                        Zmienne.bledy.Add(i + ": Brak średnika na końcu.");
+                                    }
                                 }
                                 //czy double
-                                if (tab[0] == "grenade" && tab[tab.Length - 1].EndsWith(";"))
-                                {
-                                    string prawaStrona = "";
-                                    for (int tmp = 3; tmp < tab.Length; tmp++)
-                                    {
-                                        prawaStrona = prawaStrona + tab[tmp];
-                                    }
-                                    zmienne.BartkowyDouble(tab[1], prawaStrona, i);
-                                    //czyBylo = true;
-                                }
-                                if (tab[0] == "defuse" && tab[tab.Length - 1].EndsWith(";"))
-                                {
-                                    string prawaStrona = "";
-                                    for (int tmp = 3; tmp < tab.Length; tmp++)
-                                    {
-                                        if (prawaStrona != "")
-                                        {
-                                            prawaStrona = prawaStrona + " " + tab[tmp];
-                                        }
-                                        else
-                                        {
-                                            prawaStrona = tab[tmp];
-                                        }
-                                    }
-                                    zmienne.BartkowyString(tab[1], prawaStrona, i);
-                                    //czyBylo = true;
-                                }
-                                //czy bool
-                                if (tab[0] == "zeus" && tab.Length > 3 && tab[dlugosc - 1].EndsWith(";"))
+                                if (tab[0] == "grenade") //&& tab[tab.Length - 1].EndsWith(";"))
                                 {
 
-                                    string prawaStrona = "";
-                                    for (int tmp = 3; tmp < tab.Length; tmp++)
+                                    if (tab[dlugosc - 1].EndsWith(";"))
                                     {
-                                        prawaStrona = prawaStrona + tab[tmp];
+                                        string prawaStrona = "";
+                                        for (int tmp = 3; tmp < tab.Length; tmp++)
+                                        {
+                                            prawaStrona = prawaStrona + tab[tmp];
+                                        }
+                                        zmienne.BartkowyDouble(tab[1], prawaStrona, i);
                                     }
-                                    zmienne.BartkowyBoolean(tab[1], prawaStrona, i);
-                                    //czyBylo = true;
+                                    else
+                                    {
+                                        Zmienne.bledy.Add(i + ": Brak średnika na końcu.");
+                                    }
                                 }
+                                if (tab[0] == "defuse" )//&& tab[tab.Length - 1].EndsWith(";"))
+                                {
+                                    if (tab[dlugosc - 1].EndsWith(";"))
+                                    {
+                                        string prawaStrona = "";
+                                        for (int tmp = 3; tmp < tab.Length; tmp++)
+                                        {
+                                            if (prawaStrona != "")
+                                            {
+                                                prawaStrona = prawaStrona + " " + tab[tmp];
+                                            }
+                                            else
+                                            {
+                                                prawaStrona = tab[tmp];
+                                            }
+                                        }
+                                        zmienne.BartkowyString(tab[1], prawaStrona, i);
+                                    }
+                                    else
+                                    {
+                                        Zmienne.bledy.Add(i + ": Brak średnika na końcu.");
+                                    }
+                                }
+                                //czy bool
+                                if (tab[0] == "zeus" )// && tab[dlugosc - 1].EndsWith(";"))
+                                {
+                                    if (tab[dlugosc - 1].EndsWith(";"))
+                                    {
+                                        string prawaStrona = "";
+                                        for (int tmp = 3; tmp < tab.Length; tmp++)
+                                        {
+                                            prawaStrona = prawaStrona + tab[tmp];
+                                        }
+                                        zmienne.BartkowyBoolean(tab[1], prawaStrona, i);
+                                    }
+                                    else
+                                    {
+                                        Zmienne.bledy.Add(i + ": Brak średnika na końcu.");
+                                    }
+                                }
+                              
                             }
 
 
