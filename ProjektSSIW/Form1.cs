@@ -14,9 +14,16 @@ namespace ProjektSSIW
 {
     public partial class Form1 : Form
     {
+        public static int liniaKoncaWarunku = 0;
         public delegate void Delegat(string phrase);
-        Składnia składnia = new Składnia();
-        Zmienne zmienne = new Zmienne();
+        Petle petle = new Petle();
+        //  Składnia składnia = new Składnia();
+        //  Zmienne zmienne = new Zmienne();
+        //Funkcje funkcje = new Funkcje();
+      public static  List<int> klamraOtwierajace = new List<int>();
+       public static List<int> klamraZamykajace = new List<int>();
+
+
         public Form1()
         {
             InitializeComponent();
@@ -31,76 +38,116 @@ namespace ProjektSSIW
         {
             //tworzymy tablicę naszych elementów z richTextBoxa
             string[] tempArray = richTextBox1.Lines;
-            string[] array = richTextBox1.Lines;
-            List<string> pomLista = new List<string>();
-            //string[] errors = new string[10];//gg
-            List<String> error = new List<string>(); // lista błędów jakie mogą wyskoczyć
-            error.Add("błąd składni");
-            error.Add("brak średnika na końcu!");
-            error.Add("zła intrukcja poczatkowa! (begin)");
-            error.Add("zła intrukcja poczatkowa! (begin)");
-            error.Add("zła intrukcja poczatkowa! (begin)");
-            error.Add("zła intrukcja poczatkowa! (begin)");
-            error.Add("zła intrukcja poczatkowa! (begin)");
-            error.Add("zła intrukcja poczatkowa! (begin)");
-            error.Add("zła intrukcja poczatkowa! (begin)");
-            
 
-            
+
+            //tymczasowe do sprawdzania
+            //funkcje.przykladoweDane();
+            /*    listView1.Clear();
+                listView2.Clear();
+                listView3.Clear();
+                listView4.Clear();
+                listView5.Clear();
+                listView6.Clear();*/
+
+            label1.Text = label1.Text + " ";
+
             if (tempArray.Count() <= 0) // sprawdzenie czy tablica jest pusta
             {
-                label4.Text = "Nie wpisałeś żadnego kodu.";
+                Zmienne.bledy.Add("Nie wpisałeś żadnego kodu.");
             }
-            else 
+            else
             {
                 int size = tempArray.Length; // pobieram długość tablicy 
 
-                if (tempArray[0] == "rush" && tempArray[size-1] == "save") // sprawdzam czy na poczatku jest 'rush' a na końcu 'save'
+                if (tempArray[0] == "rush" && tempArray[size - 1] == "save") // sprawdzam czy na poczatku jest 'rush' a na końcu 'save'
                 {
-                    for (int i = 0; i < tempArray.Length; i++)
+                    petle.sprawdzenieOtwarcia(tempArray);
+                    Interpretacja inter = new Interpretacja();
+
+                    for (int i = 1; i < tempArray.Length - 1; i++)
                     {
-                        label4.Text = "Wszystko jest OK";
-                        listView1.Items.Add(tempArray[i]);
-                    }
-                    string pom = tempArray[1];
-                    string[] subs = pom.Split(' ', '\t'); //tablica przechowujaca elementy oprocz ' '
-                    string[] subs1 = pom.Split('(', ')', '+', '\t'); //tablica przechowujaca elementy oprocz '(' , ')' oraz '+'
-                    /*
-                    string knife = "knife";
-                    
-                    if (subs.Contains(knife))
-                    {
-                        textBox1.Text = knife;
-                        
-                        //then dodajemy
-                    }
-                    */
-                    foreach (var sub in subs)
-                    {
-                        listView2.Items.Add(sub);
+
+                        if( liniaKoncaWarunku < i)
+                        {
+                            //  if (liniaKoncaWarunku < tempArray.Length - 2)
+                            //  {
+
+                            inter.interpretuj(tempArray, i);
+                          //  i = liniaKoncaWarunku;
+                         //   }else
+                        }
+                       
 
                     }
-                    foreach (var p in subs1)
+
+
+
+
+
+
+
+                    label1.Text = label1.Text.Trim(' ');
+
+                    //wypisywanie zmiennych typów, nazw, wartości i prawdziwych wartości
+                    foreach (var sub in Zmienne.typZmiennej)
+                    {
+                        listView1.Items.Add(sub);
+                    }
+                    foreach (var sub in Zmienne.nazwaZmiennej)
+                    {
+                        listView4.Items.Add(sub);
+                    }
+                    foreach (var sub in Zmienne.wartoscZmiennej)
+                    {
+                        listView5.Items.Add(sub + "");
+                        listView6.Items.Add(sub.GetType() + "");
+                    }
+                    //dodawanie do konsoli
+                    foreach (var sub in Zmienne.konsola)
+                    {
+                        listView2.Items.Add(sub);
+                    }
+                    //dodawanie do bledów
+                    foreach (var p in Zmienne.bledy)
                     {
                         listView3.Items.Add(p);
                     }
+
+
+
+
+
+
                 }
-                else
-                {
-                    label4.Text = error[0];
-                }
-                
+
             }
-            zmienne.InterpretujZmienne(tempArray);
+
+
         }
 
         private void button2_Click(object sender, EventArgs e) //czyszczenie 
         {
-            label4.Text = "";
             listView1.Clear();
             listView2.Clear();
             listView3.Clear();
-            //richTextBox1.Clear();
+            listView4.Clear();
+            listView5.Clear();
+            listView6.Clear();
+            Zmienne.konsola.Clear();
+            Zmienne.typZmiennej.Clear();
+            Zmienne.nazwaZmiennej.Clear();
+            Zmienne.wartoscZmiennej.Clear();
+            Zmienne.bledy.Clear();
+            liniaKoncaWarunku = 0;
+            klamraOtwierajace.Clear();
+            klamraZamykajace.Clear();
+
+
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
