@@ -38,20 +38,18 @@ namespace ProjektSSIW
         {
             //tworzymy tablicę naszych elementów z richTextBoxa
             string[] tempArray = richTextBox1.Lines;
-            string[] array = richTextBox1.Lines;
-            List<string> pomLista = new List<string>();
 
 
             //tymczasowe do sprawdzania
             //funkcje.przykladoweDane();
-        /*    listView1.Clear();
-            listView2.Clear();
-            listView3.Clear();
-            listView4.Clear();
-            listView5.Clear();
-            listView6.Clear();*/
+            /*    listView1.Clear();
+                listView2.Clear();
+                listView3.Clear();
+                listView4.Clear();
+                listView5.Clear();
+                listView6.Clear();*/
 
-
+            label1.Text = label1.Text + " ";
 
             if (tempArray.Count() <= 0) // sprawdzenie czy tablica jest pusta
             {
@@ -88,7 +86,7 @@ namespace ProjektSSIW
 
 
 
-
+                    label1.Text = label1.Text.Trim(' ');
 
                     //wypisywanie zmiennych typów, nazw, wartości i prawdziwych wartości
                     foreach (var sub in Zmienne.typZmiennej)
@@ -143,6 +141,8 @@ namespace ProjektSSIW
             liniaKoncaWarunku = 0;
             klamraOtwierajace.Clear();
             klamraZamykajace.Clear();
+
+
         }
 
         private void button3_Click(object sender, EventArgs e)
