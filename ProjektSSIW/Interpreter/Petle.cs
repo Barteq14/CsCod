@@ -218,12 +218,19 @@ save
                         Form1.klamraZamykajace.Add(i);
                     } else if ((Form1.klamraOtwierajace.Count ) == (Form1.klamraZamykajace.Count))
                     {
+                        bool stanZmiany = false;
                        for(int y= (Form1.klamraZamykajace.Count - 1); y >= 0; y--){
                             if (Form1.klamraZamykajace[y] == 0)
                             {
                                 Form1.klamraZamykajace[y]=( i);
+                                stanZmiany = true;
                                 break;
                             }
+                        }
+                        if (stanZmiany == false)
+                        {
+                            Zmienne.bledy.Add("Błąd z klamrami ");//błąd brak )
+                            return;
                         }
                     
                     }
