@@ -225,8 +225,7 @@ save
                                 break;
                             }
                         }
-                       Zmienne.bledy.Add("Błąd brak { ");//błąd brak )
-                        return;
+                    
                     }
 
                     else
