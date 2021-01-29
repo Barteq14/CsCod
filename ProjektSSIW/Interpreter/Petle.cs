@@ -158,11 +158,11 @@ save
                         }
                         //**********************
                     }
-                    Zmienne.bledy.Add(" błąd zle wprowadony warunek " + size);// błąd zle wprowadony warunek
+                    Zmienne.bledy.Add("Błąd zle wprowadony warunek  linia " + size);// błąd zle wprowadony warunek
                 }
-                Zmienne.bledy.Add("błąd brak ) " + size);//błąd brak )
+                Zmienne.bledy.Add("Błąd brak ) linia " + size);//błąd brak )
             }
-            Zmienne.bledy.Add("błąd brak ( " + size);// błąd brak (   
+            Zmienne.bledy.Add("Błąd brak ( linia" + size);// błąd brak (   
         }
 
      /*   public bool sprawdzeneZamkniecia()
@@ -187,7 +187,8 @@ save
          }*/
         public void sprawdzenieOtwarcia(string[] tablica) 
         {
-                for (int i = size ; i < tablica.Length; i++)
+           
+            for (int i = size ; i < tablica.Length; i++)
                 {
                     string pom3 = tablica[i].Trim(' ');
                    
@@ -200,41 +201,41 @@ save
                       
                     }else  if (otwarcie[otwarcie.Length - 1] == '}')
                     {
-                    int d=0;
-                   if (Form1.klamraZamykajace.Count != 0)
-                    {
-                        d = (Form1.klamraOtwierajace.Count - 1) - (Form1.klamraZamykajace.Count - 1);
-                    }
-                    else
-                    {
-                        d = (Form1.klamraOtwierajace.Count - 1);
-                    }
-                       
-                    
-                    if (d > (Form1.klamraZamykajace.Count ))
-                    {
-                        for(int y =(Form1.klamraZamykajace.Count) ;y<d; y++)
-                        {
-                            if (y == 0)
-                            {
-                                Form1.klamraZamykajace.Add(0);
-                            }
-                            else
-                            {
-                                Form1.klamraZamykajace.Add(0);
-                            }
-                        }
-                        Form1.klamraZamykajace.Insert(d, i);
 
-                    }
-                    else if (d == (Form1.klamraZamykajace.Count-1)|| Form1.klamraZamykajace.Count == 0)
+                    if ((Form1.klamraOtwierajace.Count - 1) == (Form1.klamraZamykajace.Count))
                     {
                         Form1.klamraZamykajace.Add(i);
                     }
+                    else if ((Form1.klamraOtwierajace.Count - 1) > (Form1.klamraZamykajace.Count))
+                    {
+                        for (int y = (Form1.klamraZamykajace.Count); y < Form1.klamraOtwierajace.Count -1; y++)
+                        {
+
+
+                            Form1.klamraZamykajace.Add(0);
+
+                        }
+                        Form1.klamraZamykajace.Add(i);
+                    } else if ((Form1.klamraOtwierajace.Count ) == (Form1.klamraZamykajace.Count))
+                    {
+                       for(int y= (Form1.klamraZamykajace.Count - 1); y >= 0; y--){
+                            if (Form1.klamraZamykajace[y] == 0)
+                            {
+                                Form1.klamraZamykajace[y]=( i);
+                                break;
+                            }
+                        }
+                       Zmienne.bledy.Add("Błąd brak { ");//błąd brak )
+                        return;
+                    }
+
                     else
                     {
-                            Form1.klamraZamykajace[d] = i; //DO POPRAWY
+                        Zmienne.bledy.Add("Błąd brak { ");//błąd brak )
+                        return;
+                    }
 
+              
 
 /*
                         rush
@@ -253,22 +254,22 @@ save
                          
                          * */
 
-/*
-rush
-knife ss = 0;
-awp( ss = 1 ; ss < 3; ss++){
-negev(ss == 2){
-knife ss = 2;
-}
-m4a1s(ss);
-}
-knife gg = 1 + 5;
-awp( ss=5; ss>3;ss--){
-knife tt = ss;
-}
-save
-                         
-                         */
+                        /*
+                        rush
+                        knife ss = 0;
+                        awp( ss = 1 ; ss < 3; ss++){
+                        negev(ss == 2){
+                        knife ss = 2;
+                        }
+                        m4a1s(ss);
+                        }
+                        knife gg = 1 + 5;
+                        awp( ss=5; ss>3;ss--){
+                        knife tt = ss;
+                        }
+                        save
+
+                                                 */
 
                         /*
                          
@@ -285,14 +286,14 @@ save
 
                          * */
 
-                    }
+                        
                 }
             }
                 for(int y=0; y < Form1.klamraZamykajace.Count; y++)
             {
                 if (Form1.klamraZamykajace[y] == 0)
                 {
-                    Zmienne.bledy.Add("błąd brak } " );//błąd brak )
+                    Zmienne.bledy.Add("Błąd brak } " );//błąd brak )
                     return;
                 }
             }
@@ -424,10 +425,10 @@ save
                             else return false;
                         }
                     }
-                    Zmienne.bledy.Add("Błąd składni linnia" + size);
+                    Zmienne.bledy.Add("Błąd składni linia" + size);
                     return false;
                 }
-                Zmienne.bledy.Add("Błąd składni linnia " + size);
+                Zmienne.bledy.Add("Błąd składni linia " + size);
                 return false;
             }
             return false;
